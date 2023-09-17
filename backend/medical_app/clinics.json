@@ -1,0 +1,64 @@
+{
+    "clinics": [
+        {
+            "id": 1,
+            "name": "The Children's Care Clinic Pierrefonds",
+            "email": "cathy.ammendolea@bell.net",
+            "address": "14770 Boul. de Pierrefonds Suite 100, Pierrefonds-Roxboro, QC H9H 4Y6"
+        },
+        {
+            "id": 2,
+            "name": "Lasalle Hospital Pediatrics",
+            "email": "pediatrie.lasalle.comtl@ssss.gouv.qc.ca",
+            "address": "8585 Terr. Champlain, LaSalle, QC H8P 1C1"
+        },
+        {
+            "id": 3,
+            "name": "Tiny tots",
+            "email": "info@clubtinytots.ca",
+            "address": "6900 Décarie Boulevard, Suite 3550 Montréal Québec H3X 2T8"
+        },
+        {
+            "id": 4,
+            "name": "Bloom Clinic",
+            "email": "patients@lotusmedical.ca",
+            "address": "3535 Queen Mary Rd Suite 600, Montreal, Quebec H3V 1H8"
+        },
+        {
+            "id": 5,
+            "name": "Hopital Maisonneuve-Rosemont",
+            "email": "consultation.ped.cemtl@ssss.gouv.qc.ca",
+            "address": "5345 Bd de l'Assomption #225, Montréal, QC H1T 4B3"
+        },
+        {
+            "id": 6,
+            "name": "Centre ambulatoire de pediatrique CIUSSS Du Nord-de l'ile",
+            "email": "coralie-jeanne.leblicq.med@ssss.gouv.qc.ca",
+            "address": "1415 rue Jarry Est, 4eme etage, local D810; H2E1A7"
+        },
+        {
+            "id": 7,
+            "name": "Hôtel-Dieu d'Arthabaska",
+            "email": "genevieve_beaudoin@ssss.gouv.qc.ca",
+            "address": "5 rue des Hospitalières Victoriaville QC G6P 6N2"
+        },
+        {
+            "id": 8,
+            "name": "Clinique Pédiatrique Sept-Îles-CISSS de la Cote-Nord",
+            "email": "josee.leblanc.09cissss@ssss.gouv.qc.ca",
+            "address": "45 Rue Père Divet, Sept-Îles, QC G4R 3N7"
+        },
+        {
+            "id": 9,
+            "name": "CISSS de Gaspésie-Hôpital de Maria",
+            "email": "philippe.noel.cisssgaspesie@ssss.gouv.qc.ca",
+            "address": "419 Bd Perron, Maria, QC G0C 1Y0"
+        },
+        {
+            "id": 10,
+            "name": "Hopital Pierre-Le Gardeur Pediatrie",
+            "email": "pediatrie.desrosierslanglois.cissslan@ssss.gouv.qc.ca",
+            "address": "911 Mnt des Pionniers, Terrebonne, QC J6V 2H2"
+        }
+    ]
+}
