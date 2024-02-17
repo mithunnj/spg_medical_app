@@ -1,8 +1,23 @@
+/**
+ * Explicit imports for core layouts
+ * 
+ * Import core pages that are required to be available immediately when the Web App loads
+ * NOTE TODO: Clean up the explicit imports to improve the app loading performance when it starts
+**/
 import DashboardLayout from 'src/pages/Layout/DashboardLayout.vue';
 import AuthLayout from 'src/pages/Pages/AuthLayout.vue';
-// GeneralViews
 import NotFound from 'src/pages/GeneralViews/NotFoundPage.vue';
+import Widgets from 'src/pages/Widgets.vue';
 
+/**
+ *  Dynamic imports
+ * 
+ * This section will lazy load components as needed. This will improve the performance of the app
+ * so that all pages do not have to be loaded when the app starts.The webpackChunkName directive 
+ * provides a way to name the chunks created by Webpack during the build process. By grouping related 
+ * components into the same chunk (e.g., all components pages into a "components" chunk), it optimizes 
+ * browser caching.
+ **/
 // Calendar
 const Calendar = () =>
   import(/* webpackChunkName: "extra" */ 'src/pages/Calendar/CalendarRoute.vue');
@@ -29,7 +44,6 @@ const Typography = () =>
 // Dashboard pages
 const Dashboard = () =>
   import(/* webpackChunkName: "dashboard" */ 'src/pages/Dashboard/Dashboard.vue');
-import Widgets from 'src/pages/Widgets.vue';
 
 // Forms pages
 const RegularForms = () => import('src/pages/Forms/RegularForms.vue');
@@ -68,6 +82,13 @@ const ExtendedTables = () =>
   import(/* webpackChunkName: "tables" */ 'src/pages/Tables/ExtendedTables.vue');
 const PaginatedTables = () =>
   import(/* webpackChunkName: "tables" */ 'src/pages/Tables/PaginatedTables.vue');
+
+/**
+ * Grouped route definitions
+ * 
+ * Define route groups, and children routes within the groups. This will help to organize the routes.
+ * Can set the default child route to point to when pointing to the path within the group.
+ **/
 let componentsMenu = {
   path: '/components',
   component: DashboardLayout,
@@ -244,6 +265,12 @@ let authPages = {
   ]
 };
 
+/**
+ * Main Route Array
+ * 
+ * The route array combines all the defined routes along with a default route to handle 404 errors.
+ * This is where you can deactivate routes for the web app to not make them available.
+ **/
 const routes = [
   {
     path: '/',
