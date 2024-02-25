@@ -23,10 +23,20 @@ import App from "./App.vue";
 import router from "./routes/router";
 import i18n from "./i18n";
 import "./registerServiceWorker";
+
+// Import Amplify and its Vue components
+import Amplify from 'aws-amplify';
+import { AmplifyPlugin } from '@aws-amplify/ui-vue';
+// Import the configuration (this is created by Amplify CLI and contains your AWS resource configurations)
+import awsExports from './aws-exports';
+// Configure Amplify with your AWS resources
+Amplify.configure(awsExports);
+
 // plugin setup
 Vue.use(DashboardPlugin);
 Vue.use(VueRouter);
 Vue.use(RouterPrefetch);
+Vue.use(AmplifyPlugin);
 
 /* eslint-disable no-new */
 new Vue({
@@ -35,3 +45,4 @@ new Vue({
   router,
   i18n,
 });
+
