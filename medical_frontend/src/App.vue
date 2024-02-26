@@ -30,12 +30,12 @@ import HelloWorld from './components/HelloWorld.vue';
 
         <div class="wrapper">
           <!-- A custom HelloWorld component with a message prop -->
-          <HelloWorld msg="You did it!" />
+          <HelloWorld msg="PediaMatch" />
 
           <!-- Navigation links to different parts of the application -->
           <nav>
-            <RouterLink to="/">Home</RouterLink>
-            <RouterLink to="/about">About</RouterLink>
+            <RouterLink to="/">New Patient Form</RouterLink>
+            <RouterLink to="/about">Patient List</RouterLink>
             <!-- Wrap the Sign Out button for consistent navigation styling -->
             <span class="nav-link">
               <button class="sign-out-btn" @click="signOut">Sign Out</button>
