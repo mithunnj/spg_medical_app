@@ -1,0 +1,34 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+# NOTE TODO: Remove the line below when you take this to production
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+"""
+# NOTE TODO: Remove this - This was the original configuration file
+type Todo @model {
+  id: ID!
+  name: String!
+  description: String
+}
+"""
+
+type Patient @model {
+  id: ID! @primaryKey
+  firstName: String!
+  lastName: String!
+  guardianFirstName: String
+  guardianLastName: String
+  postalCode: String!
+  guardianPhoneNumber: String
+  guardianEmail: AWSEmail
+  attachments: [S3Object] @hasMany(fields: ["id"])
+}
+
+type S3Object @model {
+  id: ID! @primaryKey
+  patientId: ID! @index(name: "byPatient", sortKeyFields: ["createdAt"])
+  bucket: String!
+  key: String!
+  region: String!
+  createdAt: AWSDateTime!
+}

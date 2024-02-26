@@ -10,6 +10,11 @@
       "StackName": "amplify-medicalwebapp-dev-181212",
       "StackId": "arn:aws:cloudformation:us-east-1:905418306167:stack/amplify-medicalwebapp-dev-181212/757292b0-d44c-11ee-96c4-12e0b1cb36cd",
       "AmplifyAppId": "d1lqdwumw8v2ai"
+    },
+    "categories": {
+      "api": {
+        "medicalwebapp": {}
+      }
     }
   }
 }
