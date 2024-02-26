@@ -14,6 +14,21 @@
     "categories": {
       "api": {
         "medicalwebapp": {}
+      },
+      "auth": {
+        "medicalwebapp6f1f0003": {
+          "userPoolId": "us-east-1_Em8yfdL0b",
+          "userPoolName": "frontend8f5d729b_userpool_8f5d729b-dev",
+          "webClientId": "1bsllffg9libiirg7q7ola1okm",
+          "nativeClientId": "4g8ul37e736s0u7ojqtqvv045c",
+          "identityPoolId": "us-east-1:5a35ada5-9f31-483d-b08b-2f8e5f9f8d8a",
+          "identityPoolName": "frontend8f5d729b_identitypool_8f5d729b__dev",
+          "allowUnauthenticatedIdentities": false,
+          "authRoleArn": "arn:aws:iam::905418306167:role/amplify-frontend-dev-192053-authRole",
+          "authRoleName": "amplify-frontend-dev-192053-authRole",
+          "unauthRoleArn": "arn:aws:iam::905418306167:role/amplify-frontend-dev-192053-unauthRole",
+          "unauthRoleName": "amplify-frontend-dev-192053-unauthRole"
+        }
       }
     }
   }

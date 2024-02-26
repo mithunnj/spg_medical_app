@@ -16,5 +16,104 @@
       "providerPlugin": "awscloudformation",
       "service": "AppSync"
     }
+  },
+  "auth": {
+    "medicalwebapp6f1f0003": {
+      "customAuth": false,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "serviceType": "imported"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_auth_medicalwebapp6f1f0003_allowUnauthenticatedIdentities": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "medicalwebapp6f1f0003"
+        }
+      ]
+    },
+    "AMPLIFY_auth_medicalwebapp6f1f0003_authRoleArn": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "medicalwebapp6f1f0003"
+        }
+      ]
+    },
+    "AMPLIFY_auth_medicalwebapp6f1f0003_authRoleName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "medicalwebapp6f1f0003"
+        }
+      ]
+    },
+    "AMPLIFY_auth_medicalwebapp6f1f0003_identityPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "medicalwebapp6f1f0003"
+        }
+      ]
+    },
+    "AMPLIFY_auth_medicalwebapp6f1f0003_identityPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "medicalwebapp6f1f0003"
+        }
+      ]
+    },
+    "AMPLIFY_auth_medicalwebapp6f1f0003_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "medicalwebapp6f1f0003"
+        }
+      ]
+    },
+    "AMPLIFY_auth_medicalwebapp6f1f0003_unauthRoleArn": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "medicalwebapp6f1f0003"
+        }
+      ]
+    },
+    "AMPLIFY_auth_medicalwebapp6f1f0003_unauthRoleName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "medicalwebapp6f1f0003"
+        }
+      ]
+    },
+    "AMPLIFY_auth_medicalwebapp6f1f0003_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "medicalwebapp6f1f0003"
+        }
+      ]
+    },
+    "AMPLIFY_auth_medicalwebapp6f1f0003_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "medicalwebapp6f1f0003"
+        }
+      ]
+    },
+    "AMPLIFY_auth_medicalwebapp6f1f0003_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "medicalwebapp6f1f0003"
+        }
+      ]
+    }
   }
 }
