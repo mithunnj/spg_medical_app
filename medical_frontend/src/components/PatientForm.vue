@@ -1,5 +1,5 @@
 <template>
-  <WelcomeItem>
+  <PatientFormItem>
     <template #icon>
       <DocumentationIcon />
     </template>
@@ -29,10 +29,10 @@
         <input id="guardianLastName" type="text" v-model="guardianLastName" required>
       </div>
 
-      <!-- Guardian Phone Number (Simple validation pattern) -->
+      <!-- Guardian Phone Number -->
       <div class="form-group">
         <label for="guardianPhoneNumber">Guardian Phone Number</label>
-        <input id="guardianPhoneNumber" type="tel" v-model="guardianPhoneNumber" pattern="\\d{10}" title="Phone number must be 10 digits" required>
+        <input id="guardianPhoneNumber" type="tel" v-model="guardianPhoneNumber" pattern="\d{10}" title="Phone number must be 10 digits" required>
       </div>
 
       <!-- Guardian Email -->
@@ -44,27 +44,60 @@
       <!-- Patient Postal Code (Canadian postal code validation pattern) -->
       <div class="form-group">
         <label for="patientPostalCode">Patient Postal Code</label>
-        <input id="patientPostalCode" type="text" v-model="patientPostalCode" pattern="[A-Za-z]\\d[A-Za-z] ?\\d[A-Za-z]\\d" title="Must be a valid Canadian postal code" required>
+        <input id="patientPostalCode" type="text" v-model="patientPostalCode" pattern="[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d" title="Must be a valid Canadian postal code" required>
+      </div>
+
+      <!-- Clinic Selection -->
+      <div class="form-group">
+        <label for="clinicSelection">Select Clinic</label>
+        <select id="clinicSelection" v-model="selectedClinic" required>
+          <option disabled value="">Please select one</option>
+          <option v-for="clinic in clinics" :key="clinic.id" :value="clinic.id">
+            {{ clinic.name }}
+          </option>
+        </select>
       </div>
 
       <button type="submit" class="submit-btn">Submit</button>
     </form>
-  </WelcomeItem>
+  </PatientFormItem>
 </template>
 
 
 <script setup>
 import { ref } from 'vue'
-import WelcomeItem from './WelcomeItem.vue'
+import PatientFormItem from './PatientFormItem.vue'
 import DocumentationIcon from './icons/IconDocumentation.vue'
 
 const patientFirstName = ref('')
 const patientLastName = ref('')
 const guardianFirstName = ref('')
 const guardianLastName = ref('')
-const guardianPhoneNumber = ref('')
 const guardianEmail = ref('')
 const patientPostalCode = ref('')
+const guardianPhoneNumber = ref('')
+const selectedClinic = ref('') // Holds the selected clinic's ID or name
+const clinics = ref([
+  { id: 1, name: 'The Children\'s Care Clinic Pierrefonds' },
+  { id: 2, name: 'Lasalle Hospital Pediatrics' },
+  { id: 3, name: 'Tiny Tots' },
+  { id: 4, name: 'Bloom Clinic'},
+  { id: 5, name: 'Hopital Maisonneuve-Rosemont'},
+  { id: 6, name: 'Centre ambulatoire de pediatrique CIUSSS Du Nord-de l\'ile'},
+  { id: 7, name: 'Hôtel-Dieu d\'Arthabaska'},
+  { id: 8, name: 'Clinique Pédiatrique Sept-Îles-CISSS de la Cote-Nord'},
+  { id: 9, name: 'CISSS de Gaspésie-Hôpital de Maria'},
+  { id: 10, name: 'Hopital Pierre-Le Gardeur Pediatrie'},
+  { id: 11, name: 'Pédiatres de l\'Hôpital de St-Eustache'},
+  { id: 12, name: 'Pédiatres de Ste-Agathe'},
+  { id: 13, name: 'Hopital Charles Lemoyne'},
+  { id: 14, name: 'Hopital Pierre Boucher'},
+  { id: 15, name: 'Hôpital Honoré-Mercier Pavillon Saint-Charles'},
+  { id: 16, name: 'Northern Program-Montreal Children\'s Hospital'},
+  { id: 17, name: 'Clinique Le Copain-CISSSO Outaouais Hôpital de Gatineau\'s Hospital'},
+  { id: 18, name: 'Clinique de Pédiatrie du Saguenay'},
+])
+
 
 function submitForm() {
   console.log({
@@ -72,9 +105,10 @@ function submitForm() {
     patientLastName: patientLastName.value,
     guardianFirstName: guardianFirstName.value,
     guardianLastName: guardianLastName.value,
-    guardianPhoneNumber: guardianPhoneNumber.value,
     guardianEmail: guardianEmail.value,
-    patientPostalCode: patientPostalCode.value
+    patientPostalCode: patientPostalCode.value,
+    guardianPhoneNumber: guardianPhoneNumber.value,
+    selectedClinic: selectedClinic.value // Include the selected clinic
   })
   // Add actual submission logic here (e.g., API call)
 }
