@@ -36,12 +36,14 @@ import HelloWorld from './components/HelloWorld.vue';
           <nav>
             <RouterLink to="/">Home</RouterLink>
             <RouterLink to="/about">About</RouterLink>
+            <!-- Wrap the Sign Out button for consistent navigation styling -->
+            <span class="nav-link">
+              <button class="sign-out-btn" @click="signOut">Sign Out</button>
+            </span>
           </nav>
 
           <!-- Displaying a greeting message with the username of the authenticated user -->
           <h1>Hello {{ user.username }}!</h1>
-          <!-- A button that allows the user to sign out of the application -->
-          <button @click="signOut">Sign Out</button>
         </div>
       </header>
 
@@ -80,16 +82,34 @@ nav a.router-link-exact-active:hover {
   background-color: transparent;
 }
 
-/* Styling for navigation links */
-nav a {
+/* Styling for navigation links and the wrapper around the Sign Out button */
+nav a, .nav-link {
   display: inline-block;
   padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border); /* Ensures separation between links and the Sign Out button */
 }
 
-nav a:first-of-type {
-  border: 0;
+/* Removes the right border from the last item in the navigation */
+nav .nav-link:last-child {
+  border-right: none;
 }
+
+/* Hover effect for links and the Sign Out button */
+nav a:hover, .sign-out-btn:hover {
+  background-color: green; /* Changes background to green on hover for non-selected links/buttons */
+}
+
+/* Styling adjustments for the Sign Out button to match link styles */
+.sign-out-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0; /* Adjust padding if necessary to align with other navigation items */
+}
+
 
 /* Media query for larger screens */
 @media (min-width: 1024px) {
