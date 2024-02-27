@@ -13,22 +13,14 @@ type Todo @model {
 """
 
 type Patient @model {
-  id: ID! @primaryKey
-  firstName: String!
-  lastName: String!
-  guardianFirstName: String
-  guardianLastName: String
-  postalCode: String!
-  guardianPhoneNumber: String
-  guardianEmail: AWSEmail
-  attachments: [S3Object] @hasMany(fields: ["id"])
+  id: ID!
+  patientFirstName: String!
+  patientLastName: String!
+  guardianFirstName: String!
+  guardianLastName: String!
+  guardianPhoneNumber: String!
+  guardianEmail: String!
+  patientPostalCode: String!
+  selectedClinic: String!
 }
 
-type S3Object @model {
-  id: ID! @primaryKey
-  patientId: ID! @index(name: "byPatient", sortKeyFields: ["createdAt"])
-  bucket: String!
-  key: String!
-  region: String!
-  createdAt: AWSDateTime!
-}
