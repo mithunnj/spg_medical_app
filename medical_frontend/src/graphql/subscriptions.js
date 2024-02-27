@@ -13,6 +13,7 @@ export const onCreatePatient = /* GraphQL */ `
       guardianEmail
       patientPostalCode
       selectedClinic
+      userId
       createdAt
       updatedAt
       __typename
@@ -31,6 +32,7 @@ export const onUpdatePatient = /* GraphQL */ `
       guardianEmail
       patientPostalCode
       selectedClinic
+      userId
       createdAt
       updatedAt
       __typename
@@ -49,6 +51,7 @@ export const onDeletePatient = /* GraphQL */ `
       guardianEmail
       patientPostalCode
       selectedClinic
+      userId
       createdAt
       updatedAt
       __typename

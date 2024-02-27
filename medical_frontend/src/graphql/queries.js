@@ -13,6 +13,7 @@ export const getPatient = /* GraphQL */ `
       guardianEmail
       patientPostalCode
       selectedClinic
+      userId
       createdAt
       updatedAt
       __typename
@@ -36,6 +37,7 @@ export const listPatients = /* GraphQL */ `
         guardianEmail
         patientPostalCode
         selectedClinic
+        userId
         createdAt
         updatedAt
         __typename

@@ -65,10 +65,14 @@
 
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import PatientFormItem from './PatientFormItem.vue'
 import DocumentationIcon from './icons/IconDocumentation.vue'
+import { generateClient } from 'aws-amplify/api';
+import * as mutations from '../graphql/mutations';
+import { getCurrentUser } from 'aws-amplify/auth';
 
+const appUserId = ref('')
 const patientFirstName = ref('')
 const patientLastName = ref('')
 const guardianFirstName = ref('')
@@ -98,9 +102,25 @@ const clinics = ref([
   { id: 18, name: 'Clinique de Pédiatrie du Saguenay'},
 ])
 
+// This client is used to create a new patient profile using GraphQL
+const client = generateClient();
+// Fetch current authenticated user
+async function currentAuthenticatedUser() {
+  try {
+    const { username, userId, signInDetails } = await getCurrentUser();
+    appUserId.value = userId;
+  } catch (err) {
+    console.log(err);
+  }
+}
 
-function submitForm() {
-  console.log({
+// Fetch user details on component mount
+onMounted(() => {
+  currentAuthenticatedUser();
+});
+
+async function submitForm() {
+  const patientDetails = {
     patientFirstName: patientFirstName.value,
     patientLastName: patientLastName.value,
     guardianFirstName: guardianFirstName.value,
@@ -108,10 +128,22 @@ function submitForm() {
     guardianEmail: guardianEmail.value,
     patientPostalCode: patientPostalCode.value,
     guardianPhoneNumber: guardianPhoneNumber.value,
-    selectedClinic: selectedClinic.value // Include the selected clinic
-  })
-  // Add actual submission logic here (e.g., API call)
+    selectedClinic: selectedClinic.value,
+    userId: appUserId.value
+  };
+
+  try {
+    const patientProfile = await client.graphql({
+      query: mutations.createPatient,
+      variables: { input: patientDetails }
+    })
+    console.log('Patient profile created:', patientProfile);
+  } catch (error) {
+    console.error('Error creating patient profile:', error);
+    alert('Failed to create patient profile.');
+  }
 }
+
 </script>
 
 

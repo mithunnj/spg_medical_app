@@ -22,5 +22,6 @@ type Patient @model {
   guardianEmail: String!
   patientPostalCode: String!
   selectedClinic: String!
+  userId: String!
 }
 
