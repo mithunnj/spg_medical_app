@@ -13,8 +13,8 @@ import '@aws-amplify/ui-vue/styles.css';
 
 // Importing Vue Router utilities for navigation
 import { RouterLink, RouterView } from 'vue-router';
-// Importing a custom HelloWorld component to be used within the app
-import HelloWorld from './components/HelloWorld.vue';
+// Importing a custom MainPage component to be used within the app
+import MainPage from './components/MainPage.vue';
 
 </script>
 
@@ -27,11 +27,11 @@ import HelloWorld from './components/HelloWorld.vue';
     <template v-slot="{ signOut, user }">
       <header>
         <!-- Displaying an application logo -->
-        <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+        <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="200" height="200" />
 
         <div class="wrapper">
-          <!-- A custom HelloWorld component with a message prop -->
-          <HelloWorld msg="PediaMatch" />
+          <!-- A custom MainPage component with a message prop -->
+          <MainPage msg="PediaMatch" />
 
           <!-- Navigation links to different parts of the application -->
           <nav>
