@@ -15,6 +15,7 @@ import '@aws-amplify/ui-vue/styles.css';
 import { RouterLink, RouterView } from 'vue-router';
 // Importing a custom HelloWorld component to be used within the app
 import HelloWorld from './components/HelloWorld.vue';
+
 </script>
 
 <template>
@@ -43,7 +44,7 @@ import HelloWorld from './components/HelloWorld.vue';
           </nav>
 
           <!-- Displaying a greeting message with the username of the authenticated user -->
-          <h1>Hello {{ user.username }}!</h1>
+          <h1>Hello {{ user.signInDetails.loginId }}!</h1>
         </div>
       </header>
 
