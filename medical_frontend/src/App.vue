@@ -44,7 +44,7 @@ import MainPage from './components/MainPage.vue';
           </nav>
 
           <!-- Displaying a greeting message with the username of the authenticated user -->
-          <h1>Hello {{ user.signInDetails.loginId }}!</h1>
+          <h1>Hello {{ user?.signInDetails?.loginId || 'Guest' }}!</h1>
         </div>
       </header>
 
