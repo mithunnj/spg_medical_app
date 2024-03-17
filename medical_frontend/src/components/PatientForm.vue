@@ -71,6 +71,7 @@ import DocumentationIcon from './icons/IconDocumentation.vue'
 import { generateClient } from 'aws-amplify/api';
 import * as mutations from '../graphql/mutations';
 import { getCurrentUser } from 'aws-amplify/auth';
+import Swal from 'sweetalert2';
 
 const appUserId = ref('')
 const patientFirstName = ref('')
@@ -120,6 +121,16 @@ onMounted(() => {
 });
 
 async function submitForm() {
+  if (!isFormValid()) {
+    Swal.fire({
+      title: 'Incomplete Form',
+      text: 'Please fill in all required fields.',
+      icon: 'warning',
+      confirmButtonText: 'OK'
+    });
+    return;
+  }
+
   const patientDetails = {
     patientFirstName: patientFirstName.value,
     patientLastName: patientLastName.value,
@@ -136,13 +147,45 @@ async function submitForm() {
     const patientProfile = await client.graphql({
       query: mutations.createPatient,
       variables: { input: patientDetails }
-    })
+    });
     console.log('Patient profile created:', patientProfile);
+    Swal.fire({
+      title: 'Success!',
+      text: 'Patient profile successfully created.',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    }).then(() => {
+      // Clear the form fields after successful submission
+      resetForm();
+    });
   } catch (error) {
     console.error('Error creating patient profile:', error);
-    alert('Failed to create patient profile.');
+    Swal.fire({
+      title: 'Error!',
+      text: 'Failed to create patient profile.',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
   }
 }
+
+function isFormValid() {
+  return patientFirstName.value && patientLastName.value && guardianFirstName.value &&
+         guardianLastName.value && guardianEmail.value && patientPostalCode.value &&
+         guardianPhoneNumber.value && selectedClinic.value; // Make sure all these fields are non-empty
+}
+
+function resetForm() {
+  patientFirstName.value = '';
+  patientLastName.value = '';
+  guardianFirstName.value = '';
+  guardianLastName.value = '';
+  guardianEmail.value = '';
+  patientPostalCode.value = '';
+  guardianPhoneNumber.value = '';
+  selectedClinic.value = ''; // Reset this to ensure user must select again
+}
+
 
 </script>
 
