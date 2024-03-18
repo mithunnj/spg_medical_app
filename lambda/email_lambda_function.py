@@ -2,24 +2,24 @@ import json
 import boto3
 
 CLINICS = {
-    1: 'The Children\'s Care Clinic Pierrefonds',
-    2: 'Lasalle Hospital Pediatrics',
-    3: 'Tiny Tots',
-    4: 'Bloom Clinic',
-    5: 'Hopital Maisonneuve-Rosemont',
-    6: 'Centre ambulatoire de pediatrique CIUSSS Du Nord-de l\'ile',
-    7: 'Hôtel-Dieu d\'Arthabaska',
-    8: 'Clinique Pédiatrique Sept-Îles-CISSS de la Cote-Nord',
-    9: 'CISSS de Gaspésie-Hôpital de Maria',
-    10: 'Hopital Pierre-Le Gardeur Pediatrie',
-    11: 'Pédiatres de l\'Hôpital de St-Eustache',
-    12: 'Pédiatres de Ste-Agathe',
-    13: 'Hopital Charles Lemoyne',
-    14: 'Hopital Pierre Boucher',
-    15: 'Hôpital Honoré-Mercier Pavillon Saint-Charles',
-    16: 'Northern Program-Montreal Children\'s Hospital',
-    17: 'Clinique Le Copain-CISSSO Outaouais Hôpital de Gatineau\'s Hospital',
-    18: 'Clinique de Pédiatrie du Saguenay'
+    '1': 'The Children\'s Care Clinic Pierrefonds',
+    '2': 'Lasalle Hospital Pediatrics',
+    '3': 'Tiny Tots',
+    '4': 'Bloom Clinic',
+    '5': 'Hopital Maisonneuve-Rosemont',
+    '6': 'Centre ambulatoire de pediatrique CIUSSS Du Nord-de l\'ile',
+    '7': 'Hôtel-Dieu d\'Arthabaska',
+    '8': 'Clinique Pédiatrique Sept-Îles-CISSS de la Cote-Nord',
+    '9': 'CISSS de Gaspésie-Hôpital de Maria',
+    '10': 'Hopital Pierre-Le Gardeur Pediatrie',
+    '11': 'Pédiatres de l\'Hôpital de St-Eustache',
+    '12': 'Pédiatres de Ste-Agathe',
+    '13': 'Hopital Charles Lemoyne',
+    '14': 'Hopital Pierre Boucher',
+    '15': 'Hôpital Honoré-Mercier Pavillon Saint-Charles',
+    '16': 'Northern Program-Montreal Children\'s Hospital',
+    '17': 'Clinique Le Copain-CISSSO Outaouais Hôpital de Gatineau\'s Hospital',
+    '18': 'Clinique de Pédiatrie du Saguenay'
 }
 
 def lambda_handler(event, context):
@@ -65,8 +65,13 @@ def get_value(dynamodb_attribute):
     return None
 
 def create_email_body(new_image):
+    clinic_id = get_value(new_image.get('selectedClinic'))
+    clinic_id = str(clinic_id).strip()
+    print(f"Selected clinic ID: {clinic_id}")
+    print(f"Selected clinic ID type: {type(clinic_id)}")
+    clinic_name = CLINICS.get(clinic_id, 'Unknown Clinic')
     return f"""
-Cher/Chère {CLINICS[int(get_value(new_image.get('selectedClinic')))]},
+Cher/Chère {clinic_name},
 
 J'espère que ce message vous trouve en bonne santé. Je vous écris au nom de l'Hôpital de Montréal pour enfants pour demander un rendez-vous avec un médecin de famille pour l'un de nos patients.
 
@@ -92,7 +97,7 @@ Hôpital de Montréal pour enfants
 
 -----------------------------------------------------------------------------------------------------------
 
-Dear {CLINICS[int(get_value(new_image.get('selectedClinic')))]},
+Dear {clinic_name},
 
 I hope this message finds you well. I am writing on behalf of Montreal Children's Hospital to request an appointment with a family doctor for one of our patients.
 
