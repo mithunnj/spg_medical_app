@@ -1,14 +1,12 @@
-// import { redirect } from 'next/navigation'
-// import { auth } from '@/lib/auth'
-// import { UserRole } from '@prisma/client'
+import { redirect } from 'next/navigation'
+import { auth } from '@/lib/auth'
+import { UserRole } from '@prisma/client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 
 export default async function HomePage() {
-  // Temporarily disable auth for initial testing
-  // const session = await auth()
-  const session = null
+  const session = await auth()
 
   if (!session) {
     return (
@@ -50,8 +48,7 @@ export default async function HomePage() {
      )
    }
 
-   // Redirect based on user role - disabled for now
-   /*
+   // Redirect based on user role
    switch (session.user.role) {
      case UserRole.HOSPITAL_DOCTOR:
        redirect('/hospital/dashboard')
@@ -64,7 +61,4 @@ export default async function HomePage() {
      default:
        redirect('/auth/signin')
    }
-   */
-   
-   return <div>Loading...</div>
 }

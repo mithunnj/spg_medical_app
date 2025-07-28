@@ -1,31 +1,10 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-// import { PrismaAdapter } from '@auth/prisma-adapter'
-// import { prisma } from '@/lib/prisma'
-// import { UserRole } from '@prisma/client'
+import { PrismaAdapter } from '@auth/prisma-adapter'
+import { prisma } from '@/lib/prisma'
+import { UserRole } from '@prisma/client'
 
-// Temporarily simplified auth configuration for initial setup
-export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [
-    CredentialsProvider({
-      name: 'credentials',
-      credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
-      },
-      async authorize() {
-        // Temporarily return null to disable auth during initial setup
-        return null
-      },
-    }),
-  ],
-  pages: {
-    signIn: '/auth/signin',
-  },
-})
-
-/*
-// Full auth configuration - to be enabled once database is connected
+// Full auth configuration - now enabled with database connected
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: {
@@ -51,7 +30,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email: credentials.email as string },
           include: {
             hospital: true,
             clinic: true,
@@ -104,10 +83,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
 })
-*/
 
-// Helper functions for role-based access control - disabled until auth is fully setup
-/*
+// Helper functions for role-based access control
 export const hasRole = (userRole: UserRole, allowedRoles: UserRole[]): boolean => {
   return allowedRoles.includes(userRole)
 }
@@ -126,5 +103,4 @@ export const isParent = (role: UserRole): boolean => {
 
 export const isAdmin = (role: UserRole): boolean => {
   return role === UserRole.ADMIN
-}
-*/ 
+} 

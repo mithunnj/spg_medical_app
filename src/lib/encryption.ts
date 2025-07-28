@@ -14,7 +14,8 @@ interface EncryptedData {
  */
 export function encrypt(text: string): string {
   const iv = crypto.randomBytes(16)
-  const cipher = crypto.createCipher(ALGORITHM, ENCRYPTION_KEY)
+  const key = Buffer.from(ENCRYPTION_KEY, 'base64')
+  const cipher = crypto.createCipher('aes-256-gcm', key)
   cipher.setAAD(Buffer.from('patient-data', 'utf8'))
   
   let encrypted = cipher.update(text, 'utf8', 'hex')
@@ -37,7 +38,8 @@ export function encrypt(text: string): string {
 export function decrypt(encryptedText: string): string {
   try {
     const data: EncryptedData = JSON.parse(encryptedText)
-    const decipher = crypto.createDecipher(ALGORITHM, ENCRYPTION_KEY)
+    const key = Buffer.from(ENCRYPTION_KEY, 'base64')
+    const decipher = crypto.createDecipher('aes-256-gcm', key)
     decipher.setAAD(Buffer.from('patient-data', 'utf8'))
     decipher.setAuthTag(Buffer.from(data.authTag, 'hex'))
     
