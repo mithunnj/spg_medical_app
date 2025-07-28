@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
-import { Heart, Shield, Loader2, ArrowLeft, Building2 } from 'lucide-react'
+import { Heart, Shield, Loader2, ArrowLeft, Stethoscope } from 'lucide-react'
 import Link from 'next/link'
 
 export default function SignInPage() {
@@ -73,7 +73,7 @@ export default function SignInPage() {
         <div className="text-center mb-10">
           <div className="flex items-center justify-center mb-6">
             <div className="bg-blue-600 p-3 rounded-xl mr-3">
-              <Building2 className="h-7 w-7 text-white" />
+              <Stethoscope className="h-7 w-7 text-white" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">

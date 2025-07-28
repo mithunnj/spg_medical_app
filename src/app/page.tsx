@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
-import { Heart, Shield, Users, ArrowRight, Building2 } from 'lucide-react'
+import { Heart, Shield, Users, ArrowRight, Stethoscope } from 'lucide-react'
 
 export default async function HomePage() {
   const session = await auth()
@@ -18,7 +18,7 @@ export default async function HomePage() {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="bg-blue-600 p-4 rounded-xl mr-4">
-                <Building2 className="h-8 w-8 text-white" />
+                <Stethoscope className="h-8 w-8 text-white" />
               </div>
               <div>
                 <h1 className="text-5xl font-bold text-gray-900 mb-3">
