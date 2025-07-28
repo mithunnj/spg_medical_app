@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
-import { Heart, Shield, Loader2, ArrowLeft, Stethoscope } from 'lucide-react'
+import { Heart, Shield, Loader2, ArrowLeft, Building2 } from 'lucide-react'
 import Link from 'next/link'
 
 export default function SignInPage() {
@@ -70,36 +70,33 @@ export default function SignInPage() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-10">
           <div className="flex items-center justify-center mb-6">
-            <div className="bg-blue-600 p-3 rounded-2xl mr-3">
-              <Heart className="h-7 w-7 text-white" />
+            <div className="bg-blue-600 p-3 rounded-xl mr-3">
+              <Building2 className="h-7 w-7 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-slate-900">
-                CareFlow
+              <h1 className="text-3xl font-bold text-gray-900">
+                CareBridge
               </h1>
-              <p className="text-sm text-slate-600">
-                Professional Medical Access Portal
+              <p className="text-sm text-gray-600">
+                Trusted Bridge Between Care Teams
               </p>
             </div>
           </div>
           
-          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 mb-4">
+          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300 px-3 py-1">
             Montreal Children&apos;s Hospital - PICU
           </Badge>
         </div>
         
         {/* Sign In Card */}
-        <Card className="bg-white/80 backdrop-blur-sm border-slate-200 shadow-xl">
+        <Card className="bg-white border-gray-200 shadow-sm">
           <CardHeader className="text-center pb-6">
-            <div className="bg-slate-100 w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Stethoscope className="h-7 w-7 text-slate-600" />
-            </div>
-            <CardTitle className="text-xl text-slate-900 font-semibold">
-              Healthcare Professional Sign In
+            <CardTitle className="text-xl text-gray-900 font-semibold">
+              Professional Access Portal
             </CardTitle>
-            <CardDescription className="text-slate-600">
+            <CardDescription className="text-gray-600">
               Enter your credentials to access the secure medical portal
             </CardDescription>
           </CardHeader>
@@ -108,7 +105,7 @@ export default function SignInPage() {
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email Field */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium text-slate-700">
+                <Label htmlFor="email" className="text-sm font-medium text-gray-700">
                   Email Address
                 </Label>
                 <Input
@@ -119,13 +116,13 @@ export default function SignInPage() {
                   placeholder="doctor@hospital.com"
                   required
                   disabled={isLoading}
-                  className="h-11 bg-white border-slate-300 focus:border-blue-500 focus:ring-blue-500"
+                  className="h-11 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
               {/* Password Field */}
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium text-slate-700">
+                <Label htmlFor="password" className="text-sm font-medium text-gray-700">
                   Password
                 </Label>
                 <Input
@@ -136,13 +133,13 @@ export default function SignInPage() {
                   placeholder="••••••••••••"
                   required
                   disabled={isLoading}
-                  className="h-11 bg-white border-slate-300 focus:border-blue-500 focus:ring-blue-500"
+                  className="h-11 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
               {/* License Number Field */}
               <div className="space-y-2">
-                <Label htmlFor="licenseNumber" className="text-sm font-medium text-slate-700">
+                <Label htmlFor="licenseNumber" className="text-sm font-medium text-gray-700">
                   Medical License Number
                 </Label>
                 <Input
@@ -152,9 +149,9 @@ export default function SignInPage() {
                   onChange={(e) => setLicenseNumber(e.target.value)}
                   placeholder="QC-12345 (for medical professionals)"
                   disabled={isLoading}
-                  className="h-11 bg-white border-slate-300 focus:border-blue-500 focus:ring-blue-500"
+                  className="h-11 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                 />
-                <p className="text-xs text-slate-500 flex items-center">
+                <p className="text-xs text-gray-500 flex items-center">
                   <Shield className="h-3 w-3 mr-1" />
                   Required for hospital and clinic doctors
                 </p>
@@ -170,7 +167,7 @@ export default function SignInPage() {
               {/* Submit Button */}
               <Button 
                 type="submit" 
-                className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors" 
+                className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors" 
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -179,16 +176,16 @@ export default function SignInPage() {
                     Authenticating...
                   </>
                 ) : (
-                  'Sign In to CareFlow'
+                  'Sign In to CareBridge'
                 )}
               </Button>
             </form>
 
             {/* Footer Links */}
-            <div className="mt-6 text-center space-y-3">
+            <div className="mt-6 text-center">
               <Link 
                 href="/" 
-                className="inline-flex items-center text-sm text-slate-600 hover:text-slate-800 transition-colors"
+                className="inline-flex items-center text-sm text-gray-600 hover:text-gray-800 transition-colors"
               >
                 <ArrowLeft className="mr-1 h-3 w-3" />
                 Back to Home
@@ -198,8 +195,8 @@ export default function SignInPage() {
         </Card>
 
         {/* Security Notice */}
-        <div className="mt-6 p-4 bg-slate-100/50 rounded-xl backdrop-blur-sm">
-          <div className="flex items-center justify-center space-x-4 text-xs text-slate-600">
+        <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <div className="flex items-center justify-center space-x-4 text-xs text-gray-600">
             <div className="flex items-center">
               <Shield className="h-3 w-3 mr-1" />
               <span>HIPAA Compliant Security</span>
@@ -209,7 +206,7 @@ export default function SignInPage() {
               <span>Patient Privacy Protected</span>
             </div>
           </div>
-          <p className="text-xs text-slate-500 text-center mt-2">
+          <p className="text-xs text-gray-500 text-center mt-2">
             Unauthorized access is strictly prohibited and monitored
           </p>
         </div>

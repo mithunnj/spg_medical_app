@@ -1,18 +1,9 @@
 {
-  "name": "careflow-medical-platform",
+  "name": "carebridge-medical-platform",
   "version": "1.0.0",
-  "description": "Professional medical care coordination platform for seamless patient discharge transitions",
+  "description": "A trusted bridge between intensive care and outpatient medicine, with a transparent family portal",
   "private": true,
-  "keywords": [
-    "medical",
-    "healthcare",
-    "patient-care",
-    "hospital",
-    "clinic",
-    "discharge-coordination",
-    "pediatric",
-    "HIPAA-compliant"
-  ],
+  "keywords": ["medical", "healthcare", "patient-care", "hospital", "clinic", "bridge", "care-coordination", "pediatric", "HIPAA-compliant"],
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",

@@ -1,16 +1,23 @@
-# CareFlow - Professional Medical Care Coordination Platform
+# CareBridge - Trusted Medical Care Coordination
 
-A secure, HIPAA-compliant web application for coordinating patient discharge from the Pediatric ICU (PICU) to outbound family clinics at Montreal Children's Hospital.
+A trusted bridge between intensive care and outpatient medicine, with a transparent family portal for seamless patient transitions at Montreal Children's Hospital.
+
+## 🌉 Bridge Concept
+
+**CareBridge** connects healthcare teams across the care continuum:
+- **PICU → Outpatient Clinics**: Seamless patient discharge coordination
+- **Medical Teams → Families**: Transparent communication throughout transitions
+- **Hospital → Community**: Trusted care continuity beyond hospital walls
 
 ## 🏥 Platform Overview
 
-**CareFlow** facilitates seamless medical care transitions between:
-- **Hospital Doctors (PICU)**: Coordinate patient discharge and select appropriate outbound clinics
+CareBridge facilitates secure medical care transitions between:
+- **Hospital Doctors (PICU)**: Coordinate patient discharge and select appropriate outpatient clinics
 - **Clinic Doctors**: Review and approve patient requests based on specialization and availability  
-- **Patient Families**: Receive updates and communication throughout the care transition process
-- **Healthcare Administrators**: Oversee system operations and manage institutional workflows
+- **Patient Families**: Receive transparent updates throughout the care transition process
+- **Healthcare Administrators**: Oversee system operations and manage care workflows
 
-## ✨ Key Features
+## ✨ Platform Features
 
 ### 🔐 **Security & Compliance**
 - **HIPAA-Compliant**: End-to-end encryption for all patient data
@@ -19,23 +26,22 @@ A secure, HIPAA-compliant web application for coordinating patient discharge fro
 - **Session Security**: 8-hour timeout with secure session management
 - **Privacy Controls**: No indexing of medical data with strict access controls
 
-### 🏥 **Medical Workflow Features**
-- **Patient Discharge Coordination**: Streamlined PICU to outbound clinic transitions
-- **Secure File Management**: HIPAA-compliant medical document storage and sharing
-- **Real-Time Communication**: Instant updates between healthcare providers and families
-- **Clinic Availability Tracking**: Live capacity and specialization management
-- **Care Continuity**: Comprehensive patient handoff documentation
+### 🌉 **Care Bridge Features**
+- **Secure Patient Discharge Coordination**: Streamlined PICU to outpatient clinic transitions
+- **HIPAA-Compliant Data Encryption**: Advanced security for all medical information
+- **Transparent Family Communication**: Real-time updates for patient families
+- **Real-Time Care Team Coordination**: Instant communication between healthcare providers
 
 ### 📊 **Professional Analytics**
 - **Usage Monitoring**: Track portal adoption across medical staff
-- **Performance Metrics**: Monitor discharge coordination efficiency
+- **Performance Metrics**: Monitor care transition efficiency
 - **Compliance Reporting**: HIPAA audit trails and security monitoring
 
 ## 🛠️ Technology Stack
 
 ### **Frontend & Backend**
 - **Framework**: Next.js 14 with App Router & TypeScript
-- **UI/UX**: Tailwind CSS + shadcn/ui components with professional medical design
+- **UI/UX**: Tailwind CSS + shadcn/ui components with clean medical design
 - **Authentication**: NextAuth.js with role-based access control
 
 ### **Database & Security**
@@ -56,7 +62,7 @@ Create a `.env.local` file:
 
 ```env
 # Database Configuration
-DATABASE_URL="postgresql://username:password@localhost:5432/careflow_medical"
+DATABASE_URL="postgresql://username:password@localhost:5432/carebridge_medical"
 POSTGRES_URL=""
 POSTGRES_PRISMA_URL=""
 
@@ -71,7 +77,7 @@ BLOB_READ_WRITE_TOKEN="your-vercel-blob-token"
 ENCRYPTION_KEY="your-256-bit-encryption-key"
 
 # Application Settings
-APP_NAME="CareFlow"
+APP_NAME="CareBridge"
 HOSPITAL_NAME="Montreal Children's Hospital - PICU"
 ```
 
@@ -109,6 +115,24 @@ Use these credentials to test different user roles:
 | **Patient Family** | `parent@example.com` | *(not required)* | *(dev mode)* |
 | **Administrator** | `admin@thechildren.com` | *(not required)* | *(dev mode)* |
 
+## 👥 **Bridging Care Teams & Families**
+
+### **Hospital Doctors (MD)**
+- **Role**: PICU Discharge Coordination
+- **Capabilities**: Create discharge requests, upload medical files, select outpatient clinics
+
+### **Clinic Doctors (CL)**  
+- **Role**: Outpatient Care Reception
+- **Capabilities**: Review patient requests, approve/deny based on capacity, manage clinic availability
+
+### **Families (FM)**
+- **Role**: Transparent Care Updates
+- **Capabilities**: View care transition status, receive updates, communicate with care teams
+
+### **Administrators (AD)**
+- **Role**: System Management
+- **Capabilities**: Oversee platform operations, manage user access, monitor compliance
+
 ## 🏗️ **Development Workflow**
 
 ### **Feature Branch Strategy**
@@ -139,7 +163,7 @@ npm run build         # Production build verification
 ### **Core Entities**
 - **Users**: Healthcare professionals and patient families
 - **Hospitals**: PICU and other hospital facilities  
-- **Clinics**: Outbound family doctor practices
+- **Clinics**: Outpatient family doctor practices
 - **Patients**: Encrypted patient records with medical information
 - **DischargeRequests**: Care coordination between hospitals and clinics
 - **PatientFiles**: Secure medical document storage
@@ -222,8 +246,8 @@ npm run build         # Production build verification
 
 ---
 
-**CareFlow** - Streamlining Medical Care Transitions with Professional Excellence
+**CareBridge** - Building Trusted Bridges in Healthcare
 
-*© 2024 CareFlow Platform - Secure Medical Care Coordination*
+*© 2024 CareBridge Platform - Trusted Medical Care Coordination*
 
 > ⚠️ **Important**: This application handles sensitive medical information. All development, deployment, and usage must follow HIPAA compliance guidelines and institutional security policies.
