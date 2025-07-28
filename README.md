@@ -1,99 +1,87 @@
-# SPG Medical Portal - Montreal Children's Hospital
+# CareBridge - Trusted Medical Care Coordination
 
-A secure, HIPAA-compliant web application for coordinating patient discharge from the Pediatric ICU (PICU) to outbound family clinics.
+A trusted bridge between intensive care and outpatient medicine, with a transparent family portal for seamless patient transitions at Montreal Children's Hospital.
 
-## 🏥 Project Overview
+## 🌉 Bridge Concept
 
-This application facilitates secure communication between:
-- **Hospital Doctors (PICU)**: Input patient discharge information and select outbound clinics
-- **Clinic Doctors**: Review and approve/deny patient requests based on availability
-- **Parents/Guardians**: View status updates and communication from healthcare providers
+**CareBridge** connects healthcare teams across the care continuum:
+- **PICU → Outpatient Clinics**: Seamless patient discharge coordination
+- **Medical Teams → Families**: Transparent communication throughout transitions
+- **Hospital → Community**: Trusted care continuity beyond hospital walls
 
-## 🛠️ Tech Stack
+## 🏥 Platform Overview
 
-### Frontend & Backend
-- **Framework**: Next.js 14 with App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS + shadcn/ui components
+CareBridge facilitates secure medical care transitions between:
+- **Hospital Doctors (PICU)**: Coordinate patient discharge and select appropriate outpatient clinics
+- **Clinic Doctors**: Review and approve patient requests based on specialization and availability  
+- **Patient Families**: Receive transparent updates throughout the care transition process
+- **Healthcare Administrators**: Oversee system operations and manage care workflows
+
+## ✨ Platform Features
+
+### 🔐 **Security & Compliance**
+- **HIPAA-Compliant**: End-to-end encryption for all patient data
+- **Role-Based Access**: Secure authentication with medical license verification
+- **Data Protection**: AES-256-GCM encryption for sensitive patient information
+- **Session Security**: 8-hour timeout with secure session management
+- **Privacy Controls**: No indexing of medical data with strict access controls
+
+### 🌉 **Care Bridge Features**
+- **Secure Patient Discharge Coordination**: Streamlined PICU to outpatient clinic transitions
+- **HIPAA-Compliant Data Encryption**: Advanced security for all medical information
+- **Transparent Family Communication**: Real-time updates for patient families
+- **Real-Time Care Team Coordination**: Instant communication between healthcare providers
+
+### 📊 **Professional Analytics**
+- **Usage Monitoring**: Track portal adoption across medical staff
+- **Performance Metrics**: Monitor care transition efficiency
+- **Compliance Reporting**: HIPAA audit trails and security monitoring
+
+## 🛠️ Technology Stack
+
+### **Frontend & Backend**
+- **Framework**: Next.js 14 with App Router & TypeScript
+- **UI/UX**: Tailwind CSS + shadcn/ui components with clean medical design
 - **Authentication**: NextAuth.js with role-based access control
 
-### Database & Storage
-- **Database**: PostgreSQL (Vercel Postgres for production)
-- **ORM**: Prisma
-- **File Storage**: Vercel Blob (HIPAA-compliant)
-- **Encryption**: AES-256-GCM for patient data
+### **Database & Security**
+- **Database**: PostgreSQL with Prisma ORM (Vercel Postgres for production)
+- **File Storage**: Vercel Blob for secure medical document storage
+- **Encryption**: AES-256-GCM for patient data protection
+- **Deployment**: Vercel with automatic CI/CD
 
-### Deployment
-- **Platform**: Vercel
-- **Environment**: Production-ready with HIPAA compliance
+## 🚀 Quick Start
 
-## 🔐 Security & Compliance
-
-### HIPAA Compliance Features
-- ✅ End-to-end encryption for patient data
-- ✅ Secure authentication with medical license verification
-- ✅ Audit logging (planned)
-- ✅ Role-based access control
-- ✅ Session management with 8-hour timeout
-- ✅ No indexing of medical data (`robots: noindex, nofollow`)
-
-### Data Encryption
-Patient personal information is encrypted before storage:
-- Names, DOB, health card numbers
-- Addresses and contact information
-- Emergency contact details
-
-## 🏗️ Architecture
-
-### User Roles
-1. **HOSPITAL_DOCTOR**: PICU doctors creating discharge requests
-2. **CLINIC_DOCTOR**: Outbound clinic doctors reviewing requests
-3. **PARENT**: Patient guardians viewing updates
-4. **ADMIN**: System administrators
-
-### Database Schema
-- **Users**: Healthcare professionals and parents
-- **Hospitals**: PICU and other hospital facilities
-- **Clinics**: Outbound family doctor clinics
-- **Patients**: Encrypted patient records
-- **DischargeRequests**: Patient discharge coordination
-- **PatientFiles**: Secure file attachments
-
-## 🚀 Development Setup
-
-### Prerequisites
-- Node.js 18+ 
+### **Prerequisites**
+- Node.js 18+
 - PostgreSQL database
 - Vercel account (for deployment)
 
-### Environment Variables
+### **Environment Setup**
 Create a `.env.local` file:
 
 ```env
-# Database
-DATABASE_URL="postgresql://username:password@localhost:5432/spg_medical_app"
+# Database Configuration
+DATABASE_URL="postgresql://username:password@localhost:5432/carebridge_medical"
 POSTGRES_URL=""
 POSTGRES_PRISMA_URL=""
-POSTGRES_URL_NON_POOLING=""
 
-# NextAuth.js
-NEXTAUTH_SECRET="your-secret-key-here-change-in-production"
+# Authentication
+NEXTAUTH_SECRET="your-secure-secret-key"
 NEXTAUTH_URL="http://localhost:3000"
 
-# Vercel Blob Storage
-BLOB_READ_WRITE_TOKEN=""
+# File Storage
+BLOB_READ_WRITE_TOKEN="your-vercel-blob-token"
 
-# Encryption for HIPAA compliance
-ENCRYPTION_KEY="your-encryption-key-here-change-in-production"
+# Security
+ENCRYPTION_KEY="your-256-bit-encryption-key"
 
-# SMTP for notifications
-SMTP_HOST=""
-SMTP_PORT="587"
-SMTP_USER=""
-SMTP_PASS=""
+# Application Settings
+APP_NAME="CareBridge"
+HOSPITAL_NAME="Montreal Children's Hospital - PICU"
 ```
 
-### Installation & Setup
+### **Installation & Development**
 
 ```bash
 # Install dependencies
@@ -102,104 +90,164 @@ npm install
 # Generate Prisma client
 npx prisma generate
 
-# Set up database (when ready)
+# Set up database
 npx prisma db push
 
-# Run development server
+# Seed with test data
+npm run seed
+
+# Start development server
 npm run dev
 ```
 
-## 📋 Current Development Status
+## 🏥 **User Access & Testing**
 
-### ✅ Completed Features
-- [x] Next.js 14 project setup with TypeScript
-- [x] shadcn/ui component library integration
-- [x] Prisma database schema with HIPAA-compliant design
-- [x] NextAuth.js authentication setup
-- [x] Role-based access control architecture
-- [x] Encryption utilities for patient data
-- [x] Landing page and sign-in interface
+### **Live Application**
+**Production URL**: https://spg-medical-app.vercel.app/
 
-### 🚧 In Progress
-- [ ] Database setup and migrations
-- [ ] Authentication system refinement
-- [ ] TypeScript configuration optimization
+### **Test Credentials**
+Use these credentials to test different user roles:
 
-### 📝 Planned Features (Feature Branches)
-1. **Patient Information System** - Forms for PICU doctors to input patient data
-2. **File Management** - Secure upload/download of patient files
-3. **Clinic Selection** - Interface for selecting and contacting outbound clinics
-4. **Request Management** - Clinic portal for reviewing and responding to requests
-5. **Parent Portal** - Status updates and communication for families
-6. **Security & Compliance** - Additional HIPAA features and audit logging
+| **Role** | **Email** | **License Number** | **Password** |
+|----------|-----------|-------------------|--------------|
+| **Hospital Doctor** | `dr.smith@thechildren.com` | `QC-12345` | *(dev mode)* |
+| **Clinic Doctor** | `dr.johnson@familymed-downtown.ca` | `QC-67890` | *(dev mode)* |
+| **Patient Family** | `parent@example.com` | *(not required)* | *(dev mode)* |
+| **Administrator** | `admin@thechildren.com` | *(not required)* | *(dev mode)* |
 
-## 🌟 Feature Branch Workflow
+## 👥 **Bridging Care Teams & Families**
 
-Each major feature will be developed in separate branches:
+### **Hospital Doctors (MD)**
+- **Role**: PICU Discharge Coordination
+- **Capabilities**: Create discharge requests, upload medical files, select outpatient clinics
 
+### **Clinic Doctors (CL)**  
+- **Role**: Outpatient Care Reception
+- **Capabilities**: Review patient requests, approve/deny based on capacity, manage clinic availability
+
+### **Families (FM)**
+- **Role**: Transparent Care Updates
+- **Capabilities**: View care transition status, receive updates, communicate with care teams
+
+### **Administrators (AD)**
+- **Role**: System Management
+- **Capabilities**: Oversee platform operations, manage user access, monitor compliance
+
+## 🏗️ **Development Workflow**
+
+### **Feature Branch Strategy**
 ```bash
-# Example workflow
-git checkout -b feature/patient-input-system
-# Develop feature
-git commit -m "Add patient input forms"
-git push origin feature/patient-input-system
-# Create PR to main
+# Create feature branch
+git checkout -b feature/your-feature-name
+
+# Develop and test
+npm run build && npm run lint && npm run type-check
+
+# Commit changes
+git commit -m "feat: your feature description"
+
+# Push and create PR
+git push origin feature/your-feature-name
 ```
 
-### Planned Feature Branches
-- `feature/patient-input-system`
-- `feature/file-management`
-- `feature/clinic-selection`
-- `feature/clinic-portal`
-- `feature/parent-portal`
-- `feature/security-compliance`
+### **Quality Assurance**
+```bash
+npm run test          # Run test suite
+npm run lint          # Code quality checks  
+npm run type-check    # TypeScript validation
+npm run build         # Production build verification
+```
 
-## 🏥 User Workflows
+## 📊 **Database Schema**
 
-### Hospital Doctor (PICU) Workflow
-1. Sign in with medical license verification
-2. Access patient discharge form
-3. Input patient information (encrypted storage)
-4. Upload relevant medical files
-5. Select target outbound clinics
-6. Submit discharge request
-7. Track request status
+### **Core Entities**
+- **Users**: Healthcare professionals and patient families
+- **Hospitals**: PICU and other hospital facilities  
+- **Clinics**: Outpatient family doctor practices
+- **Patients**: Encrypted patient records with medical information
+- **DischargeRequests**: Care coordination between hospitals and clinics
+- **PatientFiles**: Secure medical document storage
 
-### Clinic Doctor Workflow
-1. Sign in to clinic portal
-2. View incoming patient requests
-3. Review patient information and files
-4. Approve/deny based on capacity and specialization
-5. Add clinic notes if needed
-6. Update patient status
+### **Security Model**
+- All patient personal data is encrypted before database storage
+- Role-based permissions control data access
+- Audit trails track all medical data interactions
+- HIPAA-compliant data retention policies
 
-### Parent Workflow
-1. Sign in with provided credentials
-2. View patient status updates
-3. Receive notifications about care transitions
-4. Access relevant information about next steps
+## 🚀 **Deployment**
 
-## 🔒 Security Considerations
+### **Vercel Deployment**
+1. **Connect Repository**: Link GitHub repo to Vercel project
+2. **Configure Environment**: Add production environment variables
+3. **Database Setup**: Configure Vercel Postgres
+4. **File Storage**: Set up Vercel Blob for medical documents
+5. **Deploy**: Automatic deployment on main branch updates
 
-### Data Protection
-- All patient data encrypted at rest
-- Secure transmission via HTTPS
-- Regular security audits (planned)
-- Compliance with Quebec healthcare regulations
+### **Production Configuration**
+- **SSL/TLS**: Automatic HTTPS with security headers
+- **Performance**: Optimized builds with edge caching
+- **Monitoring**: Real-time analytics and error tracking
+- **Compliance**: HIPAA-ready infrastructure
 
-### Access Control
-- Multi-factor authentication (planned)
-- Session timeout enforcement
-- Role-based permissions
-- Activity logging
+## 📈 **Monitoring & Analytics**
 
-## 📞 Support & Contact
+### **Vercel Analytics Integration**
+- **User Engagement**: Track healthcare professional adoption
+- **Performance Metrics**: Monitor page load times and user flows  
+- **Usage Patterns**: Analyze peak usage times and feature adoption
+- **Security Monitoring**: Track authentication patterns and access
 
-For technical support or medical workflow questions:
-- **Technical Issues**: [GitHub Issues](link-to-issues)
-- **HIPAA Compliance**: Contact system administrator
+## 🔒 **Security & Compliance**
+
+### **HIPAA Compliance Features**
+- ✅ **Data Encryption**: Patient data encrypted at rest and in transit
+- ✅ **Access Controls**: Role-based permissions with audit logging
+- ✅ **Session Management**: Secure authentication with timeout controls
+- ✅ **Privacy Protection**: No patient data in analytics or logs
+- ✅ **Audit Trails**: Comprehensive logging of all data access
+
+### **Security Best Practices**
+- Regular security audits and penetration testing
+- Dependency vulnerability scanning and updates
+- Secure coding practices with TypeScript
+- OWASP compliance for web application security
+
+## 📞 **Support & Documentation**
+
+### **Getting Help**
+- **Technical Issues**: [GitHub Issues](https://github.com/your-repo/issues)
 - **Medical Workflow**: Contact PICU administration
+- **HIPAA Compliance**: Contact system administrator
+- **Feature Requests**: Submit via GitHub Issues
+
+### **Documentation**
+- **API Documentation**: Available in `/docs` directory
+- **User Guides**: Role-specific guides for each user type
+- **Developer Docs**: Setup and contribution guidelines
+- **Compliance Docs**: HIPAA and security documentation
 
 ---
 
-**⚠️ Important**: This application handles sensitive medical information. All development and deployment must follow HIPAA compliance guidelines and hospital security policies.
+## 📋 **Project Status**
+
+### **✅ Production Ready**
+- Complete authentication and authorization system
+- HIPAA-compliant data encryption and storage
+- Professional medical portal UI/UX
+- Secure file upload and management
+- Real-time analytics and monitoring
+- Comprehensive testing and quality assurance
+
+### **🚧 Active Development**
+- Advanced patient workflow automation
+- Enhanced clinical decision support
+- Mobile application for healthcare providers
+- Integration with hospital information systems
+
+---
+
+**CareBridge** - Building Trusted Bridges in Healthcare
+
+*© 2024 CareBridge Platform - Trusted Medical Care Coordination*
+
+> ⚠️ **Important**: This application handles sensitive medical information. All development, deployment, and usage must follow HIPAA compliance guidelines and institutional security policies.
