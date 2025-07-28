@@ -1,0 +1,220 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  HOSPITAL_DOCTOR
+  CLINIC_DOCTOR
+  PARENT
+  ADMIN
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  DENIED
+  MATCHED
+  CANCELLED
+}
+
+enum PatientStatus {
+  ACTIVE
+  DISCHARGED
+  TRANSFERRED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  role          UserRole
+  hospitalId    String?
+  clinicId      String?
+  licenseNumber String?   // Medical license number
+  phone         String?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  hospital      Hospital? @relation(fields: [hospitalId], references: [id])
+  clinic        Clinic?   @relation(fields: [clinicId], references: [id])
+  createdRequests DischargeRequest[] @relation("CreatedBy")
+  handledRequests DischargeRequest[] @relation("HandledBy")
+  patientFiles  PatientFile[]
+  
+  // NextAuth fields
+  accounts      Account[]
+  sessions      Session[]
+
+  @@map("users")
+}
+
+model Hospital {
+  id        String   @id @default(cuid())
+  name      String
+  address   String
+  phone     String
+  email     String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  users     User[]
+  patients  Patient[]
+
+  @@map("hospitals")
+}
+
+model Clinic {
+  id               String   @id @default(cuid())
+  name             String
+  address          String
+  phone            String
+  email            String
+  specializations  String[] // Array of specializations
+  capacity         Int      @default(0)
+  currentPatients  Int      @default(0)
+  acceptingNew     Boolean  @default(true)
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  users            User[]
+  requests         DischargeRequest[]
+
+  @@map("clinics")
+}
+
+model Patient {
+  id           String        @id @default(cuid())
+  // Encrypted personal information
+  firstNameEnc String        // Encrypted first name
+  lastNameEnc  String        // Encrypted last name
+  dobEnc       String        // Encrypted date of birth
+  healthCardEnc String       // Encrypted health card number
+  addressEnc   String        // Encrypted address
+  phoneEnc     String?       // Encrypted phone number
+  emergencyContactEnc String // Encrypted emergency contact info
+  
+  // Medical information
+  admissionDate    DateTime
+  dischargeDate    DateTime?
+  diagnosis        String
+  medications      String[]
+  allergies        String[]
+  specialNeeds     String?
+  status           PatientStatus @default(ACTIVE)
+  
+  // Relations
+  hospitalId       String
+  hospital         Hospital @relation(fields: [hospitalId], references: [id])
+  requests         DischargeRequest[]
+  files            PatientFile[]
+  
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("patients")
+}
+
+model DischargeRequest {
+  id              String        @id @default(cuid())
+  patientId       String
+  clinicId        String
+  createdById     String
+  handledById     String?
+  
+  status          RequestStatus @default(PENDING)
+  priority        String        @default("NORMAL") // HIGH, NORMAL, LOW
+  notes           String?
+  clinicNotes     String?       // Notes from clinic
+  requiredCare    String[]      // Array of care requirements
+  followUpNeeded  Boolean       @default(false)
+  
+  requestedDate   DateTime      @default(now())
+  responseDate    DateTime?
+  scheduledDate   DateTime?
+  
+  // Relations
+  patient         Patient @relation(fields: [patientId], references: [id])
+  clinic          Clinic  @relation(fields: [clinicId], references: [id])
+  createdBy       User    @relation("CreatedBy", fields: [createdById], references: [id])
+  handledBy       User?   @relation("HandledBy", fields: [handledById], references: [id])
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("discharge_requests")
+}
+
+model PatientFile {
+  id          String   @id @default(cuid())
+  patientId   String
+  uploadedById String
+  
+  fileName    String
+  fileType    String
+  fileSize    Int
+  filePath    String   // Secure blob storage path
+  description String?
+  
+  // Relations
+  patient     Patient @relation(fields: [patientId], references: [id])
+  uploadedBy  User    @relation(fields: [uploadedById], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("patient_files")
+}
+
+// NextAuth required models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+} 
