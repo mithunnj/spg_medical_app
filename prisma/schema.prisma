@@ -78,9 +78,11 @@ model Hospital {
 model Clinic {
   id               String   @id @default(cuid())
   name             String
+  region           String?  // CIUSSS region or province
   address          String
-  phone            String
-  email            String
+  phone            String?  // Standardized phone format
+  fax              String?  // Standardized fax format
+  email            String?
   specializations  String[] // Array of specializations
   capacity         Int      @default(0)
   currentPatients  Int      @default(0)
