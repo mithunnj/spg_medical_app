@@ -3,7 +3,7 @@
  * Functions for retrieving and filtering clinic data
  */
 
-import { prisma } from '@/lib/prisma'
+import { prisma } from './prisma'
 
 // Use the generated Prisma type
 type Clinic = {

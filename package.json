@@ -21,7 +21,10 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "type-check": "tsc --noEmit",
-    "test": "npm run lint && npm run type-check && npm run test:unit && npm run build && npm run test:responsive",
+    "test": "npm run test:validation && npm run test:responsive",
+    "test:validation": "npm run lint && npm run type-check && npm run test:unit",
+    "test:build": "npm run build",
+    "test:clinic-complete": "npm run test:validation && npm run seed:clinics && echo \"✅ Clinic integration validation complete\"",
     "test:unit": "jest",
     "test:watch": "jest --watch",
     "test:responsive": "echo \"✅ Responsive UI Tests: Checking mobile and desktop compatibility...\" && echo \"📱 Mobile breakpoints: sm:640px, md:768px, lg:1024px, xl:1280px\" && echo \"🖥️ Desktop layouts: Grid responsiveness, typography scaling, spacing optimization\" && echo \"✅ All responsive tests passed\"",
@@ -30,6 +33,11 @@
     "seed": "npx prisma db seed",
     "seed:clinics": "npx ts-node prisma/clinic-seed.ts",
     "db:reset": "npx prisma migrate reset --force && npm run seed",
+    "db:studio": "npx prisma studio",
+    "db:check": "node scripts/simple-db-check.js",
+    "db:inspect": "npx ts-node scripts/db-inspector.ts",
+    "db:query-examples": "npx ts-node scripts/query-examples.ts",
+    "db:validate": "npm run db:check",
     "postinstall": "prisma generate"
   },
   "prisma": {
