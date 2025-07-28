@@ -1,7 +1,18 @@
 {
-  "name": "spg_medical_app",
-  "version": "0.1.0",
+  "name": "careflow-medical-platform",
+  "version": "1.0.0",
+  "description": "Professional medical care coordination platform for seamless patient discharge transitions",
   "private": true,
+  "keywords": [
+    "medical",
+    "healthcare",
+    "patient-care",
+    "hospital",
+    "clinic",
+    "discharge-coordination",
+    "pediatric",
+    "HIPAA-compliant"
+  ],
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",

@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || 'default-key-change-in-production'
-const ALGORITHM = 'aes-256-gcm'
+// const ALGORITHM = 'aes-256-gcm' // Reserved for future use
 
 interface EncryptedData {
   encryptedData: string

@@ -7,9 +7,9 @@ import { Analytics } from '@vercel/analytics/react'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'SPG Medical Portal - Montreal Children\'s Hospital',
-  description: 'Secure patient discharge coordination portal for PICU and outbound clinics',
-  keywords: 'medical, healthcare, hospital, clinic, patient, discharge, PICU, Montreal Children\'s Hospital',
+  title: 'CareFlow - Montreal Children\'s Hospital',
+  description: 'Professional medical care coordination platform for seamless patient discharge transitions from PICU to outbound clinics',
+  keywords: 'medical, healthcare, hospital, clinic, patient, discharge, PICU, Montreal Children\'s Hospital, care coordination, patient transitions',
   robots: 'noindex, nofollow', // Prevent indexing of medical data
 }
 
@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers>
-          <div className="min-h-screen bg-background">
+          <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
             {children}
           </div>
         </Providers>

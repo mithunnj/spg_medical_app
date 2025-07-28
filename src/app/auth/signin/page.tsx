@@ -8,7 +8,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2 } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Heart, Shield, Loader2, ArrowLeft, Stethoscope } from 'lucide-react'
+import Link from 'next/link'
 
 export default function SignInPage() {
   const [email, setEmail] = useState('')
@@ -57,102 +59,159 @@ export default function SignInPage() {
           router.push('/')
         }
       }
-         } catch {
-       setError('An unexpected error occurred. Please try again.')
-     } finally {
+    } catch {
+      setError('An unexpected error occurred. Please try again.')
+    } finally {
       setIsLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-white">
-      <div className="max-w-md w-full space-y-8 p-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Sign In
-          </h1>
-                     <p className="text-gray-600">
-             SPG Medical Portal - Montreal Children&apos;s Hospital
-           </p>
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center mb-6">
+            <div className="bg-blue-600 p-3 rounded-2xl mr-3">
+              <Heart className="h-7 w-7 text-white" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-slate-900">
+                CareFlow
+              </h1>
+              <p className="text-sm text-slate-600">
+                Professional Medical Access Portal
+              </p>
+            </div>
+          </div>
+          
+          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 mb-4">
+            Montreal Children&apos;s Hospital - PICU
+          </Badge>
         </div>
         
-        <Card>
-          <CardHeader>
-            <CardTitle>Healthcare Professional Access</CardTitle>
-            <CardDescription>
+        {/* Sign In Card */}
+        <Card className="bg-white/80 backdrop-blur-sm border-slate-200 shadow-xl">
+          <CardHeader className="text-center pb-6">
+            <div className="bg-slate-100 w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Stethoscope className="h-7 w-7 text-slate-600" />
+            </div>
+            <CardTitle className="text-xl text-slate-900 font-semibold">
+              Healthcare Professional Sign In
+            </CardTitle>
+            <CardDescription className="text-slate-600">
               Enter your credentials to access the secure medical portal
             </CardDescription>
           </CardHeader>
+          
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Email Field */}
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+                <Label htmlFor="email" className="text-sm font-medium text-slate-700">
+                  Email Address
+                </Label>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your.email@hospital.com"
+                  placeholder="doctor@hospital.com"
                   required
                   disabled={isLoading}
+                  className="h-11 bg-white border-slate-300 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
+              {/* Password Field */}
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-sm font-medium text-slate-700">
+                  Password
+                </Label>
                 <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder="••••••••••••"
                   required
                   disabled={isLoading}
+                  className="h-11 bg-white border-slate-300 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
+              {/* License Number Field */}
               <div className="space-y-2">
-                <Label htmlFor="licenseNumber">Medical License Number</Label>
+                <Label htmlFor="licenseNumber" className="text-sm font-medium text-slate-700">
+                  Medical License Number
+                </Label>
                 <Input
                   id="licenseNumber"
                   type="text"
                   value={licenseNumber}
                   onChange={(e) => setLicenseNumber(e.target.value)}
-                  placeholder="License Number (for medical professionals)"
+                  placeholder="QC-12345 (for medical professionals)"
                   disabled={isLoading}
+                  className="h-11 bg-white border-slate-300 focus:border-blue-500 focus:ring-blue-500"
                 />
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-slate-500 flex items-center">
+                  <Shield className="h-3 w-3 mr-1" />
                   Required for hospital and clinic doctors
                 </p>
               </div>
 
+              {/* Error Alert */}
               {error && (
-                <Alert variant="destructive">
-                  <AlertDescription>{error}</AlertDescription>
+                <Alert variant="destructive" className="bg-red-50 border-red-200">
+                  <AlertDescription className="text-red-700">{error}</AlertDescription>
                 </Alert>
               )}
 
+              {/* Submit Button */}
               <Button 
                 type="submit" 
-                className="w-full" 
+                className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors" 
                 disabled={isLoading}
               >
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Signing in...
+                    Authenticating...
                   </>
                 ) : (
-                  'Sign In'
+                  'Sign In to CareFlow'
                 )}
               </Button>
             </form>
+
+            {/* Footer Links */}
+            <div className="mt-6 text-center space-y-3">
+              <Link 
+                href="/" 
+                className="inline-flex items-center text-sm text-slate-600 hover:text-slate-800 transition-colors"
+              >
+                <ArrowLeft className="mr-1 h-3 w-3" />
+                Back to Home
+              </Link>
+            </div>
           </CardContent>
         </Card>
 
-        <div className="text-center text-xs text-gray-500">
-          <p>🔒 This is a secure, HIPAA-compliant portal</p>
-          <p>Unauthorized access is strictly prohibited</p>
+        {/* Security Notice */}
+        <div className="mt-6 p-4 bg-slate-100/50 rounded-xl backdrop-blur-sm">
+          <div className="flex items-center justify-center space-x-4 text-xs text-slate-600">
+            <div className="flex items-center">
+              <Shield className="h-3 w-3 mr-1" />
+              <span>HIPAA Compliant Security</span>
+            </div>
+            <div className="flex items-center">
+              <Heart className="h-3 w-3 mr-1" />
+              <span>Patient Privacy Protected</span>
+            </div>
+          </div>
+          <p className="text-xs text-slate-500 text-center mt-2">
+            Unauthorized access is strictly prohibited and monitored
+          </p>
         </div>
       </div>
     </div>
