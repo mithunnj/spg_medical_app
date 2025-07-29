@@ -18,9 +18,9 @@ export default function DevPICUDashboard() {
   // Mock session for development
   const session = {
     user: {
-      name: 'Dr. Development User',
+      name: 'Dr. Matthew Donlan',
       role: 'HOSPITAL_DOCTOR',
-      email: 'dev@hospital.com'
+      email: 'matthew.donlan@hospital.com'
     }
   }
 

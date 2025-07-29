@@ -13,7 +13,8 @@ import {
   AlertCircle,
   Upload,
   Send,
-  Calendar
+  Calendar,
+  Check
 } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
@@ -44,7 +45,7 @@ interface ClinicContact {
 }
 
 // Mock data - will be replaced with API calls
-const mockPatients: PatientRecord[] = [
+const initialPatients: PatientRecord[] = [
   {
     id: '1',
     firstName: 'Emma',
@@ -106,7 +107,7 @@ const mockPatients: PatientRecord[] = [
     lastActivity: '2024-01-18',
     clinicsContacted: [
       {
-        id: '2',
+        id: '4',
         clinicName: 'Quebec Family Health Center',
         contactedDate: '2024-01-14',
         status: 'DENIED',
@@ -114,7 +115,7 @@ const mockPatients: PatientRecord[] = [
         daysSinceContact: 6
       },
       {
-        id: '1',
+        id: '5',
         clinicName: 'Montreal Children\'s Clinic',
         contactedDate: '2024-01-16',
         status: 'RESPONDED',
@@ -126,9 +127,20 @@ const mockPatients: PatientRecord[] = [
 ]
 
 export default function PatientTrackingTable() {
+  const [patients, setPatients] = useState<PatientRecord[]>(initialPatients)
   const [selectedPatient, setSelectedPatient] = useState<PatientRecord | null>(null)
   const [messageText, setMessageText] = useState('')
   const [noteText, setNoteText] = useState('')
+  const [notifications, setNotifications] = useState<string[]>([])
+  const [isMessageDialogOpen, setIsMessageDialogOpen] = useState(false)
+  const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false)
+
+  const showNotification = (message: string) => {
+    setNotifications(prev => [...prev, message])
+    setTimeout(() => {
+      setNotifications(prev => prev.slice(1))
+    }, 4000)
+  }
 
   const getStatusBadge = (status: string) => {
     const config = {
@@ -161,32 +173,101 @@ export default function PatientTrackingTable() {
     )
   }
 
-  const handleSendMessage = (clinicId: string) => {
-    console.log('Sending message to clinic:', clinicId, messageText)
+  const handleSendMessage = (patientId: string, clinicId: string) => {
+    if (!messageText.trim()) return
+
+    // Update the patient's clinic contact with the message
+    setPatients(prev => prev.map(patient => {
+      if (patient.id === patientId) {
+        return {
+          ...patient,
+          clinicsContacted: patient.clinicsContacted.map(contact => {
+            if (contact.id === clinicId) {
+              return {
+                ...contact,
+                status: 'RESPONDED' as const,
+                response: `Dr. Donlan: ${messageText}`
+              }
+            }
+            return contact
+          })
+        }
+      }
+      return patient
+    }))
+
+    showNotification(`Message sent to ${selectedPatient?.clinicsContacted.find(c => c.id === clinicId)?.clinicName}`)
     setMessageText('')
-    // TODO: API call to send message
+    setIsMessageDialogOpen(false)
   }
 
   const handleAddNote = () => {
-    console.log('Adding note for patient:', selectedPatient?.id, noteText)
+    if (!noteText.trim() || !selectedPatient) return
+
+    showNotification(`Note added for patient ${selectedPatient.firstName} ${selectedPatient.lastName}`)
     setNoteText('')
-    // TODO: API call to add note
+    setIsNoteDialogOpen(false)
   }
 
   const handleFileUpload = (patientId: string, event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || [])
-    console.log('Uploading files for patient:', patientId, files)
-    // TODO: API call to upload files
+    if (files.length > 0) {
+      const patient = patients.find(p => p.id === patientId)
+      showNotification(`${files.length} file(s) uploaded for ${patient?.firstName} ${patient?.lastName}`)
+    }
   }
 
-  const sendFollowUp = (clinicId: string) => {
-    console.log('Sending automated follow-up to clinic:', clinicId)
-    // TODO: API call to send follow-up
+  const sendFollowUp = (patientId: string, clinicId: string) => {
+    // Update the clinic contact status to show follow-up was sent
+    setPatients(prev => prev.map(patient => {
+      if (patient.id === patientId) {
+        return {
+          ...patient,
+          clinicsContacted: patient.clinicsContacted.map(contact => {
+            if (contact.id === clinicId) {
+              return {
+                ...contact,
+                status: 'FOLLOW_UP_SENT' as const,
+                lastFollowUp: new Date().toISOString().split('T')[0]
+              }
+            }
+            return contact
+          })
+        }
+      }
+      return patient
+    }))
+
+    const patient = patients.find(p => p.id === patientId)
+    const clinic = patient?.clinicsContacted.find(c => c.id === clinicId)
+    showNotification(`Automated follow-up sent to ${clinic?.clinicName}`)
+  }
+
+  const sendMessageToClinic = (patientId: string, clinicId: string) => {
+    const patient = patients.find(p => p.id === patientId)
+    const clinic = patient?.clinicsContacted.find(c => c.id === clinicId)
+    setSelectedPatient(patient || null)
+    setIsMessageDialogOpen(true)
   }
 
   return (
     <div className="space-y-6">
-      {mockPatients.map((patient) => (
+      {/* Notifications */}
+      {notifications.length > 0 && (
+        <div className="fixed top-4 right-4 z-50 space-y-2">
+          {notifications.map((notification, index) => (
+            <div
+              key={index}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center space-x-2"
+            >
+              <Check className="h-4 w-4" />
+              <span>{notification}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {patients.map((patient) => (
         <Card key={patient.id} className="overflow-hidden">
           <CardContent className="p-6">
             <div className="space-y-4">
@@ -194,7 +275,7 @@ export default function PatientTrackingTable() {
               <div className="flex justify-between items-start">
                 <div className="space-y-2">
                   <div className="flex items-center space-x-3">
-                    <h3 className="text-lg font-semibold">Patient {patient.initials}</h3>
+                    <h3 className="text-lg font-semibold">{patient.firstName} {patient.lastName}</h3>
                     {getPriorityBadge(patient.priority)}
                     {getStatusBadge(patient.status)}
                   </div>
@@ -206,20 +287,27 @@ export default function PatientTrackingTable() {
                   </p>
                 </div>
                 <div className="flex space-x-2">
-                  <Dialog>
+                  <Dialog open={isMessageDialogOpen} onOpenChange={setIsMessageDialogOpen}>
                     <DialogTrigger asChild>
-                      <Button variant="outline" size="sm" onClick={() => setSelectedPatient(patient)}>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => {
+                          setSelectedPatient(patient)
+                          setIsMessageDialogOpen(true)
+                        }}
+                      >
                         <MessageSquare className="h-4 w-4 mr-2" />
                         Message
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-md">
                       <DialogHeader>
-                        <DialogTitle>Send Message - Patient {patient.initials}</DialogTitle>
+                        <DialogTitle>Send Message - {selectedPatient?.firstName} {selectedPatient?.lastName}</DialogTitle>
                       </DialogHeader>
                       <div className="space-y-4">
                         <div>
-                          <Label htmlFor="message">Message to Clinics</Label>
+                          <Label htmlFor="message">Message to All Clinics</Label>
                           <Textarea
                             id="message"
                             value={messageText}
@@ -228,7 +316,11 @@ export default function PatientTrackingTable() {
                             rows={4}
                           />
                         </div>
-                        <Button onClick={() => handleSendMessage('')} className="w-full">
+                        <Button 
+                          onClick={() => selectedPatient && handleSendMessage(selectedPatient.id, selectedPatient.clinicsContacted[0]?.id)} 
+                          className="w-full"
+                          disabled={!messageText.trim()}
+                        >
                           <Send className="h-4 w-4 mr-2" />
                           Send Message
                         </Button>
@@ -236,16 +328,23 @@ export default function PatientTrackingTable() {
                     </DialogContent>
                   </Dialog>
 
-                  <Dialog>
+                  <Dialog open={isNoteDialogOpen} onOpenChange={setIsNoteDialogOpen}>
                     <DialogTrigger asChild>
-                      <Button variant="outline" size="sm" onClick={() => setSelectedPatient(patient)}>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => {
+                          setSelectedPatient(patient)
+                          setIsNoteDialogOpen(true)
+                        }}
+                      >
                         <FileText className="h-4 w-4 mr-2" />
                         Notes
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-md">
                       <DialogHeader>
-                        <DialogTitle>Add Note - Patient {patient.initials}</DialogTitle>
+                        <DialogTitle>Add Note - {selectedPatient?.firstName} {selectedPatient?.lastName}</DialogTitle>
                       </DialogHeader>
                       <div className="space-y-4">
                         <div>
@@ -258,7 +357,11 @@ export default function PatientTrackingTable() {
                             rows={4}
                           />
                         </div>
-                        <Button onClick={handleAddNote} className="w-full">
+                        <Button 
+                          onClick={handleAddNote} 
+                          className="w-full"
+                          disabled={!noteText.trim()}
+                        >
                           <FileText className="h-4 w-4 mr-2" />
                           Save Note
                         </Button>
@@ -322,13 +425,17 @@ export default function PatientTrackingTable() {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => sendFollowUp(contact.id)}
+                            onClick={() => sendFollowUp(patient.id, contact.id)}
                           >
                             <Send className="h-4 w-4 mr-2" />
                             Follow Up
                           </Button>
                         )}
-                        <Button variant="outline" size="sm">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => sendMessageToClinic(patient.id, contact.id)}
+                        >
                           <MessageSquare className="h-4 w-4 mr-2" />
                           Message Clinic
                         </Button>
@@ -342,7 +449,7 @@ export default function PatientTrackingTable() {
         </Card>
       ))}
 
-      {mockPatients.length === 0 && (
+      {patients.length === 0 && (
         <div className="text-center py-12">
           <div className="bg-gray-50 rounded-lg p-8">
             <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
