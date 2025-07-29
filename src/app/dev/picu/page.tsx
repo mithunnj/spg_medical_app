@@ -31,26 +31,39 @@ export default function DevPICUDashboard() {
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-6 space-y-4 sm:space-y-0">
-            <div className="space-y-1">
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-                PICU Dashboard
-              </h1>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                <p className="text-gray-600">
-                  Welcome, Dr. {session.user.name}
-                </p>
-                <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300 w-fit">
+            <div className="space-y-2">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-red-100 rounded-lg">
+                    <Stethoscope className="h-6 w-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent">
+                      PICU Dashboard
+                    </h1>
+                    <p className="text-sm text-gray-500 mt-1">Intensive care patient management</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <p className="text-sm lg:text-base text-gray-600 font-medium">
+                    Welcome, Dr. {session.user.name}
+                  </p>
+                </div>
+                <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300 w-fit text-xs">
                   Development Mode
                 </Badge>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">
-                <Stethoscope className="h-4 w-4 mr-2" />
-                PICU Doctor
-              </Badge>
+              <div className="flex items-center gap-2 text-sm text-gray-600 bg-red-50 px-3 py-2 rounded-lg">
+                <Stethoscope className="h-4 w-4 text-red-600" />
+                <span className="font-medium text-red-700">PICU Doctor</span>
+              </div>
               <Link href="/dev">
-                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                <Button variant="outline" size="sm" className="flex items-center gap-2 bg-white hover:bg-gray-50">
                   <ArrowLeft className="h-4 w-4" />
                   Back to Dev Home
                 </Button>
