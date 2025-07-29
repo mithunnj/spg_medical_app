@@ -9,7 +9,6 @@ import {
   FileText, 
   Clock, 
   CheckCircle, 
-  XCircle, 
   AlertCircle,
   Upload,
   Send,
@@ -245,7 +244,6 @@ export default function PatientTrackingTable() {
 
   const sendMessageToClinic = (patientId: string, clinicId: string) => {
     const patient = patients.find(p => p.id === patientId)
-    const clinic = patient?.clinicsContacted.find(c => c.id === clinicId)
     setSelectedPatient(patient || null)
     setIsMessageDialogOpen(true)
   }

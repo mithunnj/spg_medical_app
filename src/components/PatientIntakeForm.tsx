@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Badge } from '@/components/ui/badge'
-import { CalendarDays, Upload, Users, Plus, X, MapPin, Phone, Building2, AlertCircle, CheckCircle, Clock } from 'lucide-react'
+import { Upload, Users, Plus, X, MapPin, Phone, Building2, AlertCircle, CheckCircle, Clock } from 'lucide-react'
 
 interface ClinicOption {
   id: string
