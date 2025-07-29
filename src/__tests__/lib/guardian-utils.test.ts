@@ -26,15 +26,28 @@ const formatAppointmentDate = (date: string, time: string) => {
   return `${date} at ${time}`
 }
 
-const getQuickActions = (status: string, clinicStatus: string) => {
-  if (status === 'PENDING') {
-    return ['Message PICU Doctor', 'Contact Clinic']
-  } else if (status === 'APPROVED') {
-    return ['Message Clinic']
-  } else if (status === 'WAITLISTED') {
-    return ['Contact PICU for Alternative']
+const getQuickActions = (status: string) => {
+  switch (status) {
+    case 'PENDING':
+      return [
+        { label: 'Message PICU Doctor', action: 'message-picu', variant: 'default' as const },
+        { label: 'View Details', action: 'view-details', variant: 'outline' as const }
+      ]
+    case 'APPROVED':
+      return [
+        { label: 'Message Clinic', action: 'message-clinic', variant: 'default' as const },
+        { label: 'View Appointments', action: 'view-appointments', variant: 'outline' as const }
+      ]
+    case 'WAITLISTED':
+      return [
+        { label: 'Contact Clinic', action: 'contact-clinic', variant: 'default' as const },
+        { label: 'View Details', action: 'view-details', variant: 'outline' as const }
+      ]
+    default:
+      return [
+        { label: 'View Details', action: 'view-details', variant: 'outline' as const }
+      ]
   }
-  return []
 }
 
 describe('Guardian Dashboard Utility Functions', () => {
@@ -140,28 +153,41 @@ describe('Guardian Dashboard Utility Functions', () => {
 
   describe('getQuickActions', () => {
     it('should return correct actions for pending patient', () => {
-      const actions = getQuickActions('PENDING', 'PENDING')
-      expect(actions).toEqual(['Message PICU Doctor', 'Contact Clinic'])
+      const actions = getQuickActions('PENDING')
+      expect(actions).toEqual([
+        { label: 'Message PICU Doctor', action: 'message-picu', variant: 'default' as const },
+        { label: 'View Details', action: 'view-details', variant: 'outline' as const }
+      ])
     })
 
     it('should return correct actions for approved patient', () => {
-      const actions = getQuickActions('APPROVED', 'APPROVED')
-      expect(actions).toEqual(['Message Clinic'])
+      const actions = getQuickActions('APPROVED')
+      expect(actions).toEqual([
+        { label: 'Message Clinic', action: 'message-clinic', variant: 'default' as const },
+        { label: 'View Appointments', action: 'view-appointments', variant: 'outline' as const }
+      ])
     })
 
     it('should return correct actions for waitlisted patient', () => {
-      const actions = getQuickActions('WAITLISTED', 'WAITLISTED')
-      expect(actions).toEqual(['Contact PICU for Alternative'])
+      const actions = getQuickActions('WAITLISTED')
+      expect(actions).toEqual([
+        { label: 'Contact Clinic', action: 'contact-clinic', variant: 'default' as const },
+        { label: 'View Details', action: 'view-details', variant: 'outline' as const }
+      ])
     })
 
     it('should return empty array for unknown status', () => {
-      const actions = getQuickActions('UNKNOWN', 'UNKNOWN')
-      expect(actions).toEqual([])
+      const actions = getQuickActions('UNKNOWN')
+      expect(actions).toEqual([
+        { label: 'View Details', action: 'view-details', variant: 'outline' as const }
+      ])
     })
 
     it('should return empty array for empty status', () => {
-      const actions = getQuickActions('', '')
-      expect(actions).toEqual([])
+      const actions = getQuickActions('')
+      expect(actions).toEqual([
+        { label: 'View Details', action: 'view-details', variant: 'outline' as const }
+      ])
     })
   })
 
@@ -179,14 +205,17 @@ describe('Guardian Dashboard Utility Functions', () => {
       const statusColor = getStatusColor(status)
       const daysSinceRequest = calculateDaysSinceRequest(requestedDate)
       const formattedAppointment = formatAppointmentDate(appointmentDate, appointmentTime)
-      const quickActions = getQuickActions(status, status)
+      const quickActions = getQuickActions(status)
 
       expect(formattedName).toBe('Emma Johnson (8 years) - Pending')
       expect(statusColor).toBe('bg-yellow-100 text-yellow-800 border-yellow-200')
       expect(daysSinceRequest).toBeGreaterThanOrEqual(0)
       expect(daysSinceRequest).toBeLessThanOrEqual(30)
       expect(formattedAppointment).toBe('2025-02-01 at 10:00 AM')
-      expect(quickActions).toEqual(['Message PICU Doctor', 'Contact Clinic'])
+      expect(quickActions).toEqual([
+        { label: 'Message PICU Doctor', action: 'message-picu', variant: 'default' as const },
+        { label: 'View Details', action: 'view-details', variant: 'outline' as const }
+      ])
     })
 
     it('should handle approved patient scenario', () => {
@@ -198,13 +227,16 @@ describe('Guardian Dashboard Utility Functions', () => {
       const formattedName = formatPatientName(patientName, age, status)
       const statusColor = getStatusColor(status)
       const daysSinceRequest = calculateDaysSinceRequest(requestedDate)
-      const quickActions = getQuickActions(status, status)
+      const quickActions = getQuickActions(status)
 
       expect(formattedName).toBe('Lucas Johnson (12 years) - Approved')
       expect(statusColor).toBe('bg-green-100 text-green-800 border-green-200')
       expect(daysSinceRequest).toBeGreaterThanOrEqual(0)
       expect(daysSinceRequest).toBeLessThanOrEqual(30)
-      expect(quickActions).toEqual(['Message Clinic'])
+      expect(quickActions).toEqual([
+        { label: 'Message Clinic', action: 'message-clinic', variant: 'default' as const },
+        { label: 'View Appointments', action: 'view-appointments', variant: 'outline' as const }
+      ])
     })
 
     it('should handle waitlisted patient scenario', () => {
@@ -216,13 +248,16 @@ describe('Guardian Dashboard Utility Functions', () => {
       const formattedName = formatPatientName(patientName, age, status)
       const statusColor = getStatusColor(status)
       const daysSinceRequest = calculateDaysSinceRequest(requestedDate)
-      const quickActions = getQuickActions(status, status)
+      const quickActions = getQuickActions(status)
 
       expect(formattedName).toBe('Sophia Johnson (6 years) - Waitlisted')
       expect(statusColor).toBe('bg-orange-100 text-orange-800 border-orange-200')
       expect(daysSinceRequest).toBeGreaterThanOrEqual(0)
       expect(daysSinceRequest).toBeLessThanOrEqual(30)
-      expect(quickActions).toEqual(['Contact PICU for Alternative'])
+      expect(quickActions).toEqual([
+        { label: 'Contact Clinic', action: 'contact-clinic', variant: 'default' as const },
+        { label: 'View Details', action: 'view-details', variant: 'outline' as const }
+      ])
     })
   })
 }) 
