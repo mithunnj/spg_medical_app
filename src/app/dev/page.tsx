@@ -10,7 +10,8 @@ import {
   Settings,
   ArrowRight,
   Code,
-  Eye
+  Eye,
+  ExternalLink
 } from 'lucide-react'
 
 export default function DevNavigationPage() {
@@ -41,9 +42,10 @@ export default function DevNavigationPage() {
         'Incoming patient requests',
         'Accept/deny functionality',
         'Capacity management',
-        'Response system'
-      ],
-      status: 'Coming Soon'
+        'PICU messaging system',
+        'File management',
+        'Notes and documentation'
+      ]
     },
     {
       name: 'Parent Portal',
