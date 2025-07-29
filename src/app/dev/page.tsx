@@ -4,10 +4,9 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { 
   Stethoscope, 
-  Users, 
   Building2, 
-  UserCheck, 
-  Settings,
+  Users, 
+  Settings, 
   ArrowRight,
   Code,
   Eye
@@ -41,9 +40,10 @@ export default function DevNavigationPage() {
         'Incoming patient requests',
         'Accept/deny functionality',
         'Capacity management',
-        'Response system'
-      ],
-      status: 'Coming Soon'
+        'PICU messaging system',
+        'File management',
+        'Notes and documentation'
+      ]
     },
     {
       name: 'Parent Portal',

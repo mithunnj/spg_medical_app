@@ -5,14 +5,13 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { 
-  UserPlus, 
   Users, 
-  Clock, 
-  CheckCircle, 
-  XCircle, 
   MessageSquare,
   FileText,
-  RefreshCw
+  CheckCircle,
+  RefreshCw,
+  Clock,
+  UserPlus
 } from 'lucide-react'
 import PatientIntakeForm from '@/components/PatientIntakeForm'
 import PatientTrackingTable from '@/components/PatientTrackingTable'
