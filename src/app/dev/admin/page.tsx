@@ -15,7 +15,9 @@ import {
   Search,
   CheckCircle,
   XCircle,
-  AlertCircle
+  AlertCircle,
+  Settings,
+  Building2
 } from 'lucide-react'
 
 interface User {
@@ -450,6 +452,7 @@ export default function AdminDashboard() {
 
           {/* Analytics Tab */}
           <TabsContent value="analytics" className="space-y-6">
+            {/* Key Metrics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -493,27 +496,236 @@ export default function AdminDashboard() {
               </Card>
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Role Distribution</CardTitle>
+                  <CardTitle className="text-sm font-medium">System Health</CardTitle>
                   <Shield className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Hospital Doctors</span>
-                      <span>{users.filter(u => u.role === 'HOSPITAL_DOCTOR').length}</span>
+                  <div className="text-2xl font-bold text-green-600">98%</div>
+                  <p className="text-xs text-muted-foreground">
+                    All systems operational
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Charts and Detailed Analytics */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Role Distribution Chart */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Users className="h-5 w-5" />
+                    <span>Role Distribution</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Hospital Doctors</span>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-24 bg-gray-200 rounded-full h-2">
+                          <div 
+                            className="bg-blue-600 h-2 rounded-full" 
+                            style={{ width: `${(users.filter(u => u.role === 'HOSPITAL_DOCTOR').length / users.length) * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="text-sm font-medium">{users.filter(u => u.role === 'HOSPITAL_DOCTOR').length}</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span>Clinic Doctors</span>
-                      <span>{users.filter(u => u.role === 'CLINIC_DOCTOR').length}</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Clinic Doctors</span>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-24 bg-gray-200 rounded-full h-2">
+                          <div 
+                            className="bg-green-600 h-2 rounded-full" 
+                            style={{ width: `${(users.filter(u => u.role === 'CLINIC_DOCTOR').length / users.length) * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="text-sm font-medium">{users.filter(u => u.role === 'CLINIC_DOCTOR').length}</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span>Parents</span>
-                      <span>{users.filter(u => u.role === 'PARENT').length}</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Parents</span>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-24 bg-gray-200 rounded-full h-2">
+                          <div 
+                            className="bg-purple-600 h-2 rounded-full" 
+                            style={{ width: `${(users.filter(u => u.role === 'PARENT').length / users.length) * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="text-sm font-medium">{users.filter(u => u.role === 'PARENT').length}</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Admins</span>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-24 bg-gray-200 rounded-full h-2">
+                          <div 
+                            className="bg-red-600 h-2 rounded-full" 
+                            style={{ width: `${(users.filter(u => u.role === 'ADMIN').length / users.length) * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="text-sm font-medium">{users.filter(u => u.role === 'ADMIN').length}</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* User Activity Timeline */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <AlertCircle className="h-5 w-5" />
+                    <span>Recent Activity</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">New user registration</p>
+                        <p className="text-xs text-gray-500">Dr. Emily Rodriguez - 2 hours ago</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">Role request approved</p>
+                        <p className="text-xs text-gray-500">Maria Johnson - 1 day ago</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">Pending request</p>
+                        <p className="text-xs text-gray-500">Dr. Ahmed Hassan - 2 days ago</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">Request denied</p>
+                        <p className="text-xs text-gray-500">Dr. Michael Chen - 3 days ago</p>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
+
+            {/* Request Trends and Performance */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Request Status Breakdown */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Shield className="h-5 w-5" />
+                    <span>Request Status Breakdown</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Pending</span>
+                      <div className="flex items-center space-x-2">
+                        <Badge className="bg-yellow-100 text-yellow-800">
+                          {roleRequests.filter(r => r.status === 'PENDING').length}
+                        </Badge>
+                        <span className="text-sm text-gray-500">
+                          {Math.round((roleRequests.filter(r => r.status === 'PENDING').length / roleRequests.length) * 100)}%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Approved</span>
+                      <div className="flex items-center space-x-2">
+                        <Badge className="bg-green-100 text-green-800">
+                          {roleRequests.filter(r => r.status === 'APPROVED').length}
+                        </Badge>
+                        <span className="text-sm text-gray-500">
+                          {Math.round((roleRequests.filter(r => r.status === 'APPROVED').length / roleRequests.length) * 100)}%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Denied</span>
+                      <div className="flex items-center space-x-2">
+                        <Badge className="bg-red-100 text-red-800">
+                          {roleRequests.filter(r => r.status === 'DENIED').length}
+                        </Badge>
+                        <span className="text-sm text-gray-500">
+                          {Math.round((roleRequests.filter(r => r.status === 'DENIED').length / roleRequests.length) * 100)}%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* System Performance Metrics */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Settings className="h-5 w-5" />
+                    <span>System Performance</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Average Response Time</span>
+                      <span className="text-sm font-medium text-green-600">245ms</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Uptime</span>
+                      <span className="text-sm font-medium text-green-600">99.9%</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Active Sessions</span>
+                      <span className="text-sm font-medium text-blue-600">23</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">Database Connections</span>
+                      <span className="text-sm font-medium text-orange-600">12/20</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Organization Statistics */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Building2 className="h-5 w-5" />
+                  <span>Organization Statistics</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600">
+                      {users.filter(u => u.organization.includes('Hospital')).length}
+                    </div>
+                    <div className="text-sm text-gray-600">Hospital Users</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-600">
+                      {users.filter(u => u.organization.includes('Clinic')).length}
+                    </div>
+                    <div className="text-sm text-gray-600">Clinic Users</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-purple-600">
+                      {users.filter(u => u.organization.includes('Family')).length}
+                    </div>
+                    <div className="text-sm text-gray-600">Family Users</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
