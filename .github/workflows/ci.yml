@@ -1,70 +1,133 @@
-name: CareBridge CI/CD Pipeline
+name: CI/CD Pipeline
 
 on:
-  push:
-    branches: [ main, develop ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main]
+  push:
+    branches: [main]
 
 jobs:
-  test-and-validate:
-    name: 🩺 CareBridge - Test & Validate
+  test:
     runs-on: ubuntu-latest
-    
     strategy:
       matrix:
         node-version: [18.x, 20.x]
-    
     steps:
-    - name: 📥 Checkout Code
-      uses: actions/checkout@v4
-      
-    - name: 📦 Setup Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        
-    - name: 🔧 Install Dependencies
-      run: npm ci
-      
-    - name: 🗃️ Generate Prisma Client
-      run: npx prisma generate
-      env:
-        DATABASE_URL: "postgresql://test:test@localhost:5432/test"
-        
-    - name: 🧪 Run Linting
-      run: npm run lint
-      
-    - name: 🔍 TypeScript Type Check
-      run: npm run type-check
-      
-    - name: 🏗️ Production Build Test
-      run: npm run build
-      env:
-        DATABASE_URL: "postgresql://test:test@localhost:5432/test"
-        NEXTAUTH_SECRET: "test-secret-for-ci"
-        NEXTAUTH_URL: "http://localhost:3000"
-        ENCRYPTION_KEY: "dGVzdC1lbmNyeXB0aW9uLWtleS0zMi1ieXRlcw=="
-        BLOB_READ_WRITE_TOKEN: "test-blob-token"
-        
-    - name: 🔒 Security Audit
-      run: npm audit --audit-level moderate
-      
-    - name: 📊 Build Size Analysis
-      run: |
-        echo "## 📊 Build Analysis" >> $GITHUB_STEP_SUMMARY
-        echo "### Bundle Size Information" >> $GITHUB_STEP_SUMMARY
-        du -sh .next >> $GITHUB_STEP_SUMMARY || echo "Build directory size calculation failed" >> $GITHUB_STEP_SUMMARY
-        
-    - name: ✅ Deployment Readiness Check
-      run: |
-        echo "## ✅ CareBridge Deployment Status" >> $GITHUB_STEP_SUMMARY
-        echo "### Build Validation Results" >> $GITHUB_STEP_SUMMARY
-        echo "- ✅ Linting: Passed" >> $GITHUB_STEP_SUMMARY
-        echo "- ✅ Type Checking: Passed" >> $GITHUB_STEP_SUMMARY
-        echo "- ✅ Production Build: Passed" >> $GITHUB_STEP_SUMMARY
-        echo "- ✅ Prisma Client Generation: Passed" >> $GITHUB_STEP_SUMMARY
-        echo "- ✅ Security Audit: Passed" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "🏥 **CareBridge is ready for medical deployment!**" >> $GITHUB_STEP_SUMMARY 
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run linting
+        run: npm run lint
+      - name: Run type checking
+        run: npm run type-check
+      - name: Run unit tests
+        run: npm run test:unit
+      - name: Run integration tests
+        run: npm run test:integration
+      - name: Run guardian dashboard tests
+        run: npm run test -- --testPathPatterns="guardian|patient"
+      - name: Run responsive UI tests
+        run: npm run test -- --testPathPatterns="ResponsiveUI|DashboardLayout"
+      - name: Run component tests
+        run: npm run test -- --testPathPatterns="components"
+      - name: Upload test coverage
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build application
+        run: npm run build
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: .next/
+          retention-days: 1
+
+  security:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run security audit
+        run: npm audit --audit-level moderate
+      - name: Run dependency check
+        run: npm outdated || true
+
+  # deploy-preview:
+  #   runs-on: ubuntu-latest
+  #   needs: [test, build, security]
+  #   if: github.event_name == 'pull_request' && secrets.VERCEL_TOKEN != ''
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '20.x'
+  #         cache: 'npm'
+  #     - name: Install dependencies
+  #       run: npm ci
+  #     - name: Build application
+  #       run: npm run build
+  #     - name: Deploy to Vercel (Preview)
+  #       uses: amondnet/vercel-action@v25
+  #       with:
+  #         vercel-token: ${{ secrets.VERCEL_TOKEN }}
+  #         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+  #         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+  #         vercel-args: '--prod'
+
+  # deploy-production:
+  #   runs-on: ubuntu-latest
+  #   needs: [test, build, security]
+  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.VERCEL_TOKEN != ''
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '20.x'
+  #         cache: 'npm'
+  #     - name: Install dependencies
+  #       run: npm ci
+  #     - name: Build application
+  #       run: npm run build
+  #     - name: Deploy to Vercel (Production)
+  #       uses: amondnet/vercel-action@v25
+  #       with:
+  #         vercel-token: ${{ secrets.VERCEL_TOKEN }}
+  #         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+  #         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+  #         vercel-args: '--prod' 

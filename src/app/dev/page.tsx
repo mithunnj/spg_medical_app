@@ -46,18 +46,19 @@ export default function DevNavigationPage() {
       ]
     },
     {
-      name: 'Parent Portal',
-      description: 'Patient guardian interface for tracking child\'s placement progress',
-      route: '/dev/parent',
+      name: 'Patient Guardian Dashboard',
+      description: 'Patient guardian interface for tracking child\'s clinic referral status',
+      route: '/dev/guardian',
       role: 'PARENT',
       color: 'bg-purple-50 text-purple-700 border-purple-200',
       icon: Users,
       features: [
         'Patient status tracking',
-        'Progress updates',
-        'Communication portal'
-      ],
-      status: 'Coming Soon'
+        'PICU messaging system',
+        'Clinic communication',
+        'Follow-up appointments',
+        'Progress updates'
+      ]
     },
     {
       name: 'Admin Dashboard',
@@ -199,7 +200,7 @@ export default function DevNavigationPage() {
             </div>
             <div className="bg-white p-2 rounded border">
               <span className="text-gray-500">Parent:</span> 
-              <span className="text-purple-600 ml-2">localhost:3000/dev/parent</span>
+              <span className="text-purple-600 ml-2">localhost:3000/dev/guardian</span>
             </div>
             <div className="bg-white p-2 rounded border">
               <span className="text-gray-500">Admin:</span> 

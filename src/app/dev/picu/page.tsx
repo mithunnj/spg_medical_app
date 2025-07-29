@@ -1,15 +1,16 @@
+import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { 
-  UserPlus, 
+  Stethoscope, 
   Users, 
-  Clock, 
-  CheckCircle, 
-  MessageSquare,
-  FileText,
-  RefreshCw
+  MessageSquare, 
+  FileText, 
+  Calendar,
+  Building2,
+  ArrowLeft
 } from 'lucide-react'
 import PatientIntakeForm from '@/components/PatientIntakeForm'
 import PatientTrackingTable from '@/components/PatientTrackingTable'
@@ -29,28 +30,45 @@ export default function DevPICUDashboard() {
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-6 space-y-4 sm:space-y-0">
-            <div className="space-y-1">
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-                PICU Dashboard
-              </h1>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                <p className="text-gray-600">
-                  Welcome, Dr. {session.user.name}
-                </p>
-                <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300 w-fit">
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center py-4 sm:py-6 space-y-4 lg:space-y-0">
+            <div className="space-y-2">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="p-2 bg-red-100 rounded-lg">
+                    <Stethoscope className="h-5 w-5 sm:h-6 sm:w-6 text-red-600" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent truncate">
+                      PICU Dashboard
+                    </h1>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-1 hidden sm:block">Intensive care patient management</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <p className="text-sm lg:text-base text-gray-600 font-medium truncate">
+                    Welcome, Dr. {session.user.name}
+                  </p>
+                </div>
+                <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300 w-fit text-xs">
                   Development Mode
                 </Badge>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                Pediatric ICU
-              </Badge>
-              <Button variant="outline" size="sm" className="w-fit">
-                <RefreshCw className="h-4 w-4 mr-2" />
-                Refresh
-              </Button>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 bg-red-50 px-2 sm:px-3 py-1 sm:py-2 rounded-lg">
+                <Stethoscope className="h-3 w-3 sm:h-4 sm:w-4 text-red-600" />
+                <span className="font-medium text-red-700">PICU Doctor</span>
+              </div>
+              <Link href="/dev">
+                <Button variant="outline" size="sm" className="flex items-center gap-2 bg-white hover:bg-gray-50 text-xs sm:text-sm">
+                  <ArrowLeft className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Back to Dev Home</span>
+                  <span className="sm:hidden">Back</span>
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -76,7 +94,7 @@ export default function DevPICUDashboard() {
           <Card className="hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Pending Responses</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
+              <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">5</div>
@@ -89,7 +107,7 @@ export default function DevPICUDashboard() {
           <Card className="hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Successful Matches</CardTitle>
-              <CheckCircle className="h-4 w-4 text-muted-foreground" />
+              <Building2 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">8</div>
@@ -122,7 +140,7 @@ export default function DevPICUDashboard() {
               <span className="sm:hidden">Patients</span>
             </TabsTrigger>
             <TabsTrigger value="intake" className="flex items-center justify-center space-x-2 py-3">
-              <UserPlus className="h-4 w-4" />
+              <Stethoscope className="h-4 w-4" />
               <span className="hidden sm:inline">New Patient Intake</span>
               <span className="sm:hidden">New Intake</span>
             </TabsTrigger>
