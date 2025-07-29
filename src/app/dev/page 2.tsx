@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { 
   Stethoscope, 
-  Building2, 
   Users, 
-  Settings, 
+  Building2, 
+  UserCheck, 
+  Settings,
   ArrowRight,
   Code,
   Eye
@@ -40,25 +41,23 @@ export default function DevNavigationPage() {
         'Incoming patient requests',
         'Accept/deny functionality',
         'Capacity management',
-        'PICU messaging system',
-        'File management',
-        'Notes and documentation'
-      ]
+        'Response system'
+      ],
+      status: 'Coming Soon'
     },
     {
-      name: 'Patient Guardian Dashboard',
-      description: 'Patient guardian interface for tracking child\'s clinic referral status',
-      route: '/dev/guardian',
+      name: 'Parent Portal',
+      description: 'Patient guardian interface for tracking child\'s placement progress',
+      route: '/dev/parent',
       role: 'PARENT',
       color: 'bg-purple-50 text-purple-700 border-purple-200',
       icon: Users,
       features: [
         'Patient status tracking',
-        'PICU messaging system',
-        'Clinic communication',
-        'Follow-up appointments',
-        'Progress updates'
-      ]
+        'Progress updates',
+        'Communication portal'
+      ],
+      status: 'Coming Soon'
     },
     {
       name: 'Admin Dashboard',
@@ -72,7 +71,8 @@ export default function DevNavigationPage() {
         'Role assignments',
         'System analytics',
         'Audit logs'
-      ]
+      ],
+      status: 'Coming Soon'
     }
   ]
 
@@ -129,7 +129,11 @@ export default function DevNavigationPage() {
                         </Badge>
                       </div>
                     </div>
-
+                    {route.status && (
+                      <Badge variant="secondary" className="text-xs">
+                        {route.status}
+                      </Badge>
+                    )}
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -149,12 +153,18 @@ export default function DevNavigationPage() {
                     </ul>
                   </div>
 
-                  <Link href={route.route}>
-                    <Button className="w-full">
-                      <span>View {route.name}</span>
-                      <ArrowRight className="h-4 w-4 ml-2" />
+                  {route.status !== 'Coming Soon' ? (
+                    <Link href={route.route}>
+                      <Button className="w-full">
+                        <span>View {route.name}</span>
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Button disabled className="w-full">
+                      {route.status}
                     </Button>
-                  </Link>
+                  )}
                 </CardContent>
               </Card>
             )
@@ -189,7 +199,7 @@ export default function DevNavigationPage() {
             </div>
             <div className="bg-white p-2 rounded border">
               <span className="text-gray-500">Parent:</span> 
-              <span className="text-purple-600 ml-2">localhost:3000/dev/guardian</span>
+              <span className="text-purple-600 ml-2">localhost:3000/dev/parent</span>
             </div>
             <div className="bg-white p-2 rounded border">
               <span className="text-gray-500">Admin:</span> 
