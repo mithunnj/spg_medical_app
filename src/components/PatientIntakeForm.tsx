@@ -437,17 +437,25 @@ export default function PatientIntakeForm() {
                     ? 'border-blue-500 bg-blue-50'
                     : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                 }`}
-                onClick={() => handleClinicToggle(clinic.id)}
               >
                 <div className="space-y-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-3 flex-1">
                       <Checkbox
                         checked={selectedClinics.includes(clinic.id)}
-                        onChange={() => handleClinicToggle(clinic.id)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedClinics(prev => [...prev, clinic.id])
+                          } else {
+                            setSelectedClinics(prev => prev.filter(id => id !== clinic.id))
+                          }
+                        }}
                         className="mt-1"
                       />
-                      <div className="space-y-2 flex-1">
+                      <div 
+                        className="space-y-2 flex-1 cursor-pointer"
+                        onClick={() => handleClinicToggle(clinic.id)}
+                      >
                         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                           <h4 className="font-semibold text-gray-900">{clinic.name}</h4>
                           {getAvailabilityBadge(clinic)}
