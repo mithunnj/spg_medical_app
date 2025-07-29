@@ -37,7 +37,7 @@ jobs:
       - name: Run component tests
         run: npm run test -- --testPathPatterns="components"
       - name: Upload test coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           file: ./coverage/lcov.info
           flags: unittests
@@ -60,7 +60,7 @@ jobs:
       - name: Build application
         run: npm run build
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-files
           path: .next/
