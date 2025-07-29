@@ -31,11 +31,11 @@ jobs:
       - name: Run integration tests
         run: npm run test:integration
       - name: Run guardian dashboard tests
-        run: npm run test -- --testPathPattern="guardian|patient"
+        run: npm run test -- --testPathPatterns="guardian|patient"
       - name: Run responsive UI tests
-        run: npm run test -- --testPathPattern="ResponsiveUI|DashboardLayout"
+        run: npm run test -- --testPathPatterns="ResponsiveUI|DashboardLayout"
       - name: Run component tests
-        run: npm run test -- --testPathPattern="components"
+        run: npm run test -- --testPathPatterns="components"
       - name: Upload test coverage
         uses: codecov/codecov-action@v3
         with:

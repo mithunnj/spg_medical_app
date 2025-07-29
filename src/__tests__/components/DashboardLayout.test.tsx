@@ -309,7 +309,7 @@ describe('Dashboard Layout Components', () => {
         guardian: ['purple-100', 'purple-600', 'purple-800', 'purple-50', 'purple-700']
       }
       
-      Object.entries(colorSchemes).forEach(([theme, colors]) => {
+      Object.entries(colorSchemes).forEach(([, colors]) => {
         colors.forEach(color => {
           expect(color).toBeTruthy()
         })
