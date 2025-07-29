@@ -1,5 +1,3 @@
-import { redirect } from 'next/navigation'
-import { auth } from '@/lib/auth'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -9,7 +7,6 @@ import {
   Users, 
   Clock, 
   CheckCircle, 
-  XCircle, 
   MessageSquare,
   FileText,
   RefreshCw
@@ -17,26 +14,13 @@ import {
 import PatientIntakeForm from '@/components/PatientIntakeForm'
 import PatientTrackingTable from '@/components/PatientTrackingTable'
 
-// 🚧 DEVELOPMENT MODE - Set to false in production
-const BYPASS_AUTH_FOR_DEV = true
-
-export default async function HospitalDashboard() {
-  let session = null
-  
-  if (!BYPASS_AUTH_FOR_DEV) {
-    session = await auth()
-    // Check authentication and role
-    if (!session || session.user.role !== 'HOSPITAL_DOCTOR') {
-      redirect('/auth/signin')
-    }
-  } else {
-    // Mock session for development
-    session = {
-      user: {
-        name: 'Dr. Development User',
-        role: 'HOSPITAL_DOCTOR',
-        email: 'dev@hospital.com'
-      }
+export default function DevPICUDashboard() {
+  // Mock session for development
+  const session = {
+    user: {
+      name: 'Dr. Development User',
+      role: 'HOSPITAL_DOCTOR',
+      email: 'dev@hospital.com'
     }
   }
 
@@ -52,11 +36,9 @@ export default async function HospitalDashboard() {
               </h1>
               <p className="text-gray-600">
                 Welcome, Dr. {session.user.name}
-                {BYPASS_AUTH_FOR_DEV && (
-                  <Badge variant="outline" className="ml-2 bg-yellow-50 text-yellow-700">
-                    Development Mode
-                  </Badge>
-                )}
+                <Badge variant="outline" className="ml-2 bg-yellow-50 text-yellow-700">
+                  Development Mode
+                </Badge>
               </p>
             </div>
             <div className="flex items-center space-x-4">
