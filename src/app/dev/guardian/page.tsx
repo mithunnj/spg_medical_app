@@ -262,25 +262,25 @@ export default function GuardianDashboard() {
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-6 space-y-4 sm:space-y-0">
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center py-4 sm:py-6 space-y-4 lg:space-y-0">
             <div className="space-y-2">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <div className="p-2 bg-purple-100 rounded-lg">
-                    <Heart className="h-6 w-6 text-purple-600" />
+                    <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
                   </div>
-                  <div>
-                    <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
+                  <div className="min-w-0 flex-1">
+                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent truncate">
                       Patient Guardian Dashboard
                     </h1>
-                    <p className="text-sm text-gray-500 mt-1">Family care coordination portal</p>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-1 hidden sm:block">Family care coordination portal</p>
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <p className="text-sm lg:text-base text-gray-600 font-medium">
+                  <p className="text-sm lg:text-base text-gray-600 font-medium truncate">
                     Welcome, {session.user.name}
                   </p>
                 </div>
@@ -292,19 +292,20 @@ export default function GuardianDashboard() {
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              <div className="flex items-center gap-2 text-sm text-gray-600 bg-purple-50 px-3 py-2 rounded-lg">
-                <Heart className="h-4 w-4 text-purple-600" />
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 bg-purple-50 px-2 sm:px-3 py-1 sm:py-2 rounded-lg">
+                <Heart className="h-3 w-3 sm:h-4 sm:w-4 text-purple-600" />
                 <span className="font-medium text-purple-700">Patient Guardian</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">
-                <User className="h-4 w-4 text-gray-600" />
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 bg-gray-50 px-2 sm:px-3 py-1 sm:py-2 rounded-lg">
+                <User className="h-3 w-3 sm:h-4 sm:w-4 text-gray-600" />
                 <span className="font-medium text-gray-700">Parent</span>
               </div>
               <Link href="/dev">
-                <Button variant="outline" size="sm" className="flex items-center gap-2 bg-white hover:bg-gray-50">
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to Dev Home
+                <Button variant="outline" size="sm" className="flex items-center gap-2 bg-white hover:bg-gray-50 text-xs sm:text-sm">
+                  <ArrowLeft className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Back to Dev Home</span>
+                  <span className="sm:hidden">Back</span>
                 </Button>
               </Link>
             </div>
