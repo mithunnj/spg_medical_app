@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -8,15 +8,12 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { 
   Users, 
   Settings, 
   Save, 
   AlertCircle, 
   CheckCircle, 
-  Plus, 
-  X,
   Building2,
   Phone,
   Mail,
@@ -60,23 +57,86 @@ const availableSpecializations = [
   'Pediatric Dermatology'
 ]
 
-export default function ClinicCapacityManager() {
-  const [settings, setSettings] = useState<ClinicSettings>({
-    name: 'Montreal Children\'s Clinic',
+interface ClinicCapacityManagerProps {
+  selectedClinic: string
+}
+
+// Mock clinic data for different clinics
+const clinicSettingsData = {
+  'clinic-1': {
+    name: 'Montreal Children&apos;s Clinic',
     capacity: 50,
     currentPatients: 38,
     acceptingNew: true,
-    specializations: ['Pediatrics', 'Family Medicine', 'Adolescent Medicine'],
-    phone: '(514) 555-0123',
-    email: 'contact@montreal-clinic.ca',
-    address: '123 Rue Saint-Jacques, Montreal, QC H3C 4W7',
+    specializations: ['Pediatric Care', 'Post-operative Care', 'Respiratory Care', 'Diabetes Management'],
+    phone: '(514) 555-0101',
+    email: 'info@montreal-children-clinic.ca',
+    address: '123 Pediatric Ave, Montreal, QC',
+    emergency24h: true,
+    notes: 'Specialized in pediatric care with 24/7 emergency services.'
+  },
+  'clinic-2': {
+    name: 'Quebec Family Health Center',
+    capacity: 35,
+    currentPatients: 28,
+    acceptingNew: true,
+    specializations: ['Family Medicine', 'Pediatric Care', 'Mental Health', 'Preventive Care'],
+    phone: '(514) 555-0202',
+    email: 'info@quebec-family-health.ca',
+    address: '456 Health Blvd, Quebec City, QC',
     emergency24h: false,
-    notes: 'Specialized in pediatric care with certified pediatric nurses on staff. We accept RAMQ and most private insurance plans.'
-  })
+    notes: 'Comprehensive family health services with bilingual staff.'
+  },
+  'clinic-3': {
+    name: 'Laval Pediatric Associates',
+    capacity: 40,
+    currentPatients: 35,
+    acceptingNew: false,
+    specializations: ['Pediatric Care', 'Neurology', 'Cardiology', 'Emergency Care'],
+    phone: '(514) 555-0303',
+    email: 'info@laval-pediatrics.ca',
+    address: '789 Medical Dr, Laval, QC',
+    emergency24h: true,
+    notes: 'High-capacity pediatric facility with specialized neurology services.'
+  },
+  'clinic-4': {
+    name: 'Montreal Pediatric Specialists',
+    capacity: 60,
+    currentPatients: 45,
+    acceptingNew: true,
+    specializations: ['Specialized Care', 'Oncology', 'Surgery', 'Rehabilitation'],
+    phone: '(514) 555-0404',
+    email: 'info@montreal-specialists.ca',
+    address: '321 Specialist Way, Montreal, QC',
+    emergency24h: true,
+    notes: 'Specialized pediatric care with advanced medical equipment.'
+  },
+  'clinic-5': {
+    name: 'West Island Family Clinic',
+    capacity: 30,
+    currentPatients: 25,
+    acceptingNew: true,
+    specializations: ['Family Medicine', 'Pediatric Care', 'Women&apos;s Health', 'Geriatric Care'],
+    phone: '(514) 555-0505',
+    email: 'info@west-island-clinic.ca',
+    address: '654 Island Rd, West Island, QC',
+    emergency24h: false,
+    notes: 'Community-focused family health center serving West Island residents.'
+  }
+}
 
+export default function ClinicCapacityManager({ selectedClinic }: ClinicCapacityManagerProps) {
+  const [settings, setSettings] = useState<ClinicSettings>(clinicSettingsData[selectedClinic as keyof typeof clinicSettingsData])
+  const [tempSettings, setTempSettings] = useState<ClinicSettings>(clinicSettingsData[selectedClinic as keyof typeof clinicSettingsData])
   const [isEditing, setIsEditing] = useState(false)
-  const [tempSettings, setTempSettings] = useState<ClinicSettings>(settings)
   const [notifications, setNotifications] = useState<string[]>([])
+
+  // Update settings when clinic selection changes
+  useEffect(() => {
+    const newSettings = clinicSettingsData[selectedClinic as keyof typeof clinicSettingsData]
+    setSettings(newSettings)
+    setTempSettings(newSettings)
+  }, [selectedClinic])
 
   const showNotification = (message: string) => {
     setNotifications(prev => [...prev, message])
@@ -199,7 +259,7 @@ export default function ClinicCapacityManager() {
           <div>
             <CardTitle className="text-lg">Clinic Information</CardTitle>
             <p className="text-sm text-gray-600 mt-1">
-              Manage your clinic's basic information and contact details
+              Manage your clinic&apos;s basic information and contact details
             </p>
           </div>
           {!isEditing ? (

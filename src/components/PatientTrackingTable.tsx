@@ -242,10 +242,9 @@ export default function PatientTrackingTable() {
     showNotification(`Automated follow-up sent to ${clinic?.clinicName}`)
   }
 
-  const sendMessageToClinic = (patientId: string, clinicId: string) => {
-    const patient = patients.find(p => p.id === patientId)
-    setSelectedPatient(patient || null)
-    setIsMessageDialogOpen(true)
+  const sendMessageToClinic = () => {
+    // Mock message sending logic
+    showNotification('Message sent to clinic successfully')
   }
 
   return (
@@ -458,7 +457,7 @@ export default function PatientTrackingTable() {
                             variant="outline" 
                             size="sm"
                             className="w-full sm:w-auto"
-                            onClick={() => sendMessageToClinic(patient.id, contact.id)}
+                            onClick={() => sendMessageToClinic()}
                           >
                             <MessageSquare className="h-4 w-4 mr-2" />
                             Message Clinic

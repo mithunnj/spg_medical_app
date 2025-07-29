@@ -1,13 +1,10 @@
-/**
- * Outbound Clinic Dashboard - Development Version
- * For clinic doctors to manage incoming patient discharge requests
- */
+"use client"
 
-import { redirect } from 'next/navigation'
-import { auth } from '@/lib/auth'
+import { useState, useEffect } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import IncomingRequestsTable from '@/components/IncomingRequestsTable'
 import ClinicCapacityManager from '@/components/ClinicCapacityManager'
 import { Building2, Users, ClipboardList, Settings, UserCheck } from 'lucide-react'
@@ -15,24 +12,86 @@ import { Building2, Users, ClipboardList, Settings, UserCheck } from 'lucide-rea
 // 🚧 DEVELOPMENT MODE - Set to false in production
 const BYPASS_AUTH_FOR_DEV = true
 
-export default async function ClinicDashboard() {
-  let session = null
+// Mock clinic data with different scenarios
+const clinicData = {
+  'clinic-1': {
+    name: 'Montreal Children&apos;s Clinic',
+    doctor: 'Dr. Sarah Martinez',
+    email: 'sarah.martinez@montreal-clinic.ca',
+    pendingRequests: 7,
+    capacity: 50,
+    currentPatients: 38,
+    availableSlots: 12,
+    weeklyAccepted: 3,
+    utilization: 76,
+    status: 'Available'
+  },
+  'clinic-2': {
+    name: 'Quebec Family Health Center',
+    doctor: 'Dr. Jean-Pierre Dubois',
+    email: 'jean.dubois@quebec-family.ca',
+    pendingRequests: 4,
+    capacity: 35,
+    currentPatients: 28,
+    availableSlots: 7,
+    weeklyAccepted: 2,
+    utilization: 80,
+    status: 'Limited'
+  },
+  'clinic-3': {
+    name: 'Laval Pediatric Associates',
+    doctor: 'Dr. Marie-Claude Tremblay',
+    email: 'marie.tremblay@laval-pediatrics.ca',
+    pendingRequests: 12,
+    capacity: 40,
+    currentPatients: 35,
+    availableSlots: 5,
+    weeklyAccepted: 5,
+    utilization: 88,
+    status: 'Limited'
+  },
+  'clinic-4': {
+    name: 'Montreal Pediatric Specialists',
+    doctor: 'Dr. Ahmed Hassan',
+    email: 'ahmed.hassan@montreal-specialists.ca',
+    pendingRequests: 2,
+    capacity: 60,
+    currentPatients: 45,
+    availableSlots: 15,
+    weeklyAccepted: 1,
+    utilization: 75,
+    status: 'Available'
+  },
+  'clinic-5': {
+    name: 'West Island Family Clinic',
+    doctor: 'Dr. Jennifer O&apos;Connor',
+    email: 'jennifer.oconnor@west-island.ca',
+    pendingRequests: 9,
+    capacity: 30,
+    currentPatients: 25,
+    availableSlots: 5,
+    weeklyAccepted: 4,
+    utilization: 83,
+    status: 'Limited'
+  }
+}
 
-  if (!BYPASS_AUTH_FOR_DEV) {
-    session = await auth()
-    // Check authentication and role
-    if (!session || session.user.role !== 'CLINIC_DOCTOR') {
-      redirect('/auth/signin')
-    }
-  } else {
-    // Mock session for development
-    session = {
-      user: {
-        name: 'Dr. Sarah Martinez',
-        role: 'CLINIC_DOCTOR',
-        email: 'sarah.martinez@montreal-clinic.ca',
-        clinicId: 'clinic-1'
-      }
+export default function ClinicDashboard() {
+  const [selectedClinic, setSelectedClinic] = useState('clinic-1')
+  const [currentClinic, setCurrentClinic] = useState(clinicData['clinic-1'])
+
+  // Update clinic data when selection changes
+  useEffect(() => {
+    setCurrentClinic(clinicData[selectedClinic as keyof typeof clinicData])
+  }, [selectedClinic])
+
+  // Mock session for development
+  const session = {
+    user: {
+      name: currentClinic.doctor.replace('Dr. ', ''),
+      role: 'CLINIC_DOCTOR',
+      email: currentClinic.email,
+      clinicId: selectedClinic
     }
   }
 
@@ -61,7 +120,7 @@ export default async function ClinicDashboard() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <Building2 className="h-4 w-4" />
-                <span className="font-medium">Montreal Children's Clinic</span>
+                <span className="font-medium">{currentClinic.name}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <UserCheck className="h-4 w-4" />
@@ -74,6 +133,42 @@ export default async function ClinicDashboard() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+        {/* Active Clinic Selector */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="text-lg">Active Clinic</CardTitle>
+            <p className="text-sm text-gray-600">
+              Switch between different clinic views to manage patient requests and capacity
+            </p>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-3">
+              <Select value={selectedClinic} onValueChange={setSelectedClinic}>
+                <SelectTrigger className="w-full sm:w-80">
+                  <SelectValue placeholder="Select a clinic..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="clinic-1">Montreal Children&apos;s Clinic</SelectItem>
+                  <SelectItem value="clinic-2">Quebec Family Health Center</SelectItem>
+                  <SelectItem value="clinic-3">Laval Pediatric Associates</SelectItem>
+                  <SelectItem value="clinic-4">Montreal Pediatric Specialists</SelectItem>
+                  <SelectItem value="clinic-5">West Island Family Clinic</SelectItem>
+                </SelectContent>
+              </Select>
+              <Badge 
+                variant="outline" 
+                className={`${
+                  currentClinic.status === 'Available' 
+                    ? 'bg-green-50 text-green-700 border-green-200' 
+                    : 'bg-orange-50 text-orange-700 border-orange-200'
+                }`}
+              >
+                {currentClinic.status}
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8">
           <Card>
@@ -81,7 +176,7 @@ export default async function ClinicDashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Pending Requests</p>
-                  <p className="text-2xl lg:text-3xl font-bold text-gray-900">7</p>
+                  <p className="text-2xl lg:text-3xl font-bold text-gray-900">{currentClinic.pendingRequests}</p>
                 </div>
                 <div className="p-2 bg-orange-100 rounded-lg">
                   <ClipboardList className="h-5 w-5 lg:h-6 lg:w-6 text-orange-600" />
@@ -95,7 +190,7 @@ export default async function ClinicDashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Available Capacity</p>
-                  <p className="text-2xl lg:text-3xl font-bold text-green-600">12/50</p>
+                  <p className="text-2xl lg:text-3xl font-bold text-green-600">{currentClinic.availableSlots}/{currentClinic.capacity}</p>
                 </div>
                 <div className="p-2 bg-green-100 rounded-lg">
                   <Users className="h-5 w-5 lg:h-6 lg:w-6 text-green-600" />
@@ -109,7 +204,7 @@ export default async function ClinicDashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">This Week</p>
-                  <p className="text-2xl lg:text-3xl font-bold text-blue-600">3</p>
+                  <p className="text-2xl lg:text-3xl font-bold text-blue-600">{currentClinic.weeklyAccepted}</p>
                   <p className="text-xs text-gray-500">Patients Accepted</p>
                 </div>
                 <div className="p-2 bg-blue-100 rounded-lg">
@@ -124,7 +219,7 @@ export default async function ClinicDashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Utilization</p>
-                  <p className="text-2xl lg:text-3xl font-bold text-purple-600">76%</p>
+                  <p className="text-2xl lg:text-3xl font-bold text-purple-600">{currentClinic.utilization}%</p>
                 </div>
                 <div className="p-2 bg-purple-100 rounded-lg">
                   <Settings className="h-5 w-5 lg:h-6 lg:w-6 text-purple-600" />
@@ -154,7 +249,7 @@ export default async function ClinicDashboard() {
                 </p>
               </CardHeader>
               <CardContent>
-                <IncomingRequestsTable />
+                <IncomingRequestsTable selectedClinic={selectedClinic} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -164,11 +259,11 @@ export default async function ClinicDashboard() {
               <CardHeader>
                 <CardTitle className="text-lg lg:text-xl">Clinic Capacity Management</CardTitle>
                 <p className="text-sm text-gray-600">
-                  Update your clinic's patient capacity and availability status
+                  Update your clinic&apos;s patient capacity and availability status
                 </p>
               </CardHeader>
               <CardContent>
-                <ClinicCapacityManager />
+                <ClinicCapacityManager selectedClinic={selectedClinic} />
               </CardContent>
             </Card>
           </TabsContent>

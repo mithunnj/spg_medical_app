@@ -4,14 +4,12 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { 
   Stethoscope, 
-  Users, 
   Building2, 
-  UserCheck, 
-  Settings,
+  Users, 
+  Settings, 
   ArrowRight,
   Code,
-  Eye,
-  ExternalLink
+  Eye
 } from 'lucide-react'
 
 export default function DevNavigationPage() {
