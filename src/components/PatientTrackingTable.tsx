@@ -144,29 +144,29 @@ export default function PatientTrackingTable() {
 
   const getStatusBadge = (status: string) => {
     const config = {
-      PENDING: { color: 'bg-yellow-100 text-yellow-800', label: 'Pending' },
-      APPROVED: { color: 'bg-green-100 text-green-800', label: 'Approved' },
-      DENIED: { color: 'bg-red-100 text-red-800', label: 'Denied' },
-      MATCHED: { color: 'bg-blue-100 text-blue-800', label: 'Matched' },
-      RESPONDED: { color: 'bg-purple-100 text-purple-800', label: 'Responded' },
-      FOLLOW_UP_SENT: { color: 'bg-orange-100 text-orange-800', label: 'Follow-up Sent' },
-      ACCEPTED: { color: 'bg-green-100 text-green-800', label: 'Accepted' }
+      PENDING: { color: 'bg-yellow-100 text-yellow-800 border-yellow-200', label: 'Pending' },
+      APPROVED: { color: 'bg-green-100 text-green-800 border-green-200', label: 'Approved' },
+      DENIED: { color: 'bg-red-100 text-red-800 border-red-200', label: 'Denied' },
+      MATCHED: { color: 'bg-blue-100 text-blue-800 border-blue-200', label: 'Matched' },
+      RESPONDED: { color: 'bg-purple-100 text-purple-800 border-purple-200', label: 'Responded' },
+      FOLLOW_UP_SENT: { color: 'bg-orange-100 text-orange-800 border-orange-200', label: 'Follow-up Sent' },
+      ACCEPTED: { color: 'bg-green-100 text-green-800 border-green-200', label: 'Accepted' }
     }
     
     const { color, label } = config[status as keyof typeof config] || config.PENDING
-    return <Badge className={color}>{label}</Badge>
+    return <Badge className={`${color} border text-xs px-2 py-1`}>{label}</Badge>
   }
 
   const getPriorityBadge = (priority: string) => {
     const config = {
-      HIGH: { color: 'bg-red-100 text-red-800', icon: AlertCircle },
-      NORMAL: { color: 'bg-gray-100 text-gray-800', icon: Clock },
-      LOW: { color: 'bg-green-100 text-green-800', icon: CheckCircle }
+      HIGH: { color: 'bg-red-100 text-red-800 border-red-200', icon: AlertCircle },
+      NORMAL: { color: 'bg-gray-100 text-gray-800 border-gray-200', icon: Clock },
+      LOW: { color: 'bg-green-100 text-green-800 border-green-200', icon: CheckCircle }
     }
     
     const { color, icon: Icon } = config[priority as keyof typeof config]
     return (
-      <Badge className={`${color} flex items-center space-x-1`}>
+      <Badge className={`${color} border flex items-center gap-1 text-xs px-2 py-1 w-fit`}>
         <Icon className="h-3 w-3" />
         <span>{priority}</span>
       </Badge>
@@ -251,47 +251,53 @@ export default function PatientTrackingTable() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 lg:space-y-6">
       {/* Notifications */}
       {notifications.length > 0 && (
         <div className="fixed top-4 right-4 z-50 space-y-2">
           {notifications.map((notification, index) => (
             <div
               key={index}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg flex items-center space-x-2"
+              className="bg-green-600 text-white px-4 py-3 rounded-lg shadow-lg flex items-center space-x-2 max-w-sm"
             >
-              <Check className="h-4 w-4" />
-              <span>{notification}</span>
+              <Check className="h-4 w-4 flex-shrink-0" />
+              <span className="text-sm">{notification}</span>
             </div>
           ))}
         </div>
       )}
 
       {patients.map((patient) => (
-        <Card key={patient.id} className="overflow-hidden">
-          <CardContent className="p-6">
-            <div className="space-y-4">
+        <Card key={patient.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+          <CardContent className="p-4 lg:p-6">
+            <div className="space-y-4 lg:space-y-6">
               {/* Patient Header */}
-              <div className="flex justify-between items-start">
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-3">
-                    <h3 className="text-lg font-semibold">{patient.firstName} {patient.lastName}</h3>
-                    {getPriorityBadge(patient.priority)}
-                    {getStatusBadge(patient.status)}
+              <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
+                <div className="space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                    <h3 className="text-lg lg:text-xl font-semibold text-gray-900">
+                      {patient.firstName} {patient.lastName}
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {getPriorityBadge(patient.priority)}
+                      {getStatusBadge(patient.status)}
+                    </div>
                   </div>
                   <p className="text-sm text-gray-600">
                     Admitted: {new Date(patient.admissionDate).toLocaleDateString()}
                   </p>
-                  <p className="text-sm text-gray-700 max-w-2xl">
+                  <p className="text-sm text-gray-700 leading-relaxed max-w-3xl">
                     {patient.diagnosis}
                   </p>
                 </div>
-                <div className="flex space-x-2">
+                
+                <div className="flex flex-col sm:flex-row gap-2 lg:flex-shrink-0">
                   <Dialog open={isMessageDialogOpen} onOpenChange={setIsMessageDialogOpen}>
                     <DialogTrigger asChild>
                       <Button 
                         variant="outline" 
                         size="sm" 
+                        className="w-full sm:w-auto"
                         onClick={() => {
                           setSelectedPatient(patient)
                           setIsMessageDialogOpen(true)
@@ -301,19 +307,24 @@ export default function PatientTrackingTable() {
                         Message
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-md">
-                      <DialogHeader>
-                        <DialogTitle>Send Message - {selectedPatient?.firstName} {selectedPatient?.lastName}</DialogTitle>
+                    <DialogContent className="sm:max-w-md mx-4">
+                      <DialogHeader className="space-y-3">
+                        <DialogTitle className="text-lg font-semibold">
+                          Send Message - {selectedPatient?.firstName} {selectedPatient?.lastName}
+                        </DialogTitle>
                       </DialogHeader>
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="message">Message to All Clinics</Label>
+                      <div className="space-y-6 py-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="message" className="text-sm font-medium">
+                            Message to All Clinics
+                          </Label>
                           <Textarea
                             id="message"
                             value={messageText}
                             onChange={(e) => setMessageText(e.target.value)}
                             placeholder="Type your message here..."
                             rows={4}
+                            className="resize-none"
                           />
                         </div>
                         <Button 
@@ -333,6 +344,7 @@ export default function PatientTrackingTable() {
                       <Button 
                         variant="outline" 
                         size="sm" 
+                        className="w-full sm:w-auto"
                         onClick={() => {
                           setSelectedPatient(patient)
                           setIsNoteDialogOpen(true)
@@ -342,19 +354,24 @@ export default function PatientTrackingTable() {
                         Notes
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-md">
-                      <DialogHeader>
-                        <DialogTitle>Add Note - {selectedPatient?.firstName} {selectedPatient?.lastName}</DialogTitle>
+                    <DialogContent className="sm:max-w-md mx-4">
+                      <DialogHeader className="space-y-3">
+                        <DialogTitle className="text-lg font-semibold">
+                          Add Note - {selectedPatient?.firstName} {selectedPatient?.lastName}
+                        </DialogTitle>
                       </DialogHeader>
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="note">Patient Note</Label>
+                      <div className="space-y-6 py-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="note" className="text-sm font-medium">
+                            Patient Note
+                          </Label>
                           <Textarea
                             id="note"
                             value={noteText}
                             onChange={(e) => setNoteText(e.target.value)}
                             placeholder="Add a note about this patient..."
                             rows={4}
+                            className="resize-none"
                           />
                         </div>
                         <Button 
@@ -369,7 +386,7 @@ export default function PatientTrackingTable() {
                     </DialogContent>
                   </Dialog>
 
-                  <div>
+                  <div className="w-full sm:w-auto">
                     <Input
                       type="file"
                       multiple
@@ -378,7 +395,7 @@ export default function PatientTrackingTable() {
                       className="hidden"
                       id={`file-upload-${patient.id}`}
                     />
-                    <Button variant="outline" size="sm" asChild>
+                    <Button variant="outline" size="sm" asChild className="w-full sm:w-auto">
                       <label htmlFor={`file-upload-${patient.id}`} className="cursor-pointer">
                         <Upload className="h-4 w-4 mr-2" />
                         Upload Files
@@ -389,60 +406,70 @@ export default function PatientTrackingTable() {
               </div>
 
               {/* Clinic Contacts */}
-              <div className="space-y-3">
-                <h4 className="font-medium text-gray-900">Clinic Contacts</h4>
-                {patient.clinicsContacted.map((contact) => (
-                  <div key={contact.id} className="bg-gray-50 rounded-lg p-4">
-                    <div className="flex justify-between items-start">
-                      <div className="space-y-2">
-                        <div className="flex items-center space-x-3">
-                          <h5 className="font-medium">{contact.clinicName}</h5>
-                          {getStatusBadge(contact.status)}
-                        </div>
-                        <div className="flex items-center space-x-4 text-sm text-gray-600">
-                          <div className="flex items-center space-x-1">
-                            <Calendar className="h-4 w-4" />
-                            <span>Contacted: {new Date(contact.contactedDate).toLocaleDateString()}</span>
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900 text-base">Clinic Contacts</h4>
+                <div className="space-y-3">
+                  {patient.clinicsContacted.map((contact) => (
+                    <div key={contact.id} className="bg-gray-50 rounded-lg p-4 lg:p-5">
+                      <div className="flex flex-col lg:flex-row lg:justify-between gap-4">
+                        <div className="space-y-3 flex-1">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                            <h5 className="font-semibold text-gray-900">{contact.clinicName}</h5>
+                            {getStatusBadge(contact.status)}
                           </div>
-                          <div className="flex items-center space-x-1">
-                            <Clock className="h-4 w-4" />
-                            <span>{contact.daysSinceContact} days ago</span>
+                          
+                          <div className="flex flex-col sm:flex-row gap-4 text-sm text-gray-600">
+                            <div className="flex items-center gap-1">
+                              <Calendar className="h-4 w-4 flex-shrink-0" />
+                              <span>Contacted: {new Date(contact.contactedDate).toLocaleDateString()}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-4 w-4 flex-shrink-0" />
+                              <span>{contact.daysSinceContact} days ago</span>
+                            </div>
                           </div>
+                          
+                          {contact.response && (
+                            <div className="bg-white p-3 rounded border-l-4 border-blue-500">
+                              <p className="text-sm">
+                                <span className="font-medium">Response:</span> {contact.response}
+                              </p>
+                            </div>
+                          )}
+                          
+                          {contact.lastFollowUp && (
+                            <p className="text-xs text-orange-600 font-medium">
+                              Follow-up sent: {new Date(contact.lastFollowUp).toLocaleDateString()}
+                            </p>
+                          )}
                         </div>
-                        {contact.response && (
-                          <p className="text-sm bg-white p-2 rounded border-l-4 border-blue-500">
-                            <strong>Response:</strong> {contact.response}
-                          </p>
-                        )}
-                        {contact.lastFollowUp && (
-                          <p className="text-xs text-orange-600">
-                            Follow-up sent: {new Date(contact.lastFollowUp).toLocaleDateString()}
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex space-x-2">
-                        {contact.status === 'PENDING' && contact.daysSinceContact >= 2 && (
-                          <Button
-                            variant="outline"
+                        
+                        <div className="flex flex-col sm:flex-row lg:flex-col gap-2 lg:flex-shrink-0">
+                          {contact.status === 'PENDING' && contact.daysSinceContact >= 2 && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="w-full sm:w-auto"
+                              onClick={() => sendFollowUp(patient.id, contact.id)}
+                            >
+                              <Send className="h-4 w-4 mr-2" />
+                              Follow Up
+                            </Button>
+                          )}
+                          <Button 
+                            variant="outline" 
                             size="sm"
-                            onClick={() => sendFollowUp(patient.id, contact.id)}
+                            className="w-full sm:w-auto"
+                            onClick={() => sendMessageToClinic(patient.id, contact.id)}
                           >
-                            <Send className="h-4 w-4 mr-2" />
-                            Follow Up
+                            <MessageSquare className="h-4 w-4 mr-2" />
+                            Message Clinic
                           </Button>
-                        )}
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => sendMessageToClinic(patient.id, contact.id)}
-                        >
-                          <MessageSquare className="h-4 w-4 mr-2" />
-                          Message Clinic
-                        </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </CardContent>

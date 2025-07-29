@@ -18,7 +18,7 @@ export default function DevPICUDashboard() {
   // Mock session for development
   const session = {
     user: {
-      name: 'Dr. Matthew Donlan',
+      name: 'Matthew Donlan',
       role: 'HOSPITAL_DOCTOR',
       email: 'matthew.donlan@hospital.com'
     }
@@ -29,23 +29,25 @@ export default function DevPICUDashboard() {
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-6 space-y-4 sm:space-y-0">
+            <div className="space-y-1">
+              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
                 PICU Dashboard
               </h1>
-              <p className="text-gray-600">
-                Welcome, Dr. {session.user.name}
-                <Badge variant="outline" className="ml-2 bg-yellow-50 text-yellow-700">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                <p className="text-gray-600">
+                  Welcome, Dr. {session.user.name}
+                </p>
+                <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300 w-fit">
                   Development Mode
                 </Badge>
-              </p>
+              </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <Badge variant="outline" className="bg-blue-50 text-blue-700">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                 Pediatric ICU
               </Badge>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="w-fit">
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Refresh
               </Button>
@@ -55,10 +57,10 @@ export default function DevPICUDashboard() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8">
+          <Card className="hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Active Patients</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
@@ -71,7 +73,7 @@ export default function DevPICUDashboard() {
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Pending Responses</CardTitle>
               <Clock className="h-4 w-4 text-muted-foreground" />
@@ -84,7 +86,7 @@ export default function DevPICUDashboard() {
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Successful Matches</CardTitle>
               <CheckCircle className="h-4 w-4 text-muted-foreground" />
@@ -97,7 +99,7 @@ export default function DevPICUDashboard() {
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Follow-ups Sent</CardTitle>
               <MessageSquare className="h-4 w-4 text-muted-foreground" />
@@ -113,43 +115,45 @@ export default function DevPICUDashboard() {
 
         {/* Main Tabs */}
         <Tabs defaultValue="patients" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="patients" className="flex items-center space-x-2">
+          <TabsList className="grid w-full grid-cols-2 h-auto">
+            <TabsTrigger value="patients" className="flex items-center justify-center space-x-2 py-3">
               <Users className="h-4 w-4" />
-              <span>Patient Tracking</span>
+              <span className="hidden sm:inline">Patient Tracking</span>
+              <span className="sm:hidden">Patients</span>
             </TabsTrigger>
-            <TabsTrigger value="intake" className="flex items-center space-x-2">
+            <TabsTrigger value="intake" className="flex items-center justify-center space-x-2 py-3">
               <UserPlus className="h-4 w-4" />
-              <span>New Patient Intake</span>
+              <span className="hidden sm:inline">New Patient Intake</span>
+              <span className="sm:hidden">New Intake</span>
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="patients" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <div className="flex justify-between items-center">
-                  <CardTitle>Patient Tracking</CardTitle>
-                  <Button variant="outline" size="sm">
+            <Card className="shadow-sm">
+              <CardHeader className="pb-4">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                  <CardTitle className="text-xl">Patient Tracking</CardTitle>
+                  <Button variant="outline" size="sm" className="w-fit">
                     <FileText className="h-4 w-4 mr-2" />
                     Export Report
                   </Button>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0">
                 <PatientTrackingTable />
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="intake" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>New Patient Intake</CardTitle>
-                <p className="text-sm text-gray-600">
+            <Card className="shadow-sm">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-xl">New Patient Intake</CardTitle>
+                <p className="text-sm text-gray-600 mt-2">
                   Add a new patient and initiate discharge coordination with outbound clinics
                 </p>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0">
                 <PatientIntakeForm />
               </CardContent>
             </Card>
