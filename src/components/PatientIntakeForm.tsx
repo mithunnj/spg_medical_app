@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -9,50 +9,33 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Badge } from '@/components/ui/badge'
-import { CalendarDays, Upload, Users, Plus, X } from 'lucide-react'
+import { CalendarDays, Upload, Users, Plus, X, MapPin, Phone, Building2, AlertCircle, CheckCircle, Clock } from 'lucide-react'
 
 interface ClinicOption {
   id: string
   name: string
   region: string
+  address: string
+  phone: string | null
+  email: string | null
   specializations: string[]
   capacity: number
   currentPatients: number
+  availableSlots: number
+  utilizationPercentage: number
+  availabilityStatus: 'AVAILABLE' | 'LIMITED' | 'FULL'
+  acceptingNew: boolean
+  isActive: boolean
 }
-
-// Mock clinic data - will be replaced with API call
-const mockClinics: ClinicOption[] = [
-  {
-    id: '1',
-    name: 'Montreal Children\'s Clinic',
-    region: 'Montreal',
-    specializations: ['Pediatric Care', 'Family Medicine'],
-    capacity: 50,
-    currentPatients: 35
-  },
-  {
-    id: '2',
-    name: 'Quebec Family Health Center',
-    region: 'Quebec City',
-    specializations: ['Family Medicine', 'Pediatric Cardiology'],
-    capacity: 40,
-    currentPatients: 28
-  },
-  {
-    id: '3',
-    name: 'Laval Pediatric Associates',
-    region: 'Laval',
-    specializations: ['Pediatric Care', 'Adolescent Medicine'],
-    capacity: 30,
-    currentPatients: 22
-  }
-]
 
 export default function PatientIntakeForm() {
   const [selectedClinics, setSelectedClinics] = useState<string[]>([])
   const [allergies, setAllergies] = useState<string[]>([''])
   const [medications, setMedications] = useState<string[]>([''])
   const [files, setFiles] = useState<File[]>([])
+  const [clinics, setClinics] = useState<ClinicOption[]>([])
+  const [loadingClinics, setLoadingClinics] = useState(true)
+  const [clinicsError, setClinicsError] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -67,6 +50,30 @@ export default function PatientIntakeForm() {
     priority: 'NORMAL',
     notes: ''
   })
+
+  // Fetch clinics from API
+  useEffect(() => {
+    const fetchClinics = async () => {
+      try {
+        setLoadingClinics(true)
+        const response = await fetch('/api/clinics?acceptingOnly=false')
+        const result = await response.json()
+        
+        if (result.success) {
+          setClinics(result.data)
+        } else {
+          setClinicsError(result.error || 'Failed to load clinics')
+        }
+      } catch (error) {
+        console.error('Error fetching clinics:', error)
+        setClinicsError('Failed to connect to clinic database')
+      } finally {
+        setLoadingClinics(false)
+      }
+    }
+
+    fetchClinics()
+  }, [])
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -114,6 +121,45 @@ export default function PatientIntakeForm() {
 
     console.log('Submitting patient data:', patientData)
     // TODO: Submit to API
+  }
+
+  const getAvailabilityBadge = (clinic: ClinicOption) => {
+    const { availabilityStatus, availableSlots, acceptingNew } = clinic
+    
+    if (!acceptingNew) {
+      return (
+        <Badge variant="outline" className="bg-gray-100 text-gray-700 border-gray-300">
+          <X className="h-3 w-3 mr-1" />
+          Not Accepting
+        </Badge>
+      )
+    }
+    
+    switch (availabilityStatus) {
+      case 'AVAILABLE':
+        return (
+          <Badge variant="outline" className="bg-green-100 text-green-700 border-green-300">
+            <CheckCircle className="h-3 w-3 mr-1" />
+            Available ({availableSlots} slots)
+          </Badge>
+        )
+      case 'LIMITED':
+        return (
+          <Badge variant="outline" className="bg-yellow-100 text-yellow-700 border-yellow-300">
+            <Clock className="h-3 w-3 mr-1" />
+            Limited ({availableSlots} slots)
+          </Badge>
+        )
+      case 'FULL':
+        return (
+          <Badge variant="outline" className="bg-red-100 text-red-700 border-red-300">
+            <AlertCircle className="h-3 w-3 mr-1" />
+            Full (0 slots)
+          </Badge>
+        )
+      default:
+        return null
+    }
   }
 
   return (
@@ -353,46 +399,96 @@ export default function PatientIntakeForm() {
       {/* Clinic Selection */}
       <Card>
         <CardHeader>
-          <CardTitle>Select Outbound Clinics</CardTitle>
+          <CardTitle className="flex items-center space-x-2">
+            <Building2 className="h-5 w-5" />
+            <span>Select Outbound Clinics</span>
+          </CardTitle>
           <p className="text-sm text-gray-600">
-            Choose which clinics to contact for this patient
+            Choose which clinics to contact for this patient ({clinics.length} clinics available)
           </p>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {mockClinics.map((clinic) => (
+            {loadingClinics && (
+              <div className="flex items-center justify-center py-8">
+                <div className="text-gray-500">Loading clinics from database...</div>
+              </div>
+            )}
+            
+            {clinicsError && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="text-red-700 font-medium">Error loading clinics</div>
+                <div className="text-red-600 text-sm">{clinicsError}</div>
+              </div>
+            )}
+            
+            {!loadingClinics && !clinicsError && clinics.length === 0 && (
+              <div className="text-center py-8 bg-gray-50 rounded-lg">
+                <Building2 className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+                <div className="text-gray-600">No clinics found in the database</div>
+              </div>
+            )}
+            
+            {!loadingClinics && !clinicsError && clinics.map((clinic) => (
               <div
                 key={clinic.id}
-                className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                className={`p-4 lg:p-5 border rounded-lg cursor-pointer transition-colors ${
                   selectedClinics.includes(clinic.id)
                     ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                 }`}
                 onClick={() => handleClinicToggle(clinic.id)}
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Checkbox
-                      checked={selectedClinics.includes(clinic.id)}
-                      onChange={() => handleClinicToggle(clinic.id)}
-                    />
-                    <div>
-                      <h4 className="font-medium">{clinic.name}</h4>
-                      <p className="text-sm text-gray-600">{clinic.region}</p>
+                <div className="space-y-3">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start space-x-3 flex-1">
+                      <Checkbox
+                        checked={selectedClinics.includes(clinic.id)}
+                        onChange={() => handleClinicToggle(clinic.id)}
+                        className="mt-1"
+                      />
+                      <div className="space-y-2 flex-1">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                          <h4 className="font-semibold text-gray-900">{clinic.name}</h4>
+                          {getAvailabilityBadge(clinic)}
+                        </div>
+                        
+                        <div className="flex flex-col sm:flex-row gap-4 text-sm text-gray-600">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-4 w-4 flex-shrink-0" />
+                            <span>{clinic.region}</span>
+                          </div>
+                          {clinic.phone && (
+                            <div className="flex items-center gap-1">
+                              <Phone className="h-4 w-4 flex-shrink-0" />
+                              <span>{clinic.phone}</span>
+                            </div>
+                          )}
+                        </div>
+                        
+                        <p className="text-sm text-gray-600">{clinic.address}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="text-right ml-4">
+                      <div className="text-sm font-medium">
+                        {clinic.currentPatients}/{clinic.capacity} patients
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {clinic.utilizationPercentage}% capacity
+                      </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm">
-                      {clinic.currentPatients}/{clinic.capacity} patients
-                    </p>
-                    <div className="flex flex-wrap gap-1 mt-1">
+                  
+                  {clinic.specializations.length > 0 && (
+                    <div className="ml-8 flex flex-wrap gap-1">
                       {clinic.specializations.map((spec, index) => (
                         <Badge key={index} variant="secondary" className="text-xs">
                           {spec}
                         </Badge>
                       ))}
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -405,7 +501,7 @@ export default function PatientIntakeForm() {
         <Button type="button" variant="outline">
           Save as Draft
         </Button>
-        <Button type="submit" disabled={selectedClinics.length === 0}>
+        <Button type="submit" disabled={selectedClinics.length === 0 || loadingClinics}>
           Submit Patient Request
         </Button>
       </div>
