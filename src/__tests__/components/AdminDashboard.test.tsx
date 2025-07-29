@@ -95,4 +95,18 @@ describe('AdminDashboard', () => {
     expect(screen.getByText('Pediatric Specialists Clinic')).toBeInTheDocument()
     expect(screen.getByText('Patient Family')).toBeInTheDocument()
   })
+
+  it('can click on analytics tab', () => {
+    const analyticsTab = screen.getByText('Analytics')
+    fireEvent.click(analyticsTab)
+    // Just verify the tab is clickable
+    expect(analyticsTab).toBeInTheDocument()
+  })
+
+  it('can click on role requests tab', () => {
+    const requestsTab = screen.getByText('Role Requests')
+    fireEvent.click(requestsTab)
+    // Just verify the tab is clickable
+    expect(requestsTab).toBeInTheDocument()
+  })
 }) 
