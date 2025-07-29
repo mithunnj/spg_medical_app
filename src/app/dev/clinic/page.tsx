@@ -1,13 +1,15 @@
 "use client"
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import IncomingRequestsTable from '@/components/IncomingRequestsTable'
 import ClinicCapacityManager from '@/components/ClinicCapacityManager'
-import { Building2, Users, ClipboardList, Settings, UserCheck } from 'lucide-react'
+import { Building2, Users, ClipboardList, Settings, UserCheck, ArrowLeft } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 // 🚧 DEVELOPMENT MODE - Set to false in production
 const BYPASS_AUTH_FOR_DEV = true
@@ -102,12 +104,20 @@ export default function ClinicDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-6 space-y-4 sm:space-y-0">
             <div className="space-y-1">
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-                Clinic Dashboard
-              </h1>
+              <div className="flex items-center gap-3">
+                <Link href="/dev">
+                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                    <ArrowLeft className="h-4 w-4" />
+                    Back to Dev Home
+                  </Button>
+                </Link>
+                <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+                  Outbound Clinic Dashboard
+                </h1>
+              </div>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                 <p className="text-sm lg:text-base text-gray-600">
-                  Welcome, Dr. {session.user.name}
+                  Welcome, {session.user.name}
                 </p>
                 {BYPASS_AUTH_FOR_DEV && (
                   <Badge variant="outline" className="w-fit text-xs">

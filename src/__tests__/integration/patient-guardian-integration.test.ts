@@ -19,7 +19,7 @@ const patientData = {
       phone: '(514) 555-0101',
       status: 'PENDING'
     },
-    requestedDate: '2024-01-15',
+    requestedDate: '2024-01-20',
     followUpAppointments: [
       {
         id: 'appt-1',
@@ -35,14 +35,14 @@ const patientData = {
         id: 'msg-1',
         from: 'PICU',
         to: 'Guardian',
-        date: '2024-01-15',
+        date: '2024-01-20',
         message: 'Your child has been referred to Montreal Children\'s Clinic for post-operative care.',
         sender: 'Dr. Matthew Donlan'
       }
     ]
   },
   'patient-2': {
-    name: 'Lucas Chen',
+    name: 'Lucas Johnson',
     age: 12,
     healthCard: 'QC987654321',
     diagnosis: 'Asthma management and respiratory monitoring',
@@ -58,7 +58,7 @@ const patientData = {
       phone: '(514) 555-0202',
       status: 'APPROVED'
     },
-    requestedDate: '2024-01-14',
+    requestedDate: '2024-01-18',
     followUpAppointments: [
       {
         id: 'appt-2',
@@ -74,7 +74,7 @@ const patientData = {
         id: 'msg-2',
         from: 'PICU',
         to: 'Guardian',
-        date: '2024-01-14',
+        date: '2024-01-18',
         message: 'Lucas has been referred to Quebec Family Health Center for asthma management.',
         sender: 'Dr. Matthew Donlan'
       },
@@ -82,18 +82,18 @@ const patientData = {
         id: 'msg-3',
         from: 'Clinic',
         to: 'Guardian',
-        date: '2024-01-16',
+        date: '2024-01-19',
         message: 'Great news! We have accepted Lucas for care.',
         sender: 'Dr. Jean-Pierre Dubois'
       }
     ]
   },
   'patient-3': {
-    name: 'Sophia Rodriguez',
+    name: 'Sophia Johnson',
     age: 6,
     healthCard: 'QC456789123',
     diagnosis: 'Diabetes management and education',
-    status: 'DENIED',
+    status: 'WAITLISTED',
     hospital: {
       name: 'Montreal Children\'s Hospital',
       doctor: 'Dr. Matthew Donlan',
@@ -103,17 +103,17 @@ const patientData = {
       name: 'Laval Pediatric Associates',
       doctor: 'Dr. Marie-Claude Tremblay',
       phone: '(514) 555-0303',
-      status: 'DENIED',
-      reason: 'Currently at full capacity for diabetes management cases'
+      status: 'WAITLISTED',
+      reason: 'Currently at full capacity for diabetes management cases. We will contact you when a spot becomes available.'
     },
-    requestedDate: '2024-01-13',
+    requestedDate: '2024-01-17',
     followUpAppointments: [],
     messages: [
       {
         id: 'msg-4',
         from: 'PICU',
         to: 'Guardian',
-        date: '2024-01-13',
+        date: '2024-01-17',
         message: 'Sophia has been referred to Laval Pediatric Associates for diabetes management.',
         sender: 'Dr. Matthew Donlan'
       },
@@ -121,8 +121,8 @@ const patientData = {
         id: 'msg-5',
         from: 'Clinic',
         to: 'Guardian',
-        date: '2024-01-15',
-        message: 'Unfortunately, we are currently at full capacity for diabetes management cases.',
+        date: '2024-01-19',
+        message: 'We have received Sophia\'s referral. Unfortunately, we are currently at full capacity for diabetes management cases.',
         sender: 'Dr. Marie-Claude Tremblay'
       }
     ]
@@ -149,7 +149,7 @@ describe('Patient Guardian Dashboard Integration', () => {
   it('should have different statuses for different patients', () => {
     expect(patientData['patient-1'].status).toBe('PENDING')
     expect(patientData['patient-2'].status).toBe('APPROVED')
-    expect(patientData['patient-3'].status).toBe('DENIED')
+    expect(patientData['patient-3'].status).toBe('WAITLISTED')
   })
 
   it('should have valid clinic information for each patient', () => {
@@ -203,14 +203,14 @@ describe('Patient Guardian Dashboard Integration', () => {
   })
 
   it('should have valid status values', () => {
-    const validStatuses = ['PENDING', 'APPROVED', 'DENIED']
+    const validStatuses = ['PENDING', 'APPROVED', 'DENIED', 'WAITLISTED']
     Object.values(patientData).forEach(patient => {
       expect(validStatuses).toContain(patient.status)
     })
   })
 
   it('should have valid clinic status values', () => {
-    const validClinicStatuses = ['PENDING', 'APPROVED', 'DENIED']
+    const validClinicStatuses = ['PENDING', 'APPROVED', 'DENIED', 'WAITLISTED']
     Object.values(patientData).forEach(patient => {
       expect(validClinicStatuses).toContain(patient.clinic.status)
     })
@@ -301,13 +301,13 @@ describe('Patient Guardian Dashboard Integration', () => {
     })
   })
 
-  it('should have denial reasons for denied patients', () => {
-    const deniedPatient = patientData['patient-3']
-    expect(deniedPatient.clinic).toHaveProperty('reason')
-    expect(deniedPatient.clinic.reason).toBeTruthy()
+  it('should have waitlist reasons for waitlisted patients', () => {
+    const waitlistedPatient = patientData['patient-3']
+    expect(waitlistedPatient.clinic).toHaveProperty('reason')
+    expect(waitlistedPatient.clinic.reason).toBeTruthy()
   })
 
-  it('should not have denial reasons for approved/pending patients', () => {
+  it('should not have waitlist reasons for approved/pending patients', () => {
     expect(patientData['patient-1'].clinic).not.toHaveProperty('reason')
     expect(patientData['patient-2'].clinic).not.toHaveProperty('reason')
   })

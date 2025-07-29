@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -11,7 +12,7 @@ import { Label } from '@/components/ui/label'
 import {
   User, Calendar, MapPin, Phone, MessageSquare, FileText, 
   CheckCircle, AlertTriangle, Clock, Heart, Building2, 
-  Stethoscope, CalendarDays, PhoneCall
+  Stethoscope, CalendarDays, PhoneCall, ArrowLeft
 } from 'lucide-react'
 
 // 🚧 DEVELOPMENT MODE - Set to false in production
@@ -81,7 +82,7 @@ const patientData: { [key: string]: Patient } = {
       phone: '(514) 555-0101',
       status: 'PENDING'
     },
-    requestedDate: '2024-01-15',
+    requestedDate: '2024-01-20',
     followUpAppointments: [
       {
         id: 'appt-1',
@@ -97,14 +98,14 @@ const patientData: { [key: string]: Patient } = {
         id: 'msg-1',
         from: 'PICU',
         to: 'Guardian',
-        date: '2024-01-15',
+        date: '2024-01-20',
         message: 'Your child has been referred to Montreal Children\'s Clinic for post-operative care. We will keep you updated on the status.',
         sender: 'Dr. Matthew Donlan'
       }
     ]
   },
   'patient-2': {
-    name: 'Lucas Chen',
+    name: 'Lucas Johnson',
     age: 12,
     healthCard: 'QC987654321',
     diagnosis: 'Asthma management and respiratory monitoring',
@@ -120,7 +121,7 @@ const patientData: { [key: string]: Patient } = {
       phone: '(514) 555-0202',
       status: 'APPROVED'
     },
-    requestedDate: '2024-01-14',
+    requestedDate: '2024-01-18',
     followUpAppointments: [
       {
         id: 'appt-2',
@@ -144,7 +145,7 @@ const patientData: { [key: string]: Patient } = {
         id: 'msg-2',
         from: 'PICU',
         to: 'Guardian',
-        date: '2024-01-14',
+        date: '2024-01-18',
         message: 'Lucas has been referred to Quebec Family Health Center for asthma management.',
         sender: 'Dr. Matthew Donlan'
       },
@@ -152,18 +153,18 @@ const patientData: { [key: string]: Patient } = {
         id: 'msg-3',
         from: 'Clinic',
         to: 'Guardian',
-        date: '2024-01-16',
+        date: '2024-01-19',
         message: 'Great news! We have accepted Lucas for care. Please call us to schedule your first appointment.',
         sender: 'Dr. Jean-Pierre Dubois'
       }
     ]
   },
   'patient-3': {
-    name: 'Sophia Rodriguez',
+    name: 'Sophia Johnson',
     age: 6,
     healthCard: 'QC456789123',
     diagnosis: 'Diabetes management and education',
-    status: 'DENIED',
+    status: 'WAITLISTED',
     hospital: {
       name: 'Montreal Children\'s Hospital',
       doctor: 'Dr. Matthew Donlan',
@@ -173,17 +174,17 @@ const patientData: { [key: string]: Patient } = {
       name: 'Laval Pediatric Associates',
       doctor: 'Dr. Marie-Claude Tremblay',
       phone: '(514) 555-0303',
-      status: 'DENIED',
-      reason: 'Currently at full capacity for diabetes management cases'
+      status: 'WAITLISTED',
+      reason: 'Currently at full capacity for diabetes management cases. We will contact you when a spot becomes available.'
     },
-    requestedDate: '2024-01-13',
+    requestedDate: '2024-01-17',
     followUpAppointments: [],
     messages: [
       {
         id: 'msg-4',
         from: 'PICU',
         to: 'Guardian',
-        date: '2024-01-13',
+        date: '2024-01-17',
         message: 'Sophia has been referred to Laval Pediatric Associates for diabetes management.',
         sender: 'Dr. Matthew Donlan'
       },
@@ -191,8 +192,8 @@ const patientData: { [key: string]: Patient } = {
         id: 'msg-5',
         from: 'Clinic',
         to: 'Guardian',
-        date: '2024-01-15',
-        message: 'Unfortunately, we are currently at full capacity for diabetes management cases. We recommend contacting other clinics in your area.',
+        date: '2024-01-19',
+        message: 'We have received Sophia\'s referral. Unfortunately, we are currently at full capacity for diabetes management cases. We will contact you when a spot becomes available.',
         sender: 'Dr. Marie-Claude Tremblay'
       }
     ]
@@ -242,7 +243,7 @@ export default function GuardianDashboard() {
     switch (status) {
       case 'PENDING': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
       case 'APPROVED': return 'bg-green-100 text-green-800 border-green-200'
-      case 'DENIED': return 'bg-red-100 text-red-800 border-red-200'
+      case 'WAITLISTED': return 'bg-orange-100 text-orange-800 border-orange-200'
       default: return 'bg-gray-100 text-gray-800 border-gray-200'
     }
   }
@@ -263,9 +264,17 @@ export default function GuardianDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-6 space-y-4 sm:space-y-0">
             <div className="space-y-1">
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-                Patient Guardian Dashboard
-              </h1>
+              <div className="flex items-center gap-3">
+                <Link href="/dev">
+                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                    <ArrowLeft className="h-4 w-4" />
+                    Back to Dev Home
+                  </Button>
+                </Link>
+                <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+                  Patient Guardian Dashboard
+                </h1>
+              </div>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                 <p className="text-sm lg:text-base text-gray-600">
                   Welcome, {session.user.name}
@@ -310,8 +319,8 @@ export default function GuardianDashboard() {
                 className="w-full sm:w-80 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="patient-1">Emma Johnson (8 years) - Pending</option>
-                <option value="patient-2">Lucas Chen (12 years) - Approved</option>
-                <option value="patient-3">Sophia Rodriguez (6 years) - Denied</option>
+                <option value="patient-2">Lucas Johnson (12 years) - Approved</option>
+                <option value="patient-3">Sophia Johnson (6 years) - Waitlisted</option>
               </select>
               <Badge className={`border ${getStatusColor(currentPatient.status)}`}>
                 {getStatusIcon(currentPatient.status)}
@@ -503,7 +512,7 @@ export default function GuardianDashboard() {
                       Message Clinic
                     </Button>
                   )}
-                  {currentPatient.status === 'DENIED' && (
+                  {currentPatient.status === 'WAITLISTED' && (
                     <Button 
                       onClick={() => {
                         setMessageRecipient('PICU')

@@ -1,15 +1,16 @@
+import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { 
-  UserPlus, 
+  Stethoscope, 
   Users, 
-  Clock, 
-  CheckCircle, 
-  MessageSquare,
-  FileText,
-  RefreshCw
+  MessageSquare, 
+  FileText, 
+  Calendar,
+  Building2,
+  ArrowLeft
 } from 'lucide-react'
 import PatientIntakeForm from '@/components/PatientIntakeForm'
 import PatientTrackingTable from '@/components/PatientTrackingTable'
@@ -44,13 +45,16 @@ export default function DevPICUDashboard() {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                Pediatric ICU
+              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">
+                <Stethoscope className="h-4 w-4 mr-2" />
+                PICU Doctor
               </Badge>
-              <Button variant="outline" size="sm" className="w-fit">
-                <RefreshCw className="h-4 w-4 mr-2" />
-                Refresh
-              </Button>
+              <Link href="/dev">
+                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <ArrowLeft className="h-4 w-4" />
+                  Back to Dev Home
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -76,7 +80,7 @@ export default function DevPICUDashboard() {
           <Card className="hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Pending Responses</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
+              <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">5</div>
@@ -89,7 +93,7 @@ export default function DevPICUDashboard() {
           <Card className="hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Successful Matches</CardTitle>
-              <CheckCircle className="h-4 w-4 text-muted-foreground" />
+              <Building2 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">8</div>
@@ -122,7 +126,7 @@ export default function DevPICUDashboard() {
               <span className="sm:hidden">Patients</span>
             </TabsTrigger>
             <TabsTrigger value="intake" className="flex items-center justify-center space-x-2 py-3">
-              <UserPlus className="h-4 w-4" />
+              <Stethoscope className="h-4 w-4" />
               <span className="hidden sm:inline">New Patient Intake</span>
               <span className="sm:hidden">New Intake</span>
             </TabsTrigger>
