@@ -19,11 +19,11 @@ const patientData = {
       phone: '(514) 555-0101',
       status: 'PENDING'
     },
-    requestedDate: '2024-01-20',
+    requestedDate: '2025-01-27',
     followUpAppointments: [
       {
         id: 'appt-1',
-        date: '2024-01-25',
+        date: '2025-02-01',
         time: '10:00 AM',
         type: 'Post-operative check-up',
         location: 'Montreal Children\'s Clinic',
@@ -35,7 +35,7 @@ const patientData = {
         id: 'msg-1',
         from: 'PICU',
         to: 'Guardian',
-        date: '2024-01-20',
+        date: '2025-01-27',
         message: 'Your child has been referred to Montreal Children\'s Clinic for post-operative care.',
         sender: 'Dr. Matthew Donlan'
       }
@@ -58,11 +58,11 @@ const patientData = {
       phone: '(514) 555-0202',
       status: 'APPROVED'
     },
-    requestedDate: '2024-01-18',
+    requestedDate: '2025-01-25',
     followUpAppointments: [
       {
         id: 'appt-2',
-        date: '2024-01-22',
+        date: '2025-01-29',
         time: '2:30 PM',
         type: 'Asthma follow-up',
         location: 'Quebec Family Health Center',
@@ -74,7 +74,7 @@ const patientData = {
         id: 'msg-2',
         from: 'PICU',
         to: 'Guardian',
-        date: '2024-01-18',
+        date: '2025-01-25',
         message: 'Lucas has been referred to Quebec Family Health Center for asthma management.',
         sender: 'Dr. Matthew Donlan'
       },
@@ -82,7 +82,7 @@ const patientData = {
         id: 'msg-3',
         from: 'Clinic',
         to: 'Guardian',
-        date: '2024-01-19',
+        date: '2025-01-26',
         message: 'Great news! We have accepted Lucas for care.',
         sender: 'Dr. Jean-Pierre Dubois'
       }
@@ -106,14 +106,14 @@ const patientData = {
       status: 'WAITLISTED',
       reason: 'Currently at full capacity for diabetes management cases. We will contact you when a spot becomes available.'
     },
-    requestedDate: '2024-01-17',
+    requestedDate: '2025-01-24',
     followUpAppointments: [],
     messages: [
       {
         id: 'msg-4',
         from: 'PICU',
         to: 'Guardian',
-        date: '2024-01-17',
+        date: '2025-01-24',
         message: 'Sophia has been referred to Laval Pediatric Associates for diabetes management.',
         sender: 'Dr. Matthew Donlan'
       },
@@ -121,7 +121,7 @@ const patientData = {
         id: 'msg-5',
         from: 'Clinic',
         to: 'Guardian',
-        date: '2024-01-19',
+        date: '2025-01-26',
         message: 'We have received Sophia\'s referral. Unfortunately, we are currently at full capacity for diabetes management cases.',
         sender: 'Dr. Marie-Claude Tremblay'
       }
@@ -273,11 +273,16 @@ describe('Patient Guardian Dashboard Integration', () => {
     })
   })
 
-  it('should have valid requested dates', () => {
+  it('should have valid requested dates within reasonable timeframe', () => {
     Object.values(patientData).forEach(patient => {
       const date = new Date(patient.requestedDate)
       expect(date.getTime()).not.toBeNaN()
       expect(date.getFullYear()).toBe(2024)
+      
+      // Check that the date is within the last 30 days
+      const daysSinceRequest = Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24))
+      expect(daysSinceRequest).toBeGreaterThanOrEqual(0)
+      expect(daysSinceRequest).toBeLessThanOrEqual(30)
     })
   })
 
