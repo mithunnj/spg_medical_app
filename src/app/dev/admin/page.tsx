@@ -96,30 +96,57 @@ export default function AdminDashboard() {
   const [roleRequests, setRoleRequests] = useState<RoleRequest[]>([
     {
       id: '1',
-      userEmail: 'dr.newton@hospital.com',
+      userEmail: 'dr.emily.rodriguez@montreal-childrens.ca',
       requestedRole: 'HOSPITAL_DOCTOR',
       status: 'PENDING',
       requestedAt: '2025-01-31T08:00:00Z',
-      organization: 'McGill University Health Centre',
-      reason: 'New PICU attending physician joining the team'
+      organization: 'Montreal Children\'s Hospital',
+      reason: 'New PICU attending physician joining the team. Specializing in pediatric critical care.'
     },
     {
       id: '2',
-      userEmail: 'clinic.manager@pediatrics.com',
+      userEmail: 'dr.ahmed.hassan@montreal-specialists.ca',
       requestedRole: 'CLINIC_DOCTOR',
       status: 'PENDING',
       requestedAt: '2025-01-30T15:30:00Z',
-      organization: 'Advanced Pediatric Care',
-      reason: 'New pediatric clinic opening in Laval'
+      organization: 'Montreal Pediatric Specialists',
+      reason: 'New pediatric specialist joining the clinic. Focus on respiratory conditions and asthma management.'
     },
     {
       id: '3',
-      userEmail: 'parent.smith@email.com',
+      userEmail: 'dr.jennifer.oconnor@west-island.ca',
+      requestedRole: 'CLINIC_DOCTOR',
+      status: 'PENDING',
+      requestedAt: '2025-01-30T14:20:00Z',
+      organization: 'West Island Family Clinic',
+      reason: 'New family medicine physician with pediatric focus. Expanding clinic capacity.'
+    },
+    {
+      id: '4',
+      userEmail: 'maria.johnson@email.com',
       requestedRole: 'PARENT',
       status: 'APPROVED',
       requestedAt: '2025-01-29T11:20:00Z',
       organization: 'Patient Family',
-      reason: 'Parent of patient requiring ongoing care coordination'
+      reason: 'Parent of Emma Johnson (8 years old) requiring ongoing care coordination after appendectomy'
+    },
+    {
+      id: '5',
+      userEmail: 'sophia.johnson@email.com',
+      requestedRole: 'PARENT',
+      status: 'PENDING',
+      requestedAt: '2025-01-31T09:15:00Z',
+      organization: 'Patient Family',
+      reason: 'Parent of Lucas Johnson (12 years old) seeking access for asthma management follow-up'
+    },
+    {
+      id: '6',
+      userEmail: 'dr.michael.chen@pediatric-specialists.ca',
+      requestedRole: 'CLINIC_DOCTOR',
+      status: 'DENIED',
+      requestedAt: '2025-01-28T10:45:00Z',
+      organization: 'Pediatric Specialists Clinic',
+      reason: 'Application denied due to incomplete credentials. Requires additional verification.'
     }
   ])
 
