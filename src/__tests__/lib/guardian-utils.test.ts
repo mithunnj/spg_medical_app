@@ -11,8 +11,22 @@ const getStatusColor = (status: string) => {
 }
 
 const calculateDaysSinceRequest = (requestedDate: string) => {
-  const days = Math.floor((Date.now() - new Date(requestedDate).getTime()) / (1000 * 60 * 60 * 24))
-  return Math.min(days, 30)
+  const date = new Date(requestedDate)
+  if (isNaN(date.getTime())) {
+    return 0 // Return 0 for invalid dates
+  }
+  
+  const now = new Date()
+  const diffTime = now.getTime() - date.getTime()
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+  
+  // If the date is in the future, return 0
+  if (diffDays < 0) {
+    return 0
+  }
+  
+  // Cap at 30 days for very old dates
+  return Math.min(diffDays, 30)
 }
 
 const formatPatientName = (name: string, age: number, status: string) => {
@@ -102,8 +116,7 @@ describe('Guardian Dashboard Utility Functions', () => {
     it('should handle invalid date strings', () => {
       const invalidDate = 'invalid-date'
       const days = calculateDaysSinceRequest(invalidDate)
-      expect(days).toBeGreaterThanOrEqual(0)
-      expect(days).toBeLessThanOrEqual(30)
+      expect(days).toBe(0)
     })
   })
 

@@ -74,7 +74,7 @@ const patientData: { [key: string]: Patient } = {
     hospital: {
       name: 'Montreal Children\'s Hospital',
       doctor: 'Dr. Matthew Donlan',
-      phone: '(514) 412-4400'
+      phone: '(514) 555-0100'
     },
     clinic: {
       name: 'Montreal Children\'s Clinic',
@@ -82,11 +82,11 @@ const patientData: { [key: string]: Patient } = {
       phone: '(514) 555-0101',
       status: 'PENDING'
     },
-    requestedDate: '2025-01-27',
+    requestedDate: '2025-01-31', // Very recent date
     followUpAppointments: [
       {
         id: 'appt-1',
-        date: '2025-02-01',
+        date: '2025-02-06',
         time: '10:00 AM',
         type: 'Post-operative check-up',
         location: 'Montreal Children\'s Clinic',
@@ -98,8 +98,8 @@ const patientData: { [key: string]: Patient } = {
         id: 'msg-1',
         from: 'PICU',
         to: 'Guardian',
-        date: '2025-01-27',
-        message: 'Your child has been referred to Montreal Children\'s Clinic for post-operative care. We will keep you updated on the status.',
+        date: '2025-01-31',
+        message: 'Patient referral sent to outbound clinic for review.',
         sender: 'Dr. Matthew Donlan'
       }
     ]
@@ -108,24 +108,24 @@ const patientData: { [key: string]: Patient } = {
     name: 'Lucas Johnson',
     age: 12,
     healthCard: 'QC987654321',
-    diagnosis: 'Asthma management and respiratory monitoring',
+    diagnosis: 'Asthma management and monitoring',
     status: 'APPROVED',
     hospital: {
       name: 'Montreal Children\'s Hospital',
       doctor: 'Dr. Matthew Donlan',
-      phone: '(514) 412-4401'
+      phone: '(514) 555-0100'
     },
     clinic: {
       name: 'Quebec Family Health Center',
       doctor: 'Dr. Jean-Pierre Dubois',
-      phone: '(514) 555-0202',
+      phone: '(514) 555-0200',
       status: 'APPROVED'
     },
-    requestedDate: '2025-01-25',
+    requestedDate: '2025-01-30', // Very recent date
     followUpAppointments: [
       {
         id: 'appt-2',
-        date: '2025-01-29',
+        date: '2025-02-04',
         time: '2:30 PM',
         type: 'Asthma follow-up',
         location: 'Quebec Family Health Center',
@@ -133,9 +133,9 @@ const patientData: { [key: string]: Patient } = {
       },
       {
         id: 'appt-3',
-        date: '2025-02-05',
+        date: '2025-02-19',
         time: '11:00 AM',
-        type: 'Respiratory function test',
+        type: 'Pulmonary function test',
         location: 'Quebec Family Health Center',
         doctor: 'Dr. Jean-Pierre Dubois'
       }
@@ -143,18 +143,10 @@ const patientData: { [key: string]: Patient } = {
     messages: [
       {
         id: 'msg-2',
-        from: 'PICU',
-        to: 'Guardian',
-        date: '2025-01-25',
-        message: 'Lucas has been referred to Quebec Family Health Center for asthma management.',
-        sender: 'Dr. Matthew Donlan'
-      },
-      {
-        id: 'msg-3',
         from: 'Clinic',
         to: 'Guardian',
-        date: '2025-01-26',
-        message: 'Great news! We have accepted Lucas for care. Please call us to schedule your first appointment.',
+        date: '2025-01-31',
+        message: 'Patient accepted. First appointment scheduled for February 4th.',
         sender: 'Dr. Jean-Pierre Dubois'
       }
     ]
@@ -163,37 +155,29 @@ const patientData: { [key: string]: Patient } = {
     name: 'Sophia Johnson',
     age: 6,
     healthCard: 'QC456789123',
-    diagnosis: 'Diabetes management and education',
+    diagnosis: 'Developmental assessment and therapy',
     status: 'WAITLISTED',
     hospital: {
       name: 'Montreal Children\'s Hospital',
       doctor: 'Dr. Matthew Donlan',
-      phone: '(514) 412-4402'
+      phone: '(514) 555-0100'
     },
     clinic: {
       name: 'Laval Pediatric Associates',
       doctor: 'Dr. Marie-Claude Tremblay',
-      phone: '(514) 555-0303',
+      phone: '(514) 555-0300',
       status: 'WAITLISTED',
-      reason: 'Currently at full capacity for diabetes management cases. We will contact you when a spot becomes available.'
+      reason: 'Currently at capacity. Will contact when space becomes available.'
     },
-    requestedDate: '2025-01-24',
+    requestedDate: '2025-01-29', // Very recent date
     followUpAppointments: [],
     messages: [
       {
-        id: 'msg-4',
-        from: 'PICU',
-        to: 'Guardian',
-        date: '2025-01-24',
-        message: 'Sophia has been referred to Laval Pediatric Associates for diabetes management.',
-        sender: 'Dr. Matthew Donlan'
-      },
-      {
-        id: 'msg-5',
+        id: 'msg-3',
         from: 'Clinic',
         to: 'Guardian',
-        date: '2025-01-26',
-        message: 'We have received Sophia\'s referral. Unfortunately, we are currently at full capacity for diabetes management cases. We will contact you when a spot becomes available.',
+        date: '2025-01-30',
+        message: 'Patient waitlisted due to current capacity. We will contact you when space becomes available.',
         sender: 'Dr. Marie-Claude Tremblay'
       }
     ]
