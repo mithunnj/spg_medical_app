@@ -164,8 +164,8 @@ export default function PICUDoctorDemo() {
                 <ArrowLeft className="h-6 w-6" />
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent flex items-center space-x-3">
-                  <Stethoscope className="h-8 w-8 text-red-600" />
+                <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent flex items-center space-x-3">
+                  <Stethoscope className="h-8 w-8 text-blue-600" />
                   <span>PICU Doctor Dashboard</span>
                 </h1>
                 <p className="text-gray-600">Montreal Children&apos;s Hospital - Patient discharge coordination</p>
@@ -375,7 +375,7 @@ export default function PICUDoctorDemo() {
                             <MessageSquare className="h-3 w-3 mr-1" />
                             Message
                           </Button>
-                          <Button size="sm" variant="outline">
+                          <Button size="sm" variant="outline" onClick={() => setSelectedModal(`view-patient-${patient.id}`)}>
                             <Eye className="h-3 w-3 mr-1" />
                             View
                           </Button>
@@ -655,6 +655,53 @@ export default function PICUDoctorDemo() {
               <div className="flex justify-end gap-2 mt-6">
                 <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
                 <Button className="bg-red-600 hover:bg-red-700">Send Message</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockPatients.map(patient => (
+          <Dialog key={patient.id} open={selectedModal === `view-patient-${patient.id}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Eye className="h-5 w-5 text-blue-600" />
+                  Patient Details: {patient.name}
+                </DialogTitle>
+                <DialogDescription>
+                  View comprehensive patient information and care status
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h4 className="font-medium text-blue-800 mb-2">Patient Information</h4>
+                    <div className="text-sm text-blue-700 space-y-1">
+                      <div><strong>Name:</strong> {patient.name}</div>
+                      <div><strong>Age:</strong> {patient.age}</div>
+                      <div><strong>Diagnosis:</strong> {patient.diagnosis}</div>
+                      <div><strong>Status:</strong> {patient.status}</div>
+                      <div><strong>Priority:</strong> {patient.priority}</div>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-800 mb-2">Care Details</h4>
+                    <div className="text-sm text-gray-700 space-y-1">
+                      <div><strong>Clinic:</strong> {patient.clinic}</div>
+                      <div><strong>Contacted:</strong> {patient.contacted}</div>
+                      <div><strong>Last Follow-up:</strong> {patient.lastFollowUp}</div>
+                      <div><strong>Days in PICU:</strong> 12</div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-medium mb-2">Care Notes</h4>
+                  <textarea className="w-full p-2 border rounded-md" rows={3} placeholder="Add care notes..." defaultValue="Patient responding well to treatment. Ready for discharge coordination with outpatient clinic." />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
+                  <Button className="bg-blue-600 hover:bg-blue-700">Update Notes</Button>
+                </div>
               </div>
             </DialogContent>
           </Dialog>

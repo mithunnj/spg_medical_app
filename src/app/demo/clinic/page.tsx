@@ -39,6 +39,8 @@ export default function ClinicDoctorDemo() {
   const [clinics, setClinics] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedModal, setSelectedModal] = useState<string | null>(null)
+  const [capacity, setCapacity] = useState(demoClinic.capacity)
+  const [currentPatients, setCurrentPatients] = useState(demoClinic.currentPatients)
 
   useEffect(() => {
     // Fetch clinic data on client side
@@ -168,8 +170,8 @@ export default function ClinicDoctorDemo() {
     }
   }
 
-  const availableSlots = demoClinic.capacity - demoClinic.currentPatients
-  const utilizationRate = Math.round((demoClinic.currentPatients / demoClinic.capacity) * 100)
+  const availableSlots = capacity - currentPatients
+  const utilizationRate = Math.round((currentPatients / capacity) * 100)
 
   const handleAcceptPatient = (patientId: string) => {
     setSelectedModal(`accept-patient-${patientId}`)
@@ -191,6 +193,28 @@ export default function ClinicDoctorDemo() {
     setSelectedModal('update-capacity')
   }
 
+  const handleIncreaseCapacity = () => {
+    setCapacity(prev => prev + 1)
+  }
+
+  const handleDecreaseCapacity = () => {
+    if (capacity > currentPatients) {
+      setCapacity(prev => prev - 1)
+    }
+  }
+
+  const handleSchedulePatientMeeting = (patientId: string) => {
+    setSelectedModal(`schedule-meeting-${patientId}`)
+  }
+
+  const handleReplyMessage = (messageId: string) => {
+    setSelectedModal(`reply-message-${messageId}`)
+  }
+
+  const handleViewMessageFiles = (messageId: string) => {
+    setSelectedModal(`view-message-files-${messageId}`)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -202,8 +226,8 @@ export default function ClinicDoctorDemo() {
                 <ArrowLeft className="h-6 w-6" />
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent flex items-center space-x-3">
-                  <Building2 className="h-8 w-8 text-blue-600" />
+                <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent flex items-center space-x-3">
+                  <Building2 className="h-8 w-8 text-green-600" />
                   <span>Clinic Doctor Dashboard</span>
                 </h1>
                 <p className="text-gray-600">{demoClinic.name} - Patient Request Management</p>
@@ -368,12 +392,12 @@ export default function ClinicDoctorDemo() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-gray-900">Total Capacity</span>
-                  <span className="text-2xl font-bold text-gray-900">{demoClinic.capacity}</span>
+                  <span className="text-2xl font-bold text-gray-900">{capacity}</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${utilizationRate}%` }}></div>
                 </div>
-                <div className="text-sm text-gray-600">{demoClinic.currentPatients} patients currently enrolled</div>
+                <div className="text-sm text-gray-600">{currentPatients} patients currently enrolled</div>
               </div>
 
               <div className="space-y-4">
@@ -382,7 +406,7 @@ export default function ClinicDoctorDemo() {
                   <span className="text-2xl font-bold text-green-600">{availableSlots}</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-green-600 h-2 rounded-full" style={{ width: `${(availableSlots / demoClinic.capacity) * 100}%` }}></div>
+                  <div className="bg-green-600 h-2 rounded-full" style={{ width: `${(availableSlots / capacity) * 100}%` }}></div>
                 </div>
                 <div className="text-sm text-gray-600">Ready for new patients</div>
               </div>
@@ -400,17 +424,17 @@ export default function ClinicDoctorDemo() {
             </div>
 
             <div className="mt-6 flex space-x-4">
-              <Button variant="outline" className="flex items-center">
+              <Button variant="outline" className="flex items-center" onClick={handleIncreaseCapacity}>
                 <Plus className="h-4 w-4 mr-2" />
                 Increase Capacity
               </Button>
-              <Button variant="outline" className="flex items-center">
+              <Button variant="outline" className="flex items-center" onClick={handleDecreaseCapacity}>
                 <Minus className="h-4 w-4 mr-2" />
                 Decrease Capacity
               </Button>
-              <Button variant="outline" className="flex items-center">
+              <Button variant="outline" className="flex items-center" onClick={() => setSelectedModal('schedule-review')}>
                 <Calendar className="h-4 w-4 mr-2" />
-                Schedule Review
+                Schedule Patient Meeting
               </Button>
             </div>
           </CardContent>
@@ -454,23 +478,23 @@ export default function ClinicDoctorDemo() {
                   </div>
                   
                   <div className="flex space-x-2">
-                    <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                    <Button size="sm" className="bg-green-600 hover:bg-green-700" onClick={() => handleAcceptPatient(request.id)}>
                       <CheckCircle className="h-3 w-3 mr-1" />
                       Accept Patient
                     </Button>
-                    <Button size="sm" variant="outline" className="text-red-600 border-red-300 hover:bg-red-50">
+                    <Button size="sm" variant="outline" className="text-red-600 border-red-300 hover:bg-red-50" onClick={() => handleDenyPatient(request.id)}>
                       <XCircle className="h-3 w-3 mr-1" />
                       Decline
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleMessagePICU(request.id)}>
                       <MessageSquare className="h-3 w-3 mr-1" />
                       Message
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleViewFiles(request.id)}>
                       <FileText className="h-3 w-3 mr-1" />
                       View Files
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => setSelectedModal(`view-patient-${request.id}`)}>
                       <Eye className="h-3 w-3 mr-1" />
                       Details
                     </Button>
@@ -509,10 +533,10 @@ export default function ClinicDoctorDemo() {
                     <p className="text-sm text-gray-600 mt-1">{message.content}</p>
                   </div>
                   <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleReplyMessage(message.id)}>
                       Reply
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleViewMessageFiles(message.id)}>
                       <FileText className="h-3 w-3 mr-1" />
                       View Files
                     </Button>
@@ -800,6 +824,200 @@ export default function ClinicDoctorDemo() {
             </div>
           </DialogContent>
         </Dialog>
+
+        <Dialog open={selectedModal === 'schedule-review'} onOpenChange={() => setSelectedModal(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-green-600" />
+                Schedule Patient Meeting
+              </DialogTitle>
+              <DialogDescription>
+                Schedule a meeting with a patient and their family
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Patient</label>
+                  <select className="w-full mt-1 p-2 border rounded-md">
+                    <option>Select patient</option>
+                    {mockRequests.map(request => (
+                      <option key={request.id}>{request.patientName}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Meeting Type</label>
+                  <select className="w-full mt-1 p-2 border rounded-md">
+                    <option>Initial consultation</option>
+                    <option>Follow-up appointment</option>
+                    <option>Care plan discussion</option>
+                    <option>Family meeting</option>
+                  </select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Date</label>
+                  <input type="date" className="w-full mt-1 p-2 border rounded-md" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Time</label>
+                  <select className="w-full mt-1 p-2 border rounded-md">
+                    <option>9:00 AM</option>
+                    <option>10:00 AM</option>
+                    <option>11:00 AM</option>
+                    <option>2:00 PM</option>
+                    <option>3:00 PM</option>
+                    <option>4:00 PM</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Notes</label>
+                <textarea className="w-full mt-1 p-2 border rounded-md" rows={3} placeholder="Meeting agenda and notes..." />
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+              <Button className="bg-green-600 hover:bg-green-700">Schedule Meeting</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {mockRequests.map(request => (
+          <Dialog key={request.id} open={selectedModal === `view-patient-${request.id}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Eye className="h-5 w-5 text-green-600" />
+                  Patient Details: {request.patientName}
+                </DialogTitle>
+                <DialogDescription>
+                  View comprehensive patient information and request details
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h4 className="font-medium text-green-800 mb-2">Patient Information</h4>
+                    <div className="text-sm text-green-700 space-y-1">
+                      <div><strong>Name:</strong> {request.patientName}</div>
+                      <div><strong>Age:</strong> {request.age}</div>
+                      <div><strong>Diagnosis:</strong> {request.diagnosis}</div>
+                      <div><strong>Priority:</strong> {request.priority}</div>
+                      <div><strong>Status:</strong> {request.status}</div>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-800 mb-2">Request Details</h4>
+                    <div className="text-sm text-gray-700 space-y-1">
+                      <div><strong>Hospital:</strong> {request.hospital}</div>
+                      <div><strong>Doctor:</strong> {request.doctor}</div>
+                      <div><strong>Received:</strong> {request.received}</div>
+                      <div><strong>Files:</strong> {request.files} documents</div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-medium mb-2">Notes</h4>
+                  <textarea className="w-full p-2 border rounded-md" rows={3} placeholder="Add notes about this patient..." defaultValue={request.notes} />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
+                  <Button className="bg-green-600 hover:bg-green-700">Update Notes</Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockMessages.map(message => (
+          <Dialog key={message.id} open={selectedModal === `reply-message-${message.id}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5 text-green-600" />
+                  Reply to {message.from}
+                </DialogTitle>
+                <DialogDescription>
+                  Send a response to the PICU doctor
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h4 className="font-medium text-blue-800 mb-2">Original Message</h4>
+                  <div className="text-sm text-blue-700">
+                    <div><strong>Subject:</strong> {message.subject}</div>
+                    <div><strong>Content:</strong> {message.content}</div>
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Subject</label>
+                  <input className="w-full mt-1 p-2 border rounded-md" placeholder="Enter reply subject" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Message</label>
+                  <textarea className="w-full mt-1 p-2 border rounded-md" rows={4} placeholder="Enter your reply..." />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" id="urgent" />
+                  <label htmlFor="urgent" className="text-sm">Mark as urgent</label>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+                <Button className="bg-green-600 hover:bg-green-700">Send Reply</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockMessages.map(message => (
+          <Dialog key={message.id} open={selectedModal === `view-message-files-${message.id}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-green-600" />
+                  Files from {message.from}
+                </DialogTitle>
+                <DialogDescription>
+                  View and download files attached to this message
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center p-3 border rounded-lg">
+                    <span className="text-sm">Patient Records</span>
+                    <Button size="sm" variant="outline">
+                      <Download className="h-3 w-3 mr-1" />
+                      Download
+                    </Button>
+                  </div>
+                  <div className="flex justify-between items-center p-3 border rounded-lg">
+                    <span className="text-sm">Lab Results</span>
+                    <Button size="sm" variant="outline">
+                      <Download className="h-3 w-3 mr-1" />
+                      Download
+                    </Button>
+                  </div>
+                  <div className="flex justify-between items-center p-3 border rounded-lg">
+                    <span className="text-sm">Care Plan</span>
+                    <Button size="sm" variant="outline">
+                      <Download className="h-3 w-3 mr-1" />
+                      Download
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
+                <Button className="bg-green-600 hover:bg-green-700">Download All</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
       </div>
     </div>
   )

@@ -186,6 +186,18 @@ export default function PatientGuardianDemo() {
     setSelectedModal(`send-message-${appointment.clinic}`)
   }
 
+  const handleViewChildDetails = (childId: string) => {
+    setSelectedModal(`view-child-${childId}`)
+  }
+
+  const handleViewMessageDetails = (messageId: string) => {
+    setSelectedModal(`view-message-${messageId}`)
+  }
+
+  const handleViewAppointmentDetails = (appointmentId: string) => {
+    setSelectedModal(`view-appointment-${appointmentId}`)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -199,7 +211,7 @@ export default function PatientGuardianDemo() {
               <div>
                 <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent flex items-center space-x-3">
                   <Users className="h-8 w-8 text-purple-600" />
-                  <span>Family Portal</span>
+                  <span>Patient Guardian Portal</span>
                 </h1>
                 <p className="text-gray-600">Track your child&apos;s care transition progress</p>
               </div>
@@ -352,10 +364,10 @@ export default function PatientGuardianDemo() {
                       <FileText className="h-3 w-3 mr-1" />
                       View Files
                     </Button>
-                    <Button size="sm" variant="outline">
-                      <Eye className="h-3 w-3 mr-1" />
-                      Details
-                    </Button>
+                                              <Button size="sm" variant="outline" onClick={() => handleViewChildDetails(child.id)}>
+                            <Eye className="h-3 w-3 mr-1" />
+                            Details
+                          </Button>
                   </div>
                 </div>
               ))}
@@ -394,10 +406,10 @@ export default function PatientGuardianDemo() {
                     <p className="text-sm text-gray-600 mt-1">{message.content}</p>
                   </div>
                   <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => setSelectedModal(`reply-message-${message.id}`)}>
                       Reply
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleViewMessageDetails(message.id)}>
                       <FileText className="h-3 w-3 mr-1" />
                       View Files
                     </Button>
@@ -868,6 +880,196 @@ export default function PatientGuardianDemo() {
               <div className="flex justify-end gap-2 mt-6">
                 <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
                 <Button className="bg-purple-600 hover:bg-purple-700">Download All</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockChildren.map(child => (
+          <Dialog key={child.id} open={selectedModal === `view-child-${child.id}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Eye className="h-5 w-5 text-purple-600" />
+                  Child Details: {child.name}
+                </DialogTitle>
+                <DialogDescription>
+                  View comprehensive information about your child's care
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                    <h4 className="font-medium text-purple-800 mb-2">Child Information</h4>
+                    <div className="text-sm text-purple-700 space-y-1">
+                      <div><strong>Name:</strong> {child.name}</div>
+                      <div><strong>Age:</strong> {child.age}</div>
+                      <div><strong>Diagnosis:</strong> {child.diagnosis}</div>
+                      <div><strong>Status:</strong> {child.status}</div>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-800 mb-2">Care Details</h4>
+                    <div className="text-sm text-gray-700 space-y-1">
+                      <div><strong>Hospital:</strong> {child.hospital}</div>
+                      <div><strong>Doctor:</strong> {child.doctor}</div>
+                      <div><strong>Clinic:</strong> {child.clinic}</div>
+                      <div><strong>Last Update:</strong> {child.lastUpdate}</div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-medium mb-2">Care Notes</h4>
+                  <textarea className="w-full p-2 border rounded-md" rows={3} placeholder="Add notes about your child's care..." />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
+                  <Button className="bg-purple-600 hover:bg-purple-700">Save Notes</Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockMessages.map(message => (
+          <Dialog key={message.id} open={selectedModal === `view-message-${message.id}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5 text-purple-600" />
+                  Message Details
+                </DialogTitle>
+                <DialogDescription>
+                  View complete message information and attached files
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h4 className="font-medium text-blue-800 mb-2">Message Information</h4>
+                  <div className="text-sm text-blue-700 space-y-1">
+                    <div><strong>From:</strong> {message.from}</div>
+                    <div><strong>Subject:</strong> {message.subject}</div>
+                    <div><strong>Date:</strong> {message.timestamp}</div>
+                    <div><strong>Type:</strong> {message.type}</div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-medium mb-2">Message Content</h4>
+                  <div className="p-3 bg-gray-50 border rounded-md">
+                    <p className="text-sm text-gray-700">{message.content}</p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="font-medium">Attached Files</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center p-2 border rounded">
+                      <span className="text-sm">Care Plan</span>
+                      <Button size="sm" variant="outline">
+                        <Download className="h-3 w-3 mr-1" />
+                        Download
+                      </Button>
+                    </div>
+                    <div className="flex justify-between items-center p-2 border rounded">
+                      <span className="text-sm">Medical Records</span>
+                      <Button size="sm" variant="outline">
+                        <Download className="h-3 w-3 mr-1" />
+                        Download
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
+                <Button className="bg-purple-600 hover:bg-purple-700">Download All</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockMessages.map(message => (
+          <Dialog key={message.id} open={selectedModal === `reply-message-${message.id}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5 text-purple-600" />
+                  Reply to {message.from}
+                </DialogTitle>
+                <DialogDescription>
+                  Send a response to the care team
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h4 className="font-medium text-blue-800 mb-2">Original Message</h4>
+                  <div className="text-sm text-blue-700">
+                    <div><strong>Subject:</strong> {message.subject}</div>
+                    <div><strong>Content:</strong> {message.content}</div>
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Subject</label>
+                  <input className="w-full mt-1 p-2 border rounded-md" placeholder="Enter reply subject" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Message</label>
+                  <textarea className="w-full mt-1 p-2 border rounded-md" rows={4} placeholder="Enter your reply..." />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" id="urgent" />
+                  <label htmlFor="urgent" className="text-sm">Mark as urgent</label>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+                <Button className="bg-purple-600 hover:bg-purple-700">Send Reply</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockAppointments.map(appointment => (
+          <Dialog key={appointment.id} open={selectedModal === `view-appointment-${appointment.id}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Calendar className="h-5 w-5 text-purple-600" />
+                  Appointment Details: {appointment.childName}
+                </DialogTitle>
+                <DialogDescription>
+                  View complete appointment information and instructions
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                    <h4 className="font-medium text-purple-800 mb-2">Appointment Info</h4>
+                    <div className="text-sm text-purple-700 space-y-1">
+                      <div><strong>Child:</strong> {appointment.childName}</div>
+                      <div><strong>Type:</strong> {appointment.type}</div>
+                      <div><strong>Date:</strong> {appointment.date}</div>
+                      <div><strong>Time:</strong> {appointment.time}</div>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-800 mb-2">Clinic Details</h4>
+                    <div className="text-sm text-gray-700 space-y-1">
+                      <div><strong>Clinic:</strong> {appointment.clinic}</div>
+                      <div><strong>Doctor:</strong> {appointment.doctor}</div>
+                      <div><strong>Status:</strong> {appointment.status}</div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-medium mb-2">Instructions</h4>
+                  <div className="p-3 bg-gray-50 border rounded-md">
+                    <p className="text-sm text-gray-700">Please arrive 15 minutes before your appointment. Bring any recent medical records or test results. If you need to reschedule, please contact the clinic at least 24 hours in advance.</p>
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
+                  <Button className="bg-purple-600 hover:bg-purple-700">Add to Calendar</Button>
+                </div>
               </div>
             </DialogContent>
           </Dialog>
