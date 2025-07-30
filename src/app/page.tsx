@@ -1,4 +1,6 @@
-import { redirect } from 'next/navigation'
+'use client'
+
+import { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -7,7 +9,9 @@ import { Heart, Shield, Users, ArrowRight, Stethoscope } from 'lucide-react'
 
 export default function HomePage() {
     // Redirect to demo mode for presentation
-    redirect('/demo')
+    useEffect(() => {
+        window.location.href = '/demo'
+    }, [])
     
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-8">
