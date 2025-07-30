@@ -5,6 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import {
   Stethoscope,
   Plus,
   MessageSquare,
@@ -18,13 +26,17 @@ import {
   Eye,
   Building2,
   MapPin,
-  Phone
+  Phone,
+  Upload,
+  Send,
+  Bell
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export default function PICUDoctorDemo() {
   const [clinics, setClinics] = useState([])
   const [loading, setLoading] = useState(true)
+  const [selectedModal, setSelectedModal] = useState<string | null>(null)
 
   useEffect(() => {
     // Fetch clinic data on client side
@@ -118,27 +130,27 @@ export default function PICUDoctorDemo() {
   }
 
   const handleNewPatientIntake = () => {
-    alert('New Patient Intake Form would open here. This would include:\n- Patient demographics\n- Medical history\n- Current diagnosis\n- Care requirements\n- Preferred clinic selection')
+    setSelectedModal('new-patient-intake')
   }
 
   const handleSendFollowUp = () => {
-    alert('Follow-up messages would be sent to clinics that haven\'t responded within 48 hours.')
+    setSelectedModal('follow-up-messages')
   }
 
   const handleUploadFiles = () => {
-    alert('File upload dialog would open here. Supported formats:\n- Medical records (PDF)\n- Lab results\n- Imaging files\n- Discharge summaries')
+    setSelectedModal('upload-files')
   }
 
   const handleScheduleFollowUps = () => {
-    alert('Calendar would open to schedule follow-up appointments and reminders.')
+    setSelectedModal('schedule-followups')
   }
 
   const handleContactClinic = (clinicName: string) => {
-    alert(`Contacting ${clinicName}...\n\nThis would open a secure messaging interface to communicate with the clinic about patient referrals.`)
+    setSelectedModal(`contact-clinic-${clinicName}`)
   }
 
   const handleMessagePatient = (patientName: string) => {
-    alert(`Opening secure messaging with ${patientName}'s family...\n\nThis allows direct communication with patient guardians about care coordination.`)
+    setSelectedModal(`message-patient-${patientName}`)
   }
 
   return (
@@ -152,8 +164,8 @@ export default function PICUDoctorDemo() {
                 <ArrowLeft className="h-6 w-6" />
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 flex items-center space-x-3">
-                  <Stethoscope className="h-8 w-8 text-blue-600" />
+                <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent flex items-center space-x-3">
+                  <Stethoscope className="h-8 w-8 text-red-600" />
                   <span>PICU Doctor Dashboard</span>
                 </h1>
                 <p className="text-gray-600">Montreal Children&apos;s Hospital - Patient discharge coordination</p>
@@ -455,6 +467,236 @@ export default function PICUDoctorDemo() {
             </div>
           </div>
         </div>
+
+        {/* Modal Dialogs */}
+        <Dialog open={selectedModal === 'new-patient-intake'} onOpenChange={() => setSelectedModal(null)}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Plus className="h-5 w-5 text-red-600" />
+                New Patient Intake Form
+              </DialogTitle>
+              <DialogDescription>
+                Complete patient information for discharge coordination
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Patient Name</label>
+                  <input className="w-full mt-1 p-2 border rounded-md" placeholder="Enter patient name" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Age</label>
+                  <input className="w-full mt-1 p-2 border rounded-md" placeholder="Age in years" />
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Diagnosis</label>
+                <textarea className="w-full mt-1 p-2 border rounded-md" rows={3} placeholder="Enter diagnosis and care requirements" />
+              </div>
+              <div>
+                <label className="text-sm font-medium">Preferred Clinics</label>
+                <select className="w-full mt-1 p-2 border rounded-md">
+                  <option>Select preferred clinics</option>
+                  {montrealClinics.slice(0, 3).map(clinic => (
+                    <option key={clinic.id}>{clinic.name}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+              <Button className="bg-red-600 hover:bg-red-700">Submit Intake</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={selectedModal === 'follow-up-messages'} onOpenChange={() => setSelectedModal(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Send className="h-5 w-5 text-red-600" />
+                Send Follow-up Messages
+              </DialogTitle>
+              <DialogDescription>
+                Automated follow-up messages for clinics that haven't responded within 48 hours
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <h4 className="font-medium text-yellow-800 mb-2">Pending Responses</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span>Montreal Pediatric Associates</span>
+                    <span className="text-yellow-600">3 days overdue</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>West Island Pediatrics</span>
+                    <span className="text-yellow-600">2 days overdue</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+              <Button className="bg-red-600 hover:bg-red-700">Send Follow-ups</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={selectedModal === 'upload-files'} onOpenChange={() => setSelectedModal(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Upload className="h-5 w-5 text-red-600" />
+                Upload Patient Files
+              </DialogTitle>
+              <DialogDescription>
+                Upload medical records, lab results, and discharge summaries
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                <p className="text-sm text-gray-600 mb-2">Drag and drop files here, or click to browse</p>
+                <p className="text-xs text-gray-500">Supported: PDF, DOC, JPG, PNG (Max 10MB each)</p>
+              </div>
+              <div className="space-y-2">
+                <h4 className="font-medium">Supported Formats:</h4>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>• Medical records (PDF)</li>
+                  <li>• Lab results (PDF, DOC)</li>
+                  <li>• Imaging files (JPG, PNG)</li>
+                  <li>• Discharge summaries (PDF)</li>
+                </ul>
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+              <Button className="bg-red-600 hover:bg-red-700">Upload Files</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={selectedModal === 'schedule-followups'} onOpenChange={() => setSelectedModal(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-red-600" />
+                Schedule Follow-ups
+              </DialogTitle>
+              <DialogDescription>
+                Schedule follow-up appointments and set reminders
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Patient</label>
+                  <select className="w-full mt-1 p-2 border rounded-md">
+                    <option>Select patient</option>
+                    {mockPatients.map(patient => (
+                      <option key={patient.id}>{patient.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Date</label>
+                  <input type="date" className="w-full mt-1 p-2 border rounded-md" />
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Type</label>
+                <select className="w-full mt-1 p-2 border rounded-md">
+                  <option>Follow-up consultation</option>
+                  <option>Lab work review</option>
+                  <option>Specialist referral</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Notes</label>
+                <textarea className="w-full mt-1 p-2 border rounded-md" rows={3} placeholder="Additional notes for the appointment" />
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+              <Button className="bg-red-600 hover:bg-red-700">Schedule Appointment</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {mockPatients.map(patient => (
+          <Dialog key={patient.id} open={selectedModal === `message-patient-${patient.name}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5 text-red-600" />
+                  Message {patient.name}'s Family
+                </DialogTitle>
+                <DialogDescription>
+                  Send secure message to patient guardians about care coordination
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium">Subject</label>
+                  <input className="w-full mt-1 p-2 border rounded-md" placeholder="Enter message subject" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Message</label>
+                  <textarea className="w-full mt-1 p-2 border rounded-md" rows={4} placeholder="Enter your message to the family..." />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" id="urgent" />
+                  <label htmlFor="urgent" className="text-sm">Mark as urgent</label>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+                <Button className="bg-red-600 hover:bg-red-700">Send Message</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {montrealClinics.map(clinic => (
+          <Dialog key={clinic.id} open={selectedModal === `contact-clinic-${clinic.name}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5 text-red-600" />
+                  Contact {clinic.name}
+                </DialogTitle>
+                <DialogDescription>
+                  Send secure message to clinic about patient referrals
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h4 className="font-medium text-blue-800 mb-2">Clinic Information</h4>
+                  <div className="text-sm text-blue-700 space-y-1">
+                    <div><strong>Region:</strong> {clinic.region || 'Montreal'}</div>
+                    <div><strong>Specializations:</strong> {clinic.specializations.join(', ')}</div>
+                    <div><strong>Available Slots:</strong> {clinic.capacity - clinic.currentPatients}</div>
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Subject</label>
+                  <input className="w-full mt-1 p-2 border rounded-md" placeholder="Enter message subject" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Message</label>
+                  <textarea className="w-full mt-1 p-2 border rounded-md" rows={4} placeholder="Enter your message to the clinic..." />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+                <Button className="bg-red-600 hover:bg-red-700">Send Message</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
       </div>
     </div>
   )

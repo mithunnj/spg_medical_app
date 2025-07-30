@@ -5,6 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import {
   Users,
   MessageSquare,
   FileText,
@@ -16,13 +24,17 @@ import {
   Heart,
   Bell,
   Phone,
-  Mail
+  Mail,
+  Upload,
+  Send,
+  Download
 } from 'lucide-react'
 
 export default function PatientGuardianDemo() {
   // Guardian name - children will have the same last name
   const guardianName = 'Maria Rodriguez'
   const guardianLastName = 'Rodriguez'
+  const [selectedModal, setSelectedModal] = useState<string | null>(null)
 
   const mockChildren = [
     {
@@ -184,7 +196,7 @@ export default function PatientGuardianDemo() {
                 <ArrowLeft className="h-6 w-6" />
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 flex items-center space-x-3">
+                <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent flex items-center space-x-3">
                   <Users className="h-8 w-8 text-purple-600" />
                   <span>Family Portal</span>
                 </h1>
