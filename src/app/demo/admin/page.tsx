@@ -1,7 +1,16 @@
+'use client'
+
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import {
   Settings,
   Users,
@@ -12,16 +21,16 @@ import {
   Trash2,
   ArrowLeft,
   Activity,
-  AlertCircle,
   CheckCircle,
-  BarChart3,
   UserPlus,
-  Key,
   Database,
-  Lock
+  Download
 } from 'lucide-react'
+import { useState } from 'react'
 
 export default function AdminDashboardDemo() {
+  const [selectedModal, setSelectedModal] = useState<string | null>(null)
+  
   const mockUsers = [
     {
       id: '1',
@@ -79,6 +88,7 @@ export default function AdminDashboardDemo() {
     {
       id: '1',
       user: 'Dr. Sarah Johnson',
+      role: 'HOSPITAL_DOCTOR',
       action: 'Patient file uploaded',
       timestamp: '2024-01-16 15:30',
       ipAddress: '192.168.1.100',
@@ -87,6 +97,7 @@ export default function AdminDashboardDemo() {
     {
       id: '2',
       user: 'Dr. Robert Wilson',
+      role: 'CLINIC_DOCTOR',
       action: 'Patient request approved',
       timestamp: '2024-01-16 14:45',
       ipAddress: '192.168.1.101',
@@ -95,6 +106,7 @@ export default function AdminDashboardDemo() {
     {
       id: '3',
       user: 'Maria Rodriguez',
+      role: 'PARENT',
       action: 'Message sent to care team',
       timestamp: '2024-01-16 13:20',
       ipAddress: '192.168.1.102',
@@ -102,40 +114,100 @@ export default function AdminDashboardDemo() {
     },
     {
       id: '4',
-      user: 'Unknown',
-      action: 'Failed login attempt',
+      user: 'Dr. Jennifer Lee',
+      role: 'CLINIC_DOCTOR',
+      action: 'Account access requested',
       timestamp: '2024-01-16 12:15',
       ipAddress: '192.168.1.103',
-      status: 'FAILED'
+      status: 'PENDING'
+    },
+    {
+      id: '5',
+      user: 'Dr. Matthew Donlan',
+      role: 'HOSPITAL_DOCTOR',
+      action: 'Patient records accessed',
+      timestamp: '2024-01-16 11:30',
+      ipAddress: '192.168.1.104',
+      status: 'SUCCESS'
+    },
+    {
+      id: '6',
+      user: 'Dr. Emily Chen',
+      role: 'CLINIC_DOCTOR',
+      action: 'Clinic capacity updated',
+      timestamp: '2024-01-16 10:45',
+      ipAddress: '192.168.1.105',
+      status: 'SUCCESS'
     }
   ]
 
   const getRoleColor = (role: string) => {
     switch (role) {
-      case 'HOSPITAL_DOCTOR': return 'bg-blue-100 text-blue-800'
-      case 'CLINIC_DOCTOR': return 'bg-green-100 text-green-800'
-      case 'PARENT': return 'bg-purple-100 text-purple-800'
-      case 'ADMIN': return 'bg-orange-100 text-orange-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'HOSPITAL_DOCTOR':
+        return 'bg-blue-100 text-blue-800'
+      case 'CLINIC_DOCTOR':
+        return 'bg-green-100 text-green-800'
+      case 'PARENT':
+        return 'bg-purple-100 text-purple-800'
+      case 'ADMIN':
+        return 'bg-orange-100 text-orange-800'
+      default:
+        return 'bg-gray-100 text-gray-800'
     }
   }
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'ACTIVE': return 'bg-green-100 text-green-800'
-      case 'PENDING': return 'bg-yellow-100 text-yellow-800'
-      case 'INACTIVE': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'ACTIVE':
+        return 'bg-green-100 text-green-800'
+      case 'PENDING':
+        return 'bg-yellow-100 text-yellow-800'
+      case 'INACTIVE':
+        return 'bg-red-100 text-red-800'
+      default:
+        return 'bg-gray-100 text-gray-800'
     }
   }
 
   const getAuditStatusColor = (status: string) => {
     switch (status) {
-      case 'SUCCESS': return 'bg-green-100 text-green-800'
-      case 'FAILED': return 'bg-red-100 text-red-800'
-      case 'WARNING': return 'bg-yellow-100 text-yellow-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'SUCCESS':
+        return 'bg-green-100 text-green-800'
+      case 'PENDING':
+        return 'bg-yellow-100 text-yellow-800'
+      case 'FAILED':
+        return 'bg-red-100 text-red-800'
+      default:
+        return 'bg-gray-100 text-gray-800'
     }
+  }
+
+  const handleAddUser = () => {
+    setSelectedModal('add-user')
+  }
+
+  const handleEditUser = (userId: string) => {
+    setSelectedModal(`edit-user-${userId}`)
+  }
+
+  const handleDeleteUser = (userId: string) => {
+    setSelectedModal(`delete-user-${userId}`)
+  }
+
+  const handleViewUser = (userId: string) => {
+    setSelectedModal(`view-user-${userId}`)
+  }
+
+  const handleSystemSettings = () => {
+    setSelectedModal('system-settings')
+  }
+
+  const handleSecurityAudit = () => {
+    setSelectedModal('security-audit')
+  }
+
+  const handleDataBackup = () => {
+    setSelectedModal('data-backup')
   }
 
   return (
@@ -149,7 +221,7 @@ export default function AdminDashboardDemo() {
                 <ArrowLeft className="h-6 w-6" />
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 flex items-center space-x-3">
+                <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent flex items-center space-x-3">
                   <Settings className="h-8 w-8 text-orange-600" />
                   <span>Administrative Dashboard</span>
                 </h1>
@@ -233,21 +305,21 @@ export default function AdminDashboardDemo() {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-4 mb-8">
-          <Button className="bg-orange-600 hover:bg-orange-700">
+          <Button className="bg-orange-600 hover:bg-orange-700" onClick={handleAddUser}>
             <UserPlus className="h-4 w-4 mr-2" />
             Add New User
           </Button>
-          <Button variant="outline">
-            <Key className="h-4 w-4 mr-2" />
-            Manage Permissions
+          <Button variant="outline" onClick={handleSystemSettings}>
+            <Settings className="h-4 w-4 mr-2" />
+            System Settings
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleSecurityAudit}>
+            <Shield className="h-4 w-4 mr-2" />
+            Security Audit
+          </Button>
+          <Button variant="outline" onClick={handleDataBackup}>
             <Database className="h-4 w-4 mr-2" />
-            System Backup
-          </Button>
-          <Button variant="outline">
-            <BarChart3 className="h-4 w-4 mr-2" />
-            Generate Reports
+            Data Backup
           </Button>
         </div>
 
@@ -262,144 +334,50 @@ export default function AdminDashboardDemo() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">User</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Role</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Status</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Last Login</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {mockUsers.map((user) => (
-                    <tr key={user.id} className="border-b border-gray-100 hover:bg-gray-50">
-                      <td className="py-4 px-4">
-                        <div>
-                          <div className="font-medium text-gray-900">{user.name}</div>
-                          <div className="text-sm text-gray-500">{user.email}</div>
-                          {user.licenseNumber && (
-                            <div className="text-xs text-gray-400">License: {user.licenseNumber}</div>
-                          )}
-                        </div>
-                      </td>
-                      <td className="py-4 px-4">
+            <div className="space-y-4">
+              {mockUsers.map((user) => (
+                <div key={user.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <h3 className="font-semibold text-gray-900">{user.name}</h3>
                         <Badge className={`text-xs ${getRoleColor(user.role)}`}>
                           {user.role.replace('_', ' ')}
                         </Badge>
-                        {user.hospital && (
-                          <div className="text-xs text-gray-500 mt-1">{user.hospital}</div>
-                        )}
-                        {user.clinic && (
-                          <div className="text-xs text-gray-500 mt-1">{user.clinic}</div>
-                        )}
-                      </td>
-                      <td className="py-4 px-4">
                         <Badge className={`text-xs ${getStatusColor(user.status)}`}>
                           {user.status}
                         </Badge>
-                      </td>
-                      <td className="py-4 px-4 text-sm text-gray-600">
-                        {user.lastLogin}
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex space-x-2">
-                          <Button size="sm" variant="outline">
-                            <Edit className="h-3 w-3 mr-1" />
-                            Edit
-                          </Button>
-                          <Button size="sm" variant="outline">
-                            <Key className="h-3 w-3 mr-1" />
-                            Permissions
-                          </Button>
-                          <Button size="sm" variant="outline" className="text-red-600 border-red-300 hover:bg-red-50">
-                            <Trash2 className="h-3 w-3 mr-1" />
-                            Delete
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </div>
+                      <div className="text-sm text-gray-600 space-y-1">
+                        <div><strong>Email:</strong> {user.email}</div>
+                        <div><strong>Last Login:</strong> {user.lastLogin}</div>
+                        {user.hospital && <div><strong>Hospital:</strong> {user.hospital}</div>}
+                        {user.clinic && <div><strong>Clinic:</strong> {user.clinic}</div>}
+                        {user.licenseNumber && <div><strong>License:</strong> {user.licenseNumber}</div>}
+                        {user.children && <div><strong>Children:</strong> {user.children.join(', ')}</div>}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex space-x-2">
+                    <Button size="sm" variant="outline" onClick={() => handleViewUser(user.id)}>
+                      <Eye className="h-3 w-3 mr-1" />
+                      View
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => handleEditUser(user.id)}>
+                      <Edit className="h-3 w-3 mr-1" />
+                      Edit
+                    </Button>
+                    <Button size="sm" variant="outline" className="text-red-600 border-red-300 hover:bg-red-50" onClick={() => handleDeleteUser(user.id)}>
+                      <Trash2 className="h-3 w-3 mr-1" />
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
-
-        {/* System Analytics */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <Card className="bg-white shadow-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>Platform Analytics</span>
-                <BarChart3 className="h-5 w-5 text-blue-600" />
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                  <span className="font-medium text-blue-900">Total Patients</span>
-                  <span className="text-xl font-bold text-blue-900">{mockSystemStats.totalPatients}</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                  <span className="font-medium text-green-900">Successful Matches</span>
-                  <span className="text-xl font-bold text-green-900">{mockSystemStats.successfulMatches}</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-                  <span className="font-medium text-purple-900">Avg Response Time</span>
-                  <span className="text-xl font-bold text-purple-900">{mockSystemStats.avgResponseTime}</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
-                  <span className="font-medium text-orange-900">Data Encryption</span>
-                  <span className="text-xl font-bold text-orange-900">{mockSystemStats.dataEncryption}</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white shadow-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>Security Overview</span>
-                <Shield className="h-5 w-5 text-green-600" />
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
-                  <CheckCircle className="h-5 w-5 text-green-600" />
-                  <div>
-                    <div className="font-medium text-green-900">HIPAA Compliance</div>
-                    <div className="text-sm text-green-700">All data encrypted and secure</div>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
-                  <Lock className="h-5 w-5 text-blue-600" />
-                  <div>
-                    <div className="font-medium text-blue-900">Access Control</div>
-                    <div className="text-sm text-blue-700">Role-based permissions active</div>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
-                  <Activity className="h-5 w-5 text-purple-600" />
-                  <div>
-                    <div className="font-medium text-purple-900">Audit Logging</div>
-                    <div className="text-sm text-purple-700">All actions tracked and logged</div>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3 p-3 bg-yellow-50 rounded-lg">
-                  <AlertCircle className="h-5 w-5 text-yellow-600" />
-                  <div>
-                    <div className="font-medium text-yellow-900">Security Alerts</div>
-                    <div className="text-sm text-yellow-700">Real-time monitoring active</div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
 
         {/* Audit Logs */}
         <Card className="bg-white shadow-sm mb-8">
@@ -407,7 +385,7 @@ export default function AdminDashboardDemo() {
             <CardTitle className="flex items-center justify-between">
               <span>Recent Audit Logs</span>
               <Badge variant="outline" className="bg-gray-50 text-gray-700">
-                {mockAuditLogs.length} Logs
+                {mockAuditLogs.length} Entries
               </Badge>
             </CardTitle>
           </CardHeader>
@@ -416,17 +394,24 @@ export default function AdminDashboardDemo() {
               {mockAuditLogs.map((log) => (
                 <div key={log.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                   <div className="flex items-start justify-between mb-2">
-                    <div className="flex items-center space-x-2">
-                      <span className="font-medium text-gray-900">{log.user}</span>
-                      <Badge className={`text-xs ${getAuditStatusColor(log.status)}`}>
-                        {log.status}
-                      </Badge>
+                    <div className="flex items-center space-x-3">
+                      <div>
+                        <span className="font-medium text-gray-900">{log.user}</span>
+                        <Badge className={`text-xs ml-2 ${getRoleColor(log.role)}`}>
+                          {log.role.replace('_', ' ')}
+                        </Badge>
+                      </div>
                     </div>
                     <span className="text-sm text-gray-500">{log.timestamp}</span>
                   </div>
                   <div className="mb-2">
-                    <div className="text-sm text-gray-600">{log.action}</div>
-                    <div className="text-xs text-gray-500">IP: {log.ipAddress}</div>
+                    <p className="text-sm text-gray-600">{log.action}</p>
+                    <p className="text-xs text-gray-500">IP: {log.ipAddress}</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Badge className={`text-xs ${getAuditStatusColor(log.status)}`}>
+                      {log.status}
+                    </Badge>
                   </div>
                 </div>
               ))}
@@ -437,41 +422,335 @@ export default function AdminDashboardDemo() {
         {/* Demo Features Highlight */}
         <div className="mt-8 bg-orange-50 border border-orange-200 rounded-xl p-6">
           <h3 className="font-semibold text-orange-900 mb-4 flex items-center">
-            <Settings className="h-5 w-5 mr-2" />
+            <Shield className="h-5 w-5 mr-2" />
             Admin Dashboard Features Demonstrated
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-orange-800 text-sm">
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>User access management</span>
+                <CheckCircle className="h-4 w-4 text-orange-600" />
+                <span>User management and role assignment</span>
               </div>
               <div className="flex items-center space-x-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Role-based permissions</span>
+                <CheckCircle className="h-4 w-4 text-orange-600" />
+                <span>System monitoring and statistics</span>
               </div>
               <div className="flex items-center space-x-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>System analytics and reporting</span>
+                <CheckCircle className="h-4 w-4 text-orange-600" />
+                <span>Security audit logging</span>
               </div>
             </div>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Audit trail monitoring</span>
+                <CheckCircle className="h-4 w-4 text-orange-600" />
+                <span>HIPAA compliance monitoring</span>
               </div>
               <div className="flex items-center space-x-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Performance metrics</span>
+                <CheckCircle className="h-4 w-4 text-orange-600" />
+                <span>Access control and permissions</span>
               </div>
               <div className="flex items-center space-x-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Compliance oversight</span>
+                <CheckCircle className="h-4 w-4 text-orange-600" />
+                <span>System backup and recovery</span>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <Dialog open={selectedModal === 'add-user'} onOpenChange={() => setSelectedModal(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <UserPlus className="h-5 w-5 text-orange-600" />
+              Add New User
+            </DialogTitle>
+            <DialogDescription>
+              Create a new user account with appropriate role and permissions
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium">Full Name</label>
+                <input className="w-full mt-1 p-2 border rounded-md" placeholder="Enter full name" />
+              </div>
+              <div>
+                <label className="text-sm font-medium">Email</label>
+                <input className="w-full mt-1 p-2 border rounded-md" type="email" placeholder="Enter email" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium">Role</label>
+                <select className="w-full mt-1 p-2 border rounded-md">
+                  <option>HOSPITAL_DOCTOR</option>
+                  <option>CLINIC_DOCTOR</option>
+                  <option>PARENT</option>
+                  <option>ADMIN</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium">License Number</label>
+                <input className="w-full mt-1 p-2 border rounded-md" placeholder="QC-XXXXX" />
+              </div>
+            </div>
+            <div>
+              <label className="text-sm font-medium">Organization</label>
+              <input className="w-full mt-1 p-2 border rounded-md" placeholder="Hospital or clinic name" />
+            </div>
+            <div className="flex items-center gap-2">
+              <input type="checkbox" id="send-email" defaultChecked />
+              <label htmlFor="send-email" className="text-sm">Send welcome email</label>
+            </div>
+          </div>
+          <div className="flex justify-end gap-2 mt-6">
+            <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+            <Button className="bg-orange-600 hover:bg-orange-700">Create User</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={selectedModal === 'system-settings'} onOpenChange={() => setSelectedModal(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Settings className="h-5 w-5 text-orange-600" />
+              System Settings
+            </DialogTitle>
+            <DialogDescription>
+              Configure system-wide settings and preferences
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium">Session Timeout (minutes)</label>
+              <input className="w-full mt-1 p-2 border rounded-md" type="number" defaultValue={30} />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Max File Upload Size (MB)</label>
+              <input className="w-full mt-1 p-2 border rounded-md" type="number" defaultValue={50} />
+            </div>
+            <div className="flex items-center gap-2">
+              <input type="checkbox" id="two-factor" defaultChecked />
+              <label htmlFor="two-factor" className="text-sm">Require two-factor authentication</label>
+            </div>
+            <div className="flex items-center gap-2">
+              <input type="checkbox" id="audit-logging" defaultChecked />
+              <label htmlFor="audit-logging" className="text-sm">Enable detailed audit logging</label>
+            </div>
+          </div>
+          <div className="flex justify-end gap-2 mt-6">
+            <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+            <Button className="bg-orange-600 hover:bg-orange-700">Save Settings</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={selectedModal === 'security-audit'} onOpenChange={() => setSelectedModal(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5 text-orange-600" />
+              Security Audit Report
+            </DialogTitle>
+            <DialogDescription>
+              Review system security status and compliance
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <h4 className="font-medium text-green-800 mb-2">Security Status: EXCELLENT</h4>
+              <div className="text-sm text-green-700 space-y-1">
+                <div>✓ All users have strong passwords</div>
+                <div>✓ Two-factor authentication enabled</div>
+                <div>✓ HIPAA compliance verified</div>
+                <div>✓ Data encryption active</div>
+                <div>✓ No security incidents detected</div>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-medium mb-2">Recommendations</h4>
+              <div className="text-sm text-gray-700 space-y-1">
+                <div>• Schedule quarterly security reviews</div>
+                <div>• Update user access permissions monthly</div>
+                <div>• Monitor login attempts for suspicious activity</div>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-end gap-2 mt-6">
+            <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
+            <Button className="bg-orange-600 hover:bg-orange-700">Generate Report</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={selectedModal === 'data-backup'} onOpenChange={() => setSelectedModal(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Database className="h-5 w-5 text-orange-600" />
+              Data Backup & Recovery
+            </DialogTitle>
+            <DialogDescription>
+              Manage system backups and data recovery options
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h4 className="font-medium text-blue-800 mb-2">Last Backup: 2024-01-16 02:00 AM</h4>
+              <div className="text-sm text-blue-700 space-y-1">
+                <div>✓ Patient records backed up</div>
+                <div>✓ User accounts secured</div>
+                <div>✓ Audit logs preserved</div>
+                <div>✓ System configuration saved</div>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <Button variant="outline">
+                <Database className="h-4 w-4 mr-2" />
+                Create Backup
+              </Button>
+              <Button variant="outline">
+                <Download className="h-4 w-4 mr-2" />
+                Download Backup
+              </Button>
+            </div>
+          </div>
+          <div className="flex justify-end gap-2 mt-6">
+            <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
+            <Button className="bg-orange-600 hover:bg-orange-700">Schedule Backup</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {mockUsers.map(user => (
+        <Dialog key={user.id} open={selectedModal === `view-user-${user.id}`} onOpenChange={() => setSelectedModal(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Eye className="h-5 w-5 text-orange-600" />
+                User Details: {user.name}
+              </DialogTitle>
+              <DialogDescription>
+                View comprehensive user information and activity
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                  <h4 className="font-medium text-orange-800 mb-2">User Information</h4>
+                  <div className="text-sm text-orange-700 space-y-1">
+                    <div><strong>Name:</strong> {user.name}</div>
+                    <div><strong>Email:</strong> {user.email}</div>
+                    <div><strong>Role:</strong> {user.role.replace('_', ' ')}</div>
+                    <div><strong>Status:</strong> {user.status}</div>
+                  </div>
+                </div>
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                  <h4 className="font-medium text-gray-800 mb-2">Account Details</h4>
+                  <div className="text-sm text-gray-700 space-y-1">
+                    <div><strong>Last Login:</strong> {user.lastLogin}</div>
+                    {user.hospital && <div><strong>Hospital:</strong> {user.hospital}</div>}
+                    {user.clinic && <div><strong>Clinic:</strong> {user.clinic}</div>}
+                    {user.licenseNumber && <div><strong>License:</strong> {user.licenseNumber}</div>}
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
+                <Button className="bg-orange-600 hover:bg-orange-700">Edit User</Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      ))}
+
+      {mockUsers.map(user => (
+        <Dialog key={user.id} open={selectedModal === `edit-user-${user.id}`} onOpenChange={() => setSelectedModal(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Edit className="h-5 w-5 text-orange-600" />
+                Edit User: {user.name}
+              </DialogTitle>
+              <DialogDescription>
+                Update user information and permissions
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Full Name</label>
+                  <input className="w-full mt-1 p-2 border rounded-md" defaultValue={user.name} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Email</label>
+                  <input className="w-full mt-1 p-2 border rounded-md" type="email" defaultValue={user.email} />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Role</label>
+                  <select className="w-full mt-1 p-2 border rounded-md" defaultValue={user.role}>
+                    <option value="HOSPITAL_DOCTOR">HOSPITAL_DOCTOR</option>
+                    <option value="CLINIC_DOCTOR">CLINIC_DOCTOR</option>
+                    <option value="PARENT">PARENT</option>
+                    <option value="ADMIN">ADMIN</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Status</label>
+                  <select className="w-full mt-1 p-2 border rounded-md" defaultValue={user.status}>
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="PENDING">PENDING</option>
+                    <option value="INACTIVE">INACTIVE</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+              <Button className="bg-orange-600 hover:bg-orange-700">Save Changes</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      ))}
+
+      {mockUsers.map(user => (
+        <Dialog key={user.id} open={selectedModal === `delete-user-${user.id}`} onOpenChange={() => setSelectedModal(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Trash2 className="h-5 w-5 text-red-600" />
+                Delete User: {user.name}
+              </DialogTitle>
+              <DialogDescription>
+                This action cannot be undone. All user data will be permanently deleted.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <h4 className="font-medium text-red-800 mb-2">Warning</h4>
+                <div className="text-sm text-red-700 space-y-1">
+                  <div>• User account will be permanently removed</div>
+                  <div>• All associated data will be deleted</div>
+                  <div>• This action cannot be reversed</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <input type="checkbox" id="confirm-delete" />
+                <label htmlFor="confirm-delete" className="text-sm">I understand and want to delete this user</label>
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+              <Button className="bg-red-600 hover:bg-red-700">Delete User</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      ))}
     </div>
   )
 } 

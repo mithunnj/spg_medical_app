@@ -155,7 +155,6 @@ describe('ClinicCapacityManager', () => {
   })
 
   it('allows updating capacity', async () => {
-    const user = userEvent.setup()
     render(<ClinicCapacityManager selectedClinic="clinic-1" />)
     
     // Test that the component renders without errors

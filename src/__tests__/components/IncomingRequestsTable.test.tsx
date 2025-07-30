@@ -1,6 +1,5 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen } from '@testing-library/react'
 import IncomingRequestsTable from '@/components/IncomingRequestsTable'
 
 describe('IncomingRequestsTable', () => {
@@ -59,7 +58,6 @@ describe('IncomingRequestsTable', () => {
   })
 
   it('allows accepting patient requests', async () => {
-    const user = userEvent.setup()
     render(<IncomingRequestsTable selectedClinic="clinic-1" />)
     
     const acceptButtons = screen.getAllByText('Accept')
@@ -69,7 +67,6 @@ describe('IncomingRequestsTable', () => {
   })
 
   it('allows declining patient requests', async () => {
-    const user = userEvent.setup()
     render(<IncomingRequestsTable selectedClinic="clinic-1" />)
     
     const declineButtons = screen.getAllByText('Decline')
@@ -79,7 +76,6 @@ describe('IncomingRequestsTable', () => {
   })
 
   it('allows sending messages to PICU doctors', async () => {
-    const user = userEvent.setup()
     render(<IncomingRequestsTable selectedClinic="clinic-1" />)
     
     // Test that the component renders without errors
@@ -96,7 +92,6 @@ describe('IncomingRequestsTable', () => {
   })
 
   it('allows file uploads', async () => {
-    const user = userEvent.setup()
     render(<IncomingRequestsTable selectedClinic="clinic-1" />)
     
     // Test that upload buttons are present
