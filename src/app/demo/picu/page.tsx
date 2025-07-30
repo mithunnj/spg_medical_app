@@ -32,8 +32,18 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
+type Clinic = {
+  id: string;
+  region?: string;
+  name: string;
+  capacity: number;
+  currentPatients: number;
+  specializations: string[];
+  acceptingNew: boolean;
+}
+
 export default function PICUDoctorDemo() {
-  const [clinics, setClinics] = useState([])
+  const [clinics, setClinics] = useState<Clinic[]>([])
 
   const [selectedModal, setSelectedModal] = useState<string | null>(null)
 
@@ -54,7 +64,7 @@ export default function PICUDoctorDemo() {
     fetchClinics()
   }, [])
   // Filter for Montreal area clinics
-  const montrealClinics = clinics.filter((c: { id: string; region?: string; name: string; capacity: number; currentPatients: number; specializations: string[]; acceptingNew: boolean }) => 
+  const montrealClinics = clinics.filter((c: Clinic) => 
     c.region?.toLowerCase().includes('montreal') || 
     c.name.toLowerCase().includes('montreal') ||
     c.name.toLowerCase().includes('pediatric')

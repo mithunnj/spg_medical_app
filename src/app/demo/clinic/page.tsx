@@ -32,11 +32,27 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
+type Clinic = {
+  id: string;
+  region?: string;
+  name: string;
+  capacity: number;
+  currentPatients: number;
+  specializations: string[];
+  acceptingNew: boolean;
+  address?: string;
+  phone?: string;
+  email?: string;
+  isActive?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 export default function ClinicDoctorDemo() {
-  const [clinics, setClinics] = useState([])
+  const [clinics, setClinics] = useState<Clinic[]>([])
   const [selectedModal, setSelectedModal] = useState<string | null>(null)
   const [capacity, setCapacity] = useState(50)
-  const [currentPatients, setCurrentPatients] = useState(38)
+  const [currentPatients] = useState(38)
 
 
   useEffect(() => {
@@ -57,7 +73,7 @@ export default function ClinicDoctorDemo() {
   }, [])
 
   // Select a sample clinic for demo
-  const demoClinic: { name: string; region: string; address: string; phone: string; email: string; specializations: string[]; capacity: number; currentPatients: number; acceptingNew: boolean; isActive: boolean; createdAt: Date; updatedAt: Date } = clinics.find((c: { name: string }) => c.name.includes('Montreal') || c.name.includes('Pediatric')) || clinics[0] || {
+  const demoClinic = clinics.find((c: Clinic) => c.name.includes('Montreal') || c.name.includes('Pediatric')) || clinics[0] || {
     id: 'demo-clinic',
     name: 'Montreal Pediatric Associates',
     region: 'Montreal',
