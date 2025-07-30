@@ -416,12 +416,9 @@ export default function PICUDoctorDemo() {
                     <div><strong>Current:</strong> {clinic.currentPatients} patients</div>
                     <div><strong>Status:</strong> {clinic.acceptingNew ? 'Accepting' : 'Full'}</div>
                   </div>
-                  <div className="mt-4 flex space-x-2">
-                    <Button size="sm" className="flex-1" onClick={() => handleContactClinic(clinic.name)}>
+                  <div className="mt-4">
+                    <Button size="sm" className="w-full" onClick={() => handleContactClinic(clinic.name)}>
                       Contact Clinic
-                    </Button>
-                    <Button size="sm" variant="outline">
-                      <Eye className="h-3 w-3" />
                     </Button>
                   </div>
                 </div>

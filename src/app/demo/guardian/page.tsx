@@ -1074,6 +1074,144 @@ export default function PatientGuardianDemo() {
             </DialogContent>
           </Dialog>
         ))}
+
+        {mockAppointments.map(appointment => (
+          <Dialog key={appointment.id} open={selectedModal === `reschedule-appointment-${appointment.childName}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Calendar className="h-5 w-5 text-purple-600" />
+                  Reschedule Appointment: {appointment.childName}
+                </DialogTitle>
+                <DialogDescription>
+                  Request a different date/time for this appointment
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                  <h4 className="font-medium text-purple-800 mb-2">Current Appointment</h4>
+                  <div className="text-sm text-purple-700 space-y-1">
+                    <div><strong>Child:</strong> {appointment.childName}</div>
+                    <div><strong>Type:</strong> {appointment.type}</div>
+                    <div><strong>Clinic:</strong> {appointment.clinic}</div>
+                    <div><strong>Date:</strong> {appointment.date} at {appointment.time}</div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium">Preferred Date</label>
+                    <input type="date" className="w-full mt-1 p-2 border rounded-md" />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium">Preferred Time</label>
+                    <select className="w-full mt-1 p-2 border rounded-md">
+                      <option>9:00 AM</option>
+                      <option>10:00 AM</option>
+                      <option>11:00 AM</option>
+                      <option>2:00 PM</option>
+                      <option>3:00 PM</option>
+                      <option>4:00 PM</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Reason for Reschedule</label>
+                  <textarea className="w-full mt-1 p-2 border rounded-md" rows={3} placeholder="Please provide a reason for rescheduling..." />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+                <Button className="bg-purple-600 hover:bg-purple-700">Request Reschedule</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockAppointments.map(appointment => (
+          <Dialog key={appointment.id} open={selectedModal === `call-clinic-${appointment.clinic}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Phone className="h-5 w-5 text-purple-600" />
+                  Call {appointment.clinic}
+                </DialogTitle>
+                <DialogDescription>
+                  Contact the clinic directly about this appointment
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                  <h4 className="font-medium text-purple-800 mb-2">Appointment Details</h4>
+                  <div className="text-sm text-purple-700 space-y-1">
+                    <div><strong>Child:</strong> {appointment.childName}</div>
+                    <div><strong>Type:</strong> {appointment.type}</div>
+                    <div><strong>Date:</strong> {appointment.date} at {appointment.time}</div>
+                    <div><strong>Doctor:</strong> {appointment.doctor}</div>
+                  </div>
+                </div>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h4 className="font-medium text-blue-800 mb-2">Clinic Contact Information</h4>
+                  <div className="text-sm text-blue-700 space-y-1">
+                    <div><strong>Phone:</strong> +1-514-555-0123</div>
+                    <div><strong>Hours:</strong> Mon-Fri 8:00 AM - 6:00 PM</div>
+                    <div><strong>Extension:</strong> Press 2 for appointments</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" id="urgent-call" />
+                  <label htmlFor="urgent-call" className="text-sm">Mark as urgent call</label>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+                <Button className="bg-purple-600 hover:bg-purple-700">Call Now</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockAppointments.map(appointment => (
+          <Dialog key={appointment.id} open={selectedModal === `send-message-${appointment.clinic}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Mail className="h-5 w-5 text-purple-600" />
+                  Send Message to {appointment.clinic}
+                </DialogTitle>
+                <DialogDescription>
+                  Send a secure message to the clinic about this appointment
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                  <h4 className="font-medium text-purple-800 mb-2">Appointment Details</h4>
+                  <div className="text-sm text-purple-700 space-y-1">
+                    <div><strong>Child:</strong> {appointment.childName}</div>
+                    <div><strong>Type:</strong> {appointment.type}</div>
+                    <div><strong>Date:</strong> {appointment.date} at {appointment.time}</div>
+                    <div><strong>Doctor:</strong> {appointment.doctor}</div>
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Subject</label>
+                  <input className="w-full mt-1 p-2 border rounded-md" placeholder="Enter message subject" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Message</label>
+                  <textarea className="w-full mt-1 p-2 border rounded-md" rows={4} placeholder="Enter your message to the clinic..." />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" id="urgent-message" />
+                  <label htmlFor="urgent-message" className="text-sm">Mark as urgent</label>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+                <Button className="bg-purple-600 hover:bg-purple-700">Send Message</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
       </div>
     </div>
   )

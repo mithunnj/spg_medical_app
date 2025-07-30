@@ -39,8 +39,8 @@ export default function ClinicDoctorDemo() {
   const [clinics, setClinics] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedModal, setSelectedModal] = useState<string | null>(null)
-  const [capacity, setCapacity] = useState(demoClinic.capacity)
-  const [currentPatients, setCurrentPatients] = useState(demoClinic.currentPatients)
+  const [capacity, setCapacity] = useState(50)
+  const [currentPatients, setCurrentPatients] = useState(38)
 
   useEffect(() => {
     // Fetch clinic data on client side

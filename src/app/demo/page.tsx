@@ -91,23 +91,23 @@ export default function DemoPage() {
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center space-x-3">
-                <Presentation className="h-8 w-8 text-blue-600" />
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 lg:py-6">
+            <div className="mb-4 sm:mb-0">
+              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 flex items-center space-x-2 lg:space-x-3">
+                <Presentation className="h-6 w-6 lg:h-8 lg:w-8 text-blue-600" />
                 <span>CareBridge Demo</span>
               </h1>
-              <p className="text-gray-600 mt-1">
+              <p className="text-sm lg:text-base text-gray-600 mt-1">
                 Professional Presentation for Dr. Matthew Donlan - Montreal Children&apos;s Hospital PICU
               </p>
             </div>
-            <div className="flex items-center space-x-3">
-              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">
-                <Eye className="h-4 w-4 mr-2" />
+            <div className="flex flex-wrap items-center gap-2 lg:gap-3">
+              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300 text-xs lg:text-sm">
+                <Eye className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
                 Demo Mode
               </Badge>
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
-                <Shield className="h-4 w-4 mr-2" />
+              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300 text-xs lg:text-sm">
+                <Shield className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
                 HIPAA Compliant
               </Badge>
             </div>
@@ -116,19 +116,19 @@ export default function DemoPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         {/* Introduction Section */}
-        <div className="text-center mb-12">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-8 lg:mb-12">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 lg:p-8 mb-6 lg:mb-8">
+            <h2 className="text-xl lg:text-2xl font-bold text-gray-900 mb-3 lg:mb-4">
               Welcome to CareBridge
             </h2>
-            <p className="text-gray-600 max-w-3xl mx-auto text-lg leading-relaxed mb-6">
+            <p className="text-gray-600 max-w-3xl mx-auto text-sm lg:text-lg leading-relaxed mb-4 lg:mb-6">
               A comprehensive medical care coordination platform designed to bridge the gap between 
               Pediatric ICU care and outpatient family medicine, ensuring seamless patient transitions 
               with full transparency for families.
             </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
+            <div className="flex flex-wrap justify-center gap-2 lg:gap-4 text-xs lg:text-sm text-gray-500">
               <div className="flex items-center">
                 <Heart className="h-4 w-4 mr-2 text-red-500" />
                 <span>Family-Centered Care</span>
@@ -233,7 +233,7 @@ export default function DemoPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 lg:gap-6">
           {demoRoutes.map((route) => {
             const IconComponent = route.icon
             
