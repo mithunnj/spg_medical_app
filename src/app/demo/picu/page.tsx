@@ -13,10 +13,24 @@ import {
   Users,
   Calendar,
   TrendingUp,
-  Eye
+  Eye,
+  Building2,
+  MapPin,
+  Phone
 } from 'lucide-react'
+import { getAllActiveClinics } from '@/lib/clinic-queries'
 
-export default function PICUDoctorDemo() {
+export default async function PICUDoctorDemo() {
+  // Fetch real clinic data from database
+  const clinics = await getAllActiveClinics()
+  
+  // Filter for Montreal area clinics
+  const montrealClinics = clinics.filter(c => 
+    c.region?.toLowerCase().includes('montreal') || 
+    c.name.toLowerCase().includes('montreal') ||
+    c.name.toLowerCase().includes('pediatric')
+  ).slice(0, 6) // Limit to 6 for demo
+
   const mockPatients = [
     {
       id: '1',
@@ -24,7 +38,7 @@ export default function PICUDoctorDemo() {
       age: '8 years',
       diagnosis: 'Severe asthma exacerbation',
       status: 'PENDING',
-      clinic: 'Downtown Family Medicine',
+      clinic: 'Montreal Pediatric Associates',
       contacted: '2024-01-15',
       lastFollowUp: '2024-01-18',
       priority: 'HIGH'
@@ -64,36 +78,6 @@ export default function PICUDoctorDemo() {
     }
   ]
 
-  const mockClinics = [
-    {
-      id: '1',
-      name: 'Downtown Family Medicine',
-      region: 'Montreal Central',
-      specializations: ['Pediatrics', 'Family Medicine'],
-      capacity: 15,
-      available: 3,
-      responseTime: '2.1 days'
-    },
-    {
-      id: '2',
-      name: 'West Island Pediatrics',
-      region: 'West Island',
-      specializations: ['Pediatrics', 'Adolescent Medicine'],
-      capacity: 12,
-      available: 5,
-      responseTime: '1.8 days'
-    },
-    {
-      id: '3',
-      name: 'Montreal Children\'s Cardiology',
-      region: 'Montreal Central',
-      specializations: ['Cardiology', 'Pediatric Cardiology'],
-      capacity: 8,
-      available: 1,
-      responseTime: '3.2 days'
-    }
-  ]
-
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'PENDING': return 'bg-yellow-100 text-yellow-800'
@@ -113,6 +97,30 @@ export default function PICUDoctorDemo() {
     }
   }
 
+  const handleNewPatientIntake = () => {
+    alert('New Patient Intake Form would open here. This would include:\n- Patient demographics\n- Medical history\n- Current diagnosis\n- Care requirements\n- Preferred clinic selection')
+  }
+
+  const handleSendFollowUp = () => {
+    alert('Follow-up messages would be sent to clinics that haven\'t responded within 48 hours.')
+  }
+
+  const handleUploadFiles = () => {
+    alert('File upload dialog would open here. Supported formats:\n- Medical records (PDF)\n- Lab results\n- Imaging files\n- Discharge summaries')
+  }
+
+  const handleScheduleFollowUps = () => {
+    alert('Calendar would open to schedule follow-up appointments and reminders.')
+  }
+
+  const handleContactClinic = (clinicName: string) => {
+    alert(`Contacting ${clinicName}...\n\nThis would open a secure messaging interface to communicate with the clinic about patient referrals.`)
+  }
+
+  const handleMessagePatient = (patientName: string) => {
+    alert(`Opening secure messaging with ${patientName}'s family...\n\nThis allows direct communication with patient guardians about care coordination.`)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -128,7 +136,7 @@ export default function PICUDoctorDemo() {
                   <Stethoscope className="h-8 w-8 text-blue-600" />
                   <span>PICU Doctor Dashboard</span>
                 </h1>
-                <p className="text-gray-600">Patient discharge coordination and clinic management</p>
+                <p className="text-gray-600">Montreal Children&apos;s Hospital - Patient discharge coordination</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
@@ -136,8 +144,8 @@ export default function PICUDoctorDemo() {
                 <Eye className="h-4 w-4 mr-2" />
                 Demo Mode
               </Badge>
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
-                Dr. Sarah Johnson
+              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">
+                Dr. Matthew Donlan
               </Badge>
             </div>
           </div>
@@ -146,6 +154,58 @@ export default function PICUDoctorDemo() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Hospital Information */}
+        <Card className="bg-white shadow-sm mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span>Hospital Information</span>
+              <Badge variant="outline" className="bg-blue-50 text-blue-700">
+                Active PICU
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <Building2 className="h-5 w-5 text-gray-500" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900">Montreal Children&apos;s Hospital</h3>
+                    <p className="text-sm text-gray-600">Pediatric Intensive Care Unit</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <MapPin className="h-5 w-5 text-gray-500" />
+                  <p className="text-sm text-gray-600">2300 Tupper Street, Montreal, QC H3H 1P3</p>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Phone className="h-5 w-5 text-gray-500" />
+                  <p className="text-sm text-gray-600">+1-514-412-4400</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">PICU Statistics</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">Current Patients</span>
+                      <span className="font-semibold">12</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">Pending Discharges</span>
+                      <span className="font-semibold">8</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">Successful Matches</span>
+                      <span className="font-semibold text-green-600">45</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="bg-white shadow-sm">
@@ -207,19 +267,19 @@ export default function PICUDoctorDemo() {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-4 mb-8">
-          <Button className="bg-blue-600 hover:bg-blue-700">
+          <Button className="bg-blue-600 hover:bg-blue-700" onClick={handleNewPatientIntake}>
             <Plus className="h-4 w-4 mr-2" />
             New Patient Intake
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleSendFollowUp}>
             <MessageSquare className="h-4 w-4 mr-2" />
             Send Follow-up Messages
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleUploadFiles}>
             <FileText className="h-4 w-4 mr-2" />
             Upload Patient Files
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleScheduleFollowUps}>
             <Calendar className="h-4 w-4 mr-2" />
             Schedule Follow-ups
           </Button>
@@ -279,7 +339,7 @@ export default function PICUDoctorDemo() {
                       </td>
                       <td className="py-4 px-4">
                         <div className="flex space-x-2">
-                          <Button size="sm" variant="outline">
+                          <Button size="sm" variant="outline" onClick={() => handleMessagePatient(patient.name)}>
                             <MessageSquare className="h-3 w-3 mr-1" />
                             Message
                           </Button>
@@ -303,28 +363,29 @@ export default function PICUDoctorDemo() {
             <CardTitle className="flex items-center justify-between">
               <span>Available Clinics</span>
               <Badge variant="outline" className="bg-green-50 text-green-700">
-                {mockClinics.length} Clinics Available
+                {montrealClinics.length} Clinics Available
               </Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {mockClinics.map((clinic) => (
+              {montrealClinics.map((clinic) => (
                 <div key={clinic.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                   <div className="flex items-start justify-between mb-3">
                     <h3 className="font-semibold text-gray-900">{clinic.name}</h3>
                     <Badge variant="outline" className="bg-green-100 text-green-700">
-                      {clinic.available} slots
+                      {clinic.capacity - clinic.currentPatients} slots
                     </Badge>
                   </div>
                   <div className="space-y-2 text-sm text-gray-600">
-                    <div><strong>Region:</strong> {clinic.region}</div>
+                    <div><strong>Region:</strong> {clinic.region || 'Montreal'}</div>
                     <div><strong>Specializations:</strong> {clinic.specializations.join(', ')}</div>
                     <div><strong>Capacity:</strong> {clinic.capacity} patients</div>
-                    <div><strong>Avg Response:</strong> {clinic.responseTime}</div>
+                    <div><strong>Current:</strong> {clinic.currentPatients} patients</div>
+                    <div><strong>Status:</strong> {clinic.acceptingNew ? 'Accepting' : 'Full'}</div>
                   </div>
                   <div className="mt-4 flex space-x-2">
-                    <Button size="sm" className="flex-1">
+                    <Button size="sm" className="flex-1" onClick={() => handleContactClinic(clinic.name)}>
                       Contact Clinic
                     </Button>
                     <Button size="sm" variant="outline">
@@ -347,15 +408,15 @@ export default function PICUDoctorDemo() {
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Patient intake and documentation forms</span>
+                <span>Montreal Children&apos;s Hospital integration</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Real-time patient tracking dashboard</span>
+                <span>Real clinic data from NeonDB</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Clinic selection and contact system</span>
+                <span>Functional action buttons</span>
               </div>
             </div>
             <div className="space-y-2">

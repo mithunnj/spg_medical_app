@@ -18,28 +18,32 @@ import {
 } from 'lucide-react'
 
 export default function PatientGuardianDemo() {
+  // Guardian name - children will have the same last name
+  const guardianName = 'Maria Rodriguez'
+  const guardianLastName = 'Rodriguez'
+
   const mockChildren = [
     {
       id: '1',
-      name: 'Emma Rodriguez',
+      name: `Emma ${guardianLastName}`,
       age: '8 years',
       diagnosis: 'Severe asthma exacerbation',
       status: 'PENDING',
       hospital: 'Montreal Children\'s Hospital',
-      doctor: 'Dr. Sarah Johnson',
-      clinic: 'Downtown Family Medicine',
+      doctor: 'Dr. Matthew Donlan',
+      clinic: 'Montreal Pediatric Associates',
       lastUpdate: '2024-01-16',
       nextAppointment: '2024-01-25',
       priority: 'HIGH'
     },
     {
       id: '2',
-      name: 'Lucas Chen',
+      name: `Lucas ${guardianLastName}`,
       age: '12 years',
       diagnosis: 'Type 1 diabetes management',
       status: 'APPROVED',
       hospital: 'Montreal Children\'s Hospital',
-      doctor: 'Dr. Michael Chen',
+      doctor: 'Dr. Matthew Donlan',
       clinic: 'West Island Pediatrics',
       lastUpdate: '2024-01-12',
       nextAppointment: '2024-01-20',
@@ -50,16 +54,16 @@ export default function PatientGuardianDemo() {
   const mockMessages = [
     {
       id: '1',
-      from: 'Dr. Sarah Johnson',
+      from: 'Dr. Matthew Donlan',
       subject: 'Emma\'s Progress Update',
-      content: 'Emma is responding well to treatment. We\'ve contacted Downtown Family Medicine for follow-up care.',
+      content: 'Emma is responding well to treatment. We\'ve contacted Montreal Pediatric Associates for follow-up care.',
       timestamp: '2024-01-16 14:30',
       unread: true,
       type: 'HOSPITAL'
     },
     {
       id: '2',
-      from: 'Downtown Family Medicine',
+      from: 'Montreal Pediatric Associates',
       subject: 'Welcome to Our Clinic',
       content: 'We\'re reviewing Emma\'s case and will contact you within 2 business days with our decision.',
       timestamp: '2024-01-15 10:15',
@@ -80,9 +84,9 @@ export default function PatientGuardianDemo() {
   const mockAppointments = [
     {
       id: '1',
-      childName: 'Emma Rodriguez',
+      childName: `Emma ${guardianLastName}`,
       type: 'Follow-up Consultation',
-      clinic: 'Downtown Family Medicine',
+      clinic: 'Montreal Pediatric Associates',
       date: '2024-01-25',
       time: '10:00 AM',
       doctor: 'Dr. Robert Wilson',
@@ -90,7 +94,7 @@ export default function PatientGuardianDemo() {
     },
     {
       id: '2',
-      childName: 'Lucas Chen',
+      childName: `Lucas ${guardianLastName}`,
       type: 'Initial Assessment',
       clinic: 'West Island Pediatrics',
       date: '2024-01-20',
@@ -127,6 +131,46 @@ export default function PatientGuardianDemo() {
     }
   }
 
+  const handleContactCareTeam = () => {
+    alert('Opening secure messaging interface to contact your care team...\n\nThis allows direct communication with PICU doctors and clinic staff.')
+  }
+
+  const handleViewDocuments = () => {
+    alert('Opening document viewer...\n\nAvailable documents:\n- Medical records\n- Lab results\n- Discharge summaries\n- Care plans')
+  }
+
+  const handleScheduleAppointment = () => {
+    alert('Opening appointment scheduler...\n\nYou can schedule follow-up appointments with clinics and request consultations.')
+  }
+
+  const handleSetNotifications = () => {
+    alert('Opening notification settings...\n\nConfigure alerts for:\n- Status updates\n- Appointment reminders\n- New messages\n- Document uploads')
+  }
+
+  const handleMessagePICU = (childName: string) => {
+    alert(`Opening secure messaging with PICU team for ${childName}...\n\nThis allows direct communication with Dr. Matthew Donlan and the PICU care team.`)
+  }
+
+  const handleMessageClinic = (childName: string) => {
+    alert(`Opening secure messaging with clinic for ${childName}...\n\nThis allows direct communication with the outpatient clinic care team.`)
+  }
+
+  const handleViewFiles = (childName: string) => {
+    alert(`Opening file viewer for ${childName}...\n\nView and download medical records, lab results, and care documentation.`)
+  }
+
+  const handleRescheduleAppointment = (appointment: any) => {
+    alert(`Opening reschedule interface for ${appointment.childName}'s appointment...\n\nYou can request a different date/time for the ${appointment.type} appointment.`)
+  }
+
+  const handleCallClinic = (appointment: any) => {
+    alert(`Initiating call to ${appointment.clinic}...\n\nThis would connect you directly to the clinic for appointment-related questions.`)
+  }
+
+  const handleSendMessage = (appointment: any) => {
+    alert(`Opening message interface for ${appointment.clinic}...\n\nSend a secure message to the clinic about ${appointment.childName}'s appointment.`)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -146,12 +190,12 @@ export default function PatientGuardianDemo() {
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-300">
+              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">
                 <Eye className="h-4 w-4 mr-2" />
                 Demo Mode
               </Badge>
               <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">
-                Maria Rodriguez
+                {guardianName}
               </Badge>
             </div>
           </div>
@@ -221,19 +265,19 @@ export default function PatientGuardianDemo() {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-4 mb-8">
-          <Button className="bg-purple-600 hover:bg-purple-700">
+          <Button className="bg-purple-600 hover:bg-purple-700" onClick={handleContactCareTeam}>
             <MessageSquare className="h-4 w-4 mr-2" />
             Contact Care Team
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleViewDocuments}>
             <FileText className="h-4 w-4 mr-2" />
             View Documents
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleScheduleAppointment}>
             <Calendar className="h-4 w-4 mr-2" />
             Schedule Appointment
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleSetNotifications}>
             <Bell className="h-4 w-4 mr-2" />
             Set Notifications
           </Button>
@@ -281,15 +325,15 @@ export default function PatientGuardianDemo() {
                   </div>
                   
                   <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleMessagePICU(child.name)}>
                       <MessageSquare className="h-3 w-3 mr-1" />
                       Message PICU
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleMessageClinic(child.name)}>
                       <MessageSquare className="h-3 w-3 mr-1" />
                       Message Clinic
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleViewFiles(child.name)}>
                       <FileText className="h-3 w-3 mr-1" />
                       View Files
                     </Button>
@@ -381,15 +425,15 @@ export default function PatientGuardianDemo() {
                   </div>
                   
                   <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleRescheduleAppointment(appointment)}>
                       <Calendar className="h-3 w-3 mr-1" />
                       Reschedule
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleCallClinic(appointment)}>
                       <Phone className="h-3 w-3 mr-1" />
                       Call Clinic
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleSendMessage(appointment)}>
                       <Mail className="h-3 w-3 mr-1" />
                       Send Message
                     </Button>
@@ -410,7 +454,7 @@ export default function PatientGuardianDemo() {
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Real-time status tracking</span>
+                <span>Related family names (same last name)</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="h-4 w-4 text-green-600" />
@@ -432,7 +476,7 @@ export default function PatientGuardianDemo() {
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Family communication tools</span>
+                <span>Functional action buttons</span>
               </div>
             </div>
           </div>

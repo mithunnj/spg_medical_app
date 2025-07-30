@@ -22,7 +22,7 @@ export default function DemoPage() {
   const demoRoutes = [
     {
       name: 'PICU Doctor Interface',
-      description: 'Pediatric ICU doctor workflow for patient discharge coordination',
+      description: 'Complete workflow for pediatric ICU doctors to coordinate patient discharges with outbound clinics. Features patient intake, clinic selection, real-time tracking, and secure communication.',
       route: '/demo/picu',
       role: 'HOSPITAL_DOCTOR',
       color: 'bg-blue-50 text-blue-700 border-blue-200',
@@ -34,17 +34,11 @@ export default function DemoPage() {
         'Secure messaging system',
         'File upload and management',
         'Automated follow-up reminders'
-      ],
-      demoData: {
-        activePatients: 12,
-        pendingRequests: 8,
-        successfulMatches: 45,
-        avgResponseTime: '2.3 days'
-      }
+      ]
     },
     {
       name: 'Outbound Clinic Interface',
-      description: 'Family doctor clinic portal for managing incoming patient requests',
+      description: 'Family doctor clinic portal for managing incoming patient requests from PICU. Includes capacity management, patient review, and secure communication with hospital teams.',
       route: '/demo/clinic',
       role: 'CLINIC_DOCTOR',
       color: 'bg-green-50 text-green-700 border-green-200',
@@ -56,17 +50,11 @@ export default function DemoPage() {
         'Secure PICU communication',
         'Patient file review system',
         'Notes and documentation tools'
-      ],
-      demoData: {
-        incomingRequests: 5,
-        availableSlots: 3,
-        avgProcessingTime: '1.8 days',
-        acceptanceRate: '78%'
-      }
+      ]
     },
     {
       name: 'Patient Guardian Portal',
-      description: 'Family portal for tracking child\'s care transition progress',
+      description: 'Family portal for tracking child\'s care transition progress with direct communication to care teams. Provides transparency and real-time updates.',
       route: '/demo/guardian',
       role: 'PARENT',
       color: 'bg-purple-50 text-purple-700 border-purple-200',
@@ -78,17 +66,11 @@ export default function DemoPage() {
         'Document access and sharing',
         'Progress notifications',
         'Family communication tools'
-      ],
-      demoData: {
-        activeCases: 2,
-        completedTransitions: 8,
-        avgWaitTime: '3.1 days',
-        satisfactionRate: '94%'
-      }
+      ]
     },
     {
       name: 'Administrative Dashboard',
-      description: 'System administration and user management interface',
+      description: 'System administration and user management interface for overseeing the entire platform. Includes user management, analytics, and compliance monitoring.',
       route: '/demo/admin',
       role: 'ADMIN',
       color: 'bg-orange-50 text-orange-700 border-orange-200',
@@ -100,13 +82,7 @@ export default function DemoPage() {
         'Audit trail monitoring',
         'Performance metrics',
         'Compliance oversight'
-      ],
-      demoData: {
-        totalUsers: 156,
-        activeSessions: 23,
-        systemUptime: '99.8%',
-        securityIncidents: 0
-      }
+      ]
     }
   ]
 
@@ -282,20 +258,6 @@ export default function DemoPage() {
                   <p className="text-gray-600 mb-4">
                     {route.description}
                   </p>
-                  
-                  {/* Demo Statistics */}
-                  <div className="grid grid-cols-2 gap-3 mb-4">
-                    {Object.entries(route.demoData).map(([key, value]) => (
-                      <div key={key} className="bg-gray-50 rounded-lg p-3">
-                        <div className="text-sm text-gray-500 capitalize">
-                          {key.replace(/([A-Z])/g, ' $1').trim()}
-                        </div>
-                        <div className="font-semibold text-gray-900">
-                          {typeof value === 'number' ? value.toLocaleString() : value}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
                   
                   <div className="mb-4">
                     <h4 className="font-medium text-gray-900 mb-2">Key Features:</h4>

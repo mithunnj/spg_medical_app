@@ -15,10 +15,34 @@ import {
   Eye,
   Calendar,
   Plus,
-  Minus
+  Minus,
+  MapPin,
+  Phone,
+  Mail
 } from 'lucide-react'
+import { getAllActiveClinics } from '@/lib/clinic-queries'
 
-export default function ClinicDoctorDemo() {
+export default async function ClinicDoctorDemo() {
+  // Fetch real clinic data from database
+  const clinics = await getAllActiveClinics()
+  
+  // Select a sample clinic for demo
+  const demoClinic = clinics.find(c => c.name.includes('Montreal') || c.name.includes('Pediatric')) || clinics[0] || {
+    id: 'demo-clinic',
+    name: 'Montreal Pediatric Associates',
+    region: 'Montreal',
+    address: '123 Medical Center Blvd, Montreal, QC',
+    phone: '+1-514-555-0123',
+    email: 'info@montrealpediatric.ca',
+    specializations: ['Pediatrics', 'Family Medicine'],
+    capacity: 50,
+    currentPatients: 38,
+    acceptingNew: true,
+    isActive: true,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
+
   const mockRequests = [
     {
       id: '1',
@@ -111,6 +135,9 @@ export default function ClinicDoctorDemo() {
     }
   }
 
+  const availableSlots = demoClinic.capacity - demoClinic.currentPatients
+  const utilizationRate = Math.round((demoClinic.currentPatients / demoClinic.capacity) * 100)
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -123,14 +150,14 @@ export default function ClinicDoctorDemo() {
               </Link>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900 flex items-center space-x-3">
-                  <Building2 className="h-8 w-8 text-green-600" />
+                  <Building2 className="h-8 w-8 text-blue-600" />
                   <span>Clinic Doctor Dashboard</span>
                 </h1>
-                <p className="text-gray-600">Downtown Family Medicine - Patient Request Management</p>
+                <p className="text-gray-600">{demoClinic.name} - Patient Request Management</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">
+              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">
                 <Eye className="h-4 w-4 mr-2" />
                 Demo Mode
               </Badge>
@@ -144,6 +171,76 @@ export default function ClinicDoctorDemo() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Clinic Information */}
+        <Card className="bg-white shadow-sm mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span>Clinic Information</span>
+              <Badge variant="outline" className={`${demoClinic.acceptingNew ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                {demoClinic.acceptingNew ? 'Accepting New Patients' : 'Not Accepting New Patients'}
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <Building2 className="h-5 w-5 text-gray-500" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900">{demoClinic.name}</h3>
+                    <p className="text-sm text-gray-600">{demoClinic.region}</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <MapPin className="h-5 w-5 text-gray-500" />
+                  <p className="text-sm text-gray-600">{demoClinic.address}</p>
+                </div>
+                {demoClinic.phone && (
+                  <div className="flex items-center space-x-3">
+                    <Phone className="h-5 w-5 text-gray-500" />
+                    <p className="text-sm text-gray-600">{demoClinic.phone}</p>
+                  </div>
+                )}
+                {demoClinic.email && (
+                  <div className="flex items-center space-x-3">
+                    <Mail className="h-5 w-5 text-gray-500" />
+                    <p className="text-sm text-gray-600">{demoClinic.email}</p>
+                  </div>
+                )}
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">Specializations</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {demoClinic.specializations.map((spec, index) => (
+                      <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700">
+                        {spec}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">Capacity Overview</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">Total Capacity</span>
+                      <span className="font-semibold">{demoClinic.capacity}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">Current Patients</span>
+                      <span className="font-semibold">{demoClinic.currentPatients}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">Available Slots</span>
+                      <span className="font-semibold text-green-600">{availableSlots}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="bg-white shadow-sm">
@@ -151,7 +248,7 @@ export default function ClinicDoctorDemo() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Incoming Requests</p>
-                  <p className="text-2xl font-bold text-gray-900">5</p>
+                  <p className="text-2xl font-bold text-gray-900">{mockRequests.length}</p>
                 </div>
                 <div className="bg-blue-100 p-3 rounded-lg">
                   <Clock className="h-6 w-6 text-blue-600" />
@@ -165,7 +262,7 @@ export default function ClinicDoctorDemo() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Available Slots</p>
-                  <p className="text-2xl font-bold text-gray-900">3</p>
+                  <p className="text-2xl font-bold text-gray-900">{availableSlots}</p>
                 </div>
                 <div className="bg-green-100 p-3 rounded-lg">
                   <Users className="h-6 w-6 text-green-600" />
@@ -178,8 +275,8 @@ export default function ClinicDoctorDemo() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Avg Processing Time</p>
-                  <p className="text-2xl font-bold text-gray-900">1.8 days</p>
+                  <p className="text-sm font-medium text-gray-600">Utilization Rate</p>
+                  <p className="text-2xl font-bold text-gray-900">{utilizationRate}%</p>
                 </div>
                 <div className="bg-purple-100 p-3 rounded-lg">
                   <TrendingUp className="h-6 w-6 text-purple-600" />
@@ -209,7 +306,7 @@ export default function ClinicDoctorDemo() {
             <CardTitle className="flex items-center justify-between">
               <span>Capacity Management</span>
               <Badge variant="outline" className="bg-green-50 text-green-700">
-                3 slots available
+                {availableSlots} slots available
               </Badge>
             </CardTitle>
           </CardHeader>
@@ -218,21 +315,21 @@ export default function ClinicDoctorDemo() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-gray-900">Total Capacity</span>
-                  <span className="text-2xl font-bold text-gray-900">15</span>
+                  <span className="text-2xl font-bold text-gray-900">{demoClinic.capacity}</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-blue-600 h-2 rounded-full" style={{ width: '80%' }}></div>
+                  <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${utilizationRate}%` }}></div>
                 </div>
-                <div className="text-sm text-gray-600">12 patients currently enrolled</div>
+                <div className="text-sm text-gray-600">{demoClinic.currentPatients} patients currently enrolled</div>
               </div>
 
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-gray-900">Available Slots</span>
-                  <span className="text-2xl font-bold text-green-600">3</span>
+                  <span className="text-2xl font-bold text-green-600">{availableSlots}</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-green-600 h-2 rounded-full" style={{ width: '20%' }}></div>
+                  <div className="bg-green-600 h-2 rounded-full" style={{ width: `${(availableSlots / demoClinic.capacity) * 100}%` }}></div>
                 </div>
                 <div className="text-sm text-gray-600">Ready for new patients</div>
               </div>
@@ -383,11 +480,11 @@ export default function ClinicDoctorDemo() {
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Incoming patient request review</span>
+                <span>Real clinic data from NeonDB</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>Accept/deny decision workflow</span>
+                <span>Incoming patient request review</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="h-4 w-4 text-green-600" />
