@@ -28,7 +28,7 @@ describe('IncomingRequestsTable', () => {
     expect(screen.getByText('Emma Johnson')).toBeInTheDocument()
     expect(screen.getByText('Lucas Chen')).toBeInTheDocument()
     // Check that requests are displayed
-    expect(screen.getByText('requests')).toBeInTheDocument()
+    expect(screen.getByText(/2.*requests/)).toBeInTheDocument()
   })
 
   it('displays different patient data for different clinics', () => {
