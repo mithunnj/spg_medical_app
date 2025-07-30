@@ -174,15 +174,15 @@ export default function PatientGuardianDemo() {
     setSelectedModal(`view-files-${childName}`)
   }
 
-  const handleRescheduleAppointment = (appointment: any) => {
+  const handleRescheduleAppointment = (appointment: { childName: string }) => {
     setSelectedModal(`reschedule-appointment-${appointment.childName}`)
   }
 
-  const handleCallClinic = (appointment: any) => {
+  const handleCallClinic = (appointment: { clinic: string }) => {
     setSelectedModal(`call-clinic-${appointment.clinic}`)
   }
 
-  const handleSendMessage = (appointment: any) => {
+  const handleSendMessage = (appointment: { clinic: string }) => {
     setSelectedModal(`send-message-${appointment.clinic}`)
   }
 
@@ -518,7 +518,7 @@ export default function PatientGuardianDemo() {
                 Contact Care Team
               </DialogTitle>
               <DialogDescription>
-                Send secure message to your care team about your child's care
+                Send secure message to your care team about your child&apos;s care
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -559,7 +559,7 @@ export default function PatientGuardianDemo() {
                 View Documents
               </DialogTitle>
               <DialogDescription>
-                Access and download your child's medical records and documentation
+                Access and download your child&apos;s medical records and documentation
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -691,7 +691,7 @@ export default function PatientGuardianDemo() {
                 Notification Settings
               </DialogTitle>
               <DialogDescription>
-                Configure how you receive updates about your child's care
+                Configure how you receive updates about your child&apos;s care
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -894,7 +894,7 @@ export default function PatientGuardianDemo() {
                   Child Details: {child.name}
                 </DialogTitle>
                 <DialogDescription>
-                  View comprehensive information about your child's care
+                  View comprehensive information about your child&apos;s care
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
@@ -920,7 +920,7 @@ export default function PatientGuardianDemo() {
                 </div>
                 <div>
                   <h4 className="font-medium mb-2">Care Notes</h4>
-                  <textarea className="w-full p-2 border rounded-md" rows={3} placeholder="Add notes about your child's care..." />
+                  <textarea className="w-full p-2 border rounded-md" rows={3} placeholder="Add notes about your child&apos;s care..." />
                 </div>
                 <div className="flex justify-end gap-2">
                   <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>

@@ -62,7 +62,7 @@ export default function ClinicDoctorDemo() {
   }, [])
 
   // Select a sample clinic for demo
-  const demoClinic = clinics.find(c => c.name.includes('Montreal') || c.name.includes('Pediatric')) || clinics[0] || {
+  const demoClinic: { name: string; region: string; address: string; phone: string; email: string; specializations: string[]; capacity: number; currentPatients: number; acceptingNew: boolean; isActive: boolean; createdAt: Date; updatedAt: Date } = clinics.find((c: { name: string }) => c.name.includes('Montreal') || c.name.includes('Pediatric')) || clinics[0] || {
     id: 'demo-clinic',
     name: 'Montreal Pediatric Associates',
     region: 'Montreal',

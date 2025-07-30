@@ -57,7 +57,7 @@ export default function PICUDoctorDemo() {
     fetchClinics()
   }, [])
   // Filter for Montreal area clinics
-  const montrealClinics = clinics.filter(c => 
+  const montrealClinics = clinics.filter((c: { id: string; region?: string; name: string; capacity: number; currentPatients: number; specializations: string[]; acceptingNew: boolean }) => 
     c.region?.toLowerCase().includes('montreal') || 
     c.name.toLowerCase().includes('montreal') ||
     c.name.toLowerCase().includes('pediatric')
@@ -517,7 +517,7 @@ export default function PICUDoctorDemo() {
                 Send Follow-up Messages
               </DialogTitle>
               <DialogDescription>
-                Automated follow-up messages for clinics that haven't responded within 48 hours
+                Automated follow-up messages for clinics that haven&apos;t responded within 48 hours
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -629,7 +629,7 @@ export default function PICUDoctorDemo() {
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
                   <MessageSquare className="h-5 w-5 text-red-600" />
-                  Message {patient.name}'s Family
+                  Message {patient.name}&apos;s Family
                 </DialogTitle>
                 <DialogDescription>
                   Send secure message to patient guardians about care coordination
