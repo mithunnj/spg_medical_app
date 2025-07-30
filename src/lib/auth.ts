@@ -1,12 +1,8 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { PrismaAdapter } from '@auth/prisma-adapter'
-import { prisma } from '@/lib/prisma'
-import { UserRole } from '@prisma/client'
 
-// Full auth configuration - now enabled with database connected
+// Demo-friendly auth configuration without database dependency
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prisma),
   session: {
     strategy: 'jwt',
     maxAge: 8 * 60 * 60, // 8 hours for security
@@ -24,40 +20,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: 'Password', type: 'password' },
         licenseNumber: { label: 'Medical License Number', type: 'text' },
       },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('Missing credentials')
-        }
-
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
-          include: {
-            hospital: true,
-            clinic: true,
-          },
-        })
-
-        if (!user || !user.isActive) {
-          throw new Error('User not found or inactive')
-        }
-
-        // For medical professionals, verify license number
-        if (
-          (user.role === UserRole.HOSPITAL_DOCTOR || user.role === UserRole.CLINIC_DOCTOR) &&
-          user.licenseNumber !== credentials.licenseNumber
-        ) {
-          throw new Error('Invalid license number')
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          hospitalId: user.hospitalId || undefined,
-          clinicId: user.clinicId || undefined,
-          licenseNumber: user.licenseNumber || undefined,
-        }
+      async authorize() {
+        // For demo purposes, return null to indicate no authentication
+        // This allows the demo to work without a database
+        return null
       },
     }),
   ],
@@ -74,7 +40,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.sub!
-        session.user.role = token.role as UserRole
+        session.user.role = token.role as string
         session.user.hospitalId = token.hospitalId as string
         session.user.clinicId = token.clinicId as string
         session.user.licenseNumber = token.licenseNumber as string
@@ -84,23 +50,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
 })
 
-// Helper functions for role-based access control
-export const hasRole = (userRole: UserRole, allowedRoles: UserRole[]): boolean => {
+// Demo helper functions (simplified for demo purposes)
+export const hasRole = (userRole: string, allowedRoles: string[]): boolean => {
   return allowedRoles.includes(userRole)
 }
 
-export const isHospitalDoctor = (role: UserRole): boolean => {
-  return role === UserRole.HOSPITAL_DOCTOR
+export const isHospitalDoctor = (role: string): boolean => {
+  return role === 'HOSPITAL_DOCTOR'
 }
 
-export const isClinicDoctor = (role: UserRole): boolean => {
-  return role === UserRole.CLINIC_DOCTOR
+export const isClinicDoctor = (role: string): boolean => {
+  return role === 'CLINIC_DOCTOR'
 }
 
-export const isParent = (role: UserRole): boolean => {
-  return role === UserRole.PARENT
+export const isParent = (role: string): boolean => {
+  return role === 'PARENT'
 }
 
-export const isAdmin = (role: UserRole): boolean => {
-  return role === UserRole.ADMIN
+export const isAdmin = (role: string): boolean => {
+  return role === 'ADMIN'
 } 
