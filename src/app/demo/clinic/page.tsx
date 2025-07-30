@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -20,12 +22,31 @@ import {
   Phone,
   Mail
 } from 'lucide-react'
-import { getAllActiveClinics } from '@/lib/clinic-queries'
+import { useEffect, useState } from 'react'
 
-export default async function ClinicDoctorDemo() {
-  // Fetch real clinic data from database
-  const clinics = await getAllActiveClinics()
-  
+export default function ClinicDoctorDemo() {
+  const [clinics, setClinics] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Fetch clinic data on client side
+    const fetchClinics = async () => {
+      try {
+        const response = await fetch('/api/clinics')
+        const data = await response.json()
+        setClinics(data)
+      } catch (error) {
+        console.error('Error fetching clinics:', error)
+        // Fallback to mock data
+        setClinics([])
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchClinics()
+  }, [])
+
   // Select a sample clinic for demo
   const demoClinic = clinics.find(c => c.name.includes('Montreal') || c.name.includes('Pediatric')) || clinics[0] || {
     id: 'demo-clinic',
