@@ -1,16 +1,10 @@
-import { redirect } from 'next/navigation'
-import { auth } from '@/lib/auth'
-import { UserRole } from '@prisma/client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { Heart, Shield, Users, ArrowRight, Stethoscope } from 'lucide-react'
 
-export default async function HomePage() {
-  const session = await auth()
-
-  if (!session) {
+export default function HomePage() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-8">
         <div className="max-w-7xl w-full">
@@ -56,12 +50,20 @@ export default async function HomePage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0 px-4 lg:px-6">
-                <Link href="/auth/signin" className="block">
-                  <Button className="w-full h-11 lg:h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors text-sm lg:text-base">
-                    Sign In to CareBridge
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
+                <div className="space-y-3">
+                  <Link href="/auth/signin" className="block">
+                    <Button className="w-full h-11 lg:h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors text-sm lg:text-base">
+                      Sign In to CareBridge
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Link href="/demo" className="block">
+                    <Button variant="outline" className="w-full h-11 lg:h-12 border-blue-300 text-blue-700 hover:bg-blue-50 font-medium rounded-lg transition-colors text-sm lg:text-base">
+                      View Demo Mode
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
                 <p className="text-xs lg:text-sm text-gray-500 text-center mt-3 lg:mt-4 px-2">
                   Medical license verification required for healthcare professionals
                 </p>
@@ -160,19 +162,4 @@ export default async function HomePage() {
         </div>
       </div>
     )
-  }
-
-  // Redirect based on user role
-  switch (session.user.role) {
-    case UserRole.HOSPITAL_DOCTOR:
-      redirect('/hospital/dashboard')
-    case UserRole.CLINIC_DOCTOR:
-      redirect('/clinic/dashboard')
-    case UserRole.PARENT:
-      redirect('/parent/dashboard')
-    case UserRole.ADMIN:
-      redirect('/admin/dashboard')
-    default:
-      redirect('/auth/signin')
-  }
 }
