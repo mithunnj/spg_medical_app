@@ -167,7 +167,7 @@ describe('ClinicDoctorDemo', () => {
     render(<ClinicDoctorDemo />)
     
     const increaseButton = screen.getByText('Increase Capacity')
-    const initialCapacity = screen.getByText('50')
+
     
     fireEvent.click(increaseButton)
     

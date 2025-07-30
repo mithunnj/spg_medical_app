@@ -10,7 +10,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
 import {
   Building2,
@@ -29,18 +28,16 @@ import {
   MapPin,
   Phone,
   Mail,
-  Upload,
-  Send,
   Download
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export default function ClinicDoctorDemo() {
   const [clinics, setClinics] = useState([])
-  const [loading, setLoading] = useState(true)
   const [selectedModal, setSelectedModal] = useState<string | null>(null)
   const [capacity, setCapacity] = useState(50)
   const [currentPatients, setCurrentPatients] = useState(38)
+
 
   useEffect(() => {
     // Fetch clinic data on client side
@@ -53,8 +50,6 @@ export default function ClinicDoctorDemo() {
         console.error('Error fetching clinics:', error)
         // Fallback to mock data
         setClinics([])
-      } finally {
-        setLoading(false)
       }
     }
     
@@ -87,7 +82,7 @@ export default function ClinicDoctorDemo() {
       priority: 'HIGH',
       status: 'PENDING',
       received: '2024-01-15',
-      hospital: 'Montreal Children\'s Hospital',
+      hospital: 'Montreal Children&apos;s Hospital',
       doctor: 'Dr. Sarah Johnson',
       files: 3,
       notes: 'Patient requires regular follow-up for asthma management'
@@ -100,7 +95,7 @@ export default function ClinicDoctorDemo() {
       priority: 'MEDIUM',
       status: 'APPROVED',
       received: '2024-01-10',
-      hospital: 'Montreal Children\'s Hospital',
+      hospital: 'Montreal Children&apos;s Hospital',
       doctor: 'Dr. Michael Chen',
       files: 5,
       notes: 'Stable condition, ready for outpatient care'
@@ -113,7 +108,7 @@ export default function ClinicDoctorDemo() {
       priority: 'HIGH',
       status: 'DENIED',
       received: '2024-01-08',
-      hospital: 'Montreal Children\'s Hospital',
+      hospital: 'Montreal Children&apos;s Hospital',
       doctor: 'Dr. Sarah Johnson',
       files: 8,
       notes: 'Requires specialized cardiology care'
@@ -126,7 +121,7 @@ export default function ClinicDoctorDemo() {
       priority: 'MEDIUM',
       status: 'APPROVED',
       received: '2024-01-05',
-      hospital: 'Montreal Children\'s Hospital',
+      hospital: 'Montreal Children&apos;s Hospital',
       doctor: 'Dr. Emily Davis',
       files: 4,
       notes: 'Well-controlled seizures, suitable for family practice'
@@ -138,7 +133,7 @@ export default function ClinicDoctorDemo() {
       id: '1',
       from: 'Dr. Sarah Johnson',
       subject: 'Re: Emma Rodriguez - Additional Information',
-      content: 'Thank you for considering Emma. I\'ve attached additional test results that may be relevant to your decision.',
+      content: 'Thank you for considering Emma. I&apos;ve attached additional test results that may be relevant to your decision.',
       timestamp: '2024-01-16 14:30',
       unread: true
     },
@@ -146,7 +141,7 @@ export default function ClinicDoctorDemo() {
       id: '2',
       from: 'Dr. Michael Chen',
       subject: 'Lucas Chen - Follow-up Questions',
-      content: 'Could you provide more details about Lucas\'s current medication regimen?',
+      content: 'Could you provide more details about Lucas&apos;s current medication regimen?',
       timestamp: '2024-01-12 09:15',
       unread: false
     }
@@ -189,9 +184,7 @@ export default function ClinicDoctorDemo() {
     setSelectedModal(`view-files-${patientId}`)
   }
 
-  const handleUpdateCapacity = () => {
-    setSelectedModal('update-capacity')
-  }
+
 
   const handleIncreaseCapacity = () => {
     setCapacity(prev => prev + 1)
@@ -203,9 +196,7 @@ export default function ClinicDoctorDemo() {
     }
   }
 
-  const handleSchedulePatientMeeting = (patientId: string) => {
-    setSelectedModal(`schedule-meeting-${patientId}`)
-  }
+
 
   const handleReplyMessage = (messageId: string) => {
     setSelectedModal(`reply-message-${messageId}`)

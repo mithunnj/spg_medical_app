@@ -10,7 +10,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
 import {
   Settings,
@@ -22,13 +21,9 @@ import {
   Trash2,
   ArrowLeft,
   Activity,
-  AlertCircle,
   CheckCircle,
-  BarChart3,
   UserPlus,
-  Key,
   Database,
-  Lock,
   Download
 } from 'lucide-react'
 import { useState } from 'react'

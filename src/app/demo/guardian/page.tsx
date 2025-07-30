@@ -10,7 +10,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
 import {
   Users,
@@ -25,8 +24,6 @@ import {
   Bell,
   Phone,
   Mail,
-  Upload,
-  Send,
   Download
 } from 'lucide-react'
 import { useState } from 'react'
@@ -44,7 +41,7 @@ export default function PatientGuardianDemo() {
       age: '8 years',
       diagnosis: 'Severe asthma exacerbation',
       status: 'PENDING',
-      hospital: 'Montreal Children\'s Hospital',
+      hospital: 'Montreal Children&apos;s Hospital',
       doctor: 'Dr. Matthew Donlan',
       clinic: 'Montreal Pediatric Associates',
       lastUpdate: '2024-01-16',
@@ -57,7 +54,7 @@ export default function PatientGuardianDemo() {
       age: '12 years',
       diagnosis: 'Type 1 diabetes management',
       status: 'APPROVED',
-      hospital: 'Montreal Children\'s Hospital',
+      hospital: 'Montreal Children&apos;s Hospital',
       doctor: 'Dr. Matthew Donlan',
       clinic: 'West Island Pediatrics',
       lastUpdate: '2024-01-12',
@@ -70,8 +67,8 @@ export default function PatientGuardianDemo() {
     {
       id: '1',
       from: 'Dr. Matthew Donlan',
-      subject: 'Emma\'s Progress Update',
-      content: 'Emma is responding well to treatment. We\'ve contacted Montreal Pediatric Associates for follow-up care.',
+      subject: 'Emma&apos;s Progress Update',
+      content: 'Emma is responding well to treatment. We&apos;ve contacted Montreal Pediatric Associates for follow-up care.',
       timestamp: '2024-01-16 14:30',
       unread: true,
       type: 'HOSPITAL'
@@ -80,7 +77,7 @@ export default function PatientGuardianDemo() {
       id: '2',
       from: 'Montreal Pediatric Associates',
       subject: 'Welcome to Our Clinic',
-      content: 'We\'re reviewing Emma\'s case and will contact you within 2 business days with our decision.',
+      content: 'We&apos;re reviewing Emma&apos;s case and will contact you within 2 business days with our decision.',
       timestamp: '2024-01-15 10:15',
       unread: false,
       type: 'CLINIC'
@@ -88,8 +85,8 @@ export default function PatientGuardianDemo() {
     {
       id: '3',
       from: 'Dr. Robert Wilson',
-      subject: 'Lucas\'s Care Plan',
-      content: 'Lucas has been accepted to our clinic. We\'ll schedule his first appointment next week.',
+      subject: 'Lucas&apos;s Care Plan',
+      content: 'Lucas has been accepted to our clinic. We&apos;ll schedule his first appointment next week.',
       timestamp: '2024-01-12 16:45',
       unread: false,
       type: 'CLINIC'
@@ -194,9 +191,7 @@ export default function PatientGuardianDemo() {
     setSelectedModal(`view-message-${messageId}`)
   }
 
-  const handleViewAppointmentDetails = (appointmentId: string) => {
-    setSelectedModal(`view-appointment-${appointmentId}`)
-  }
+
 
   return (
     <div className="min-h-screen bg-gray-50">

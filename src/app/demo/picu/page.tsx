@@ -10,7 +10,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
 import {
   Stethoscope,
@@ -29,13 +28,13 @@ import {
   Phone,
   Upload,
   Send,
-  Bell
+
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export default function PICUDoctorDemo() {
   const [clinics, setClinics] = useState([])
-  const [loading, setLoading] = useState(true)
+
   const [selectedModal, setSelectedModal] = useState<string | null>(null)
 
   useEffect(() => {
@@ -49,8 +48,6 @@ export default function PICUDoctorDemo() {
         console.error('Error fetching clinics:', error)
         // Fallback to mock data
         setClinics([])
-      } finally {
-        setLoading(false)
       }
     }
     
@@ -92,7 +89,7 @@ export default function PICUDoctorDemo() {
       age: '6 years',
       diagnosis: 'Complex congenital heart disease',
       status: 'DENIED',
-      clinic: 'Montreal Children\'s Cardiology',
+      clinic: 'Montreal Children&apos;s Cardiology',
       contacted: '2024-01-08',
       lastFollowUp: '2024-01-11',
       priority: 'HIGH'
