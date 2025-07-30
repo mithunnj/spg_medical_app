@@ -146,43 +146,43 @@ export default function PatientGuardianDemo() {
   }
 
   const handleContactCareTeam = () => {
-    alert('Opening secure messaging interface to contact your care team...\n\nThis allows direct communication with PICU doctors and clinic staff.')
+    setSelectedModal('contact-care-team')
   }
 
   const handleViewDocuments = () => {
-    alert('Opening document viewer...\n\nAvailable documents:\n- Medical records\n- Lab results\n- Discharge summaries\n- Care plans')
+    setSelectedModal('view-documents')
   }
 
   const handleScheduleAppointment = () => {
-    alert('Opening appointment scheduler...\n\nYou can schedule follow-up appointments with clinics and request consultations.')
+    setSelectedModal('schedule-appointment')
   }
 
   const handleSetNotifications = () => {
-    alert('Opening notification settings...\n\nConfigure alerts for:\n- Status updates\n- Appointment reminders\n- New messages\n- Document uploads')
+    setSelectedModal('set-notifications')
   }
 
   const handleMessagePICU = (childName: string) => {
-    alert(`Opening secure messaging with PICU team for ${childName}...\n\nThis allows direct communication with Dr. Matthew Donlan and the PICU care team.`)
+    setSelectedModal(`message-picu-${childName}`)
   }
 
   const handleMessageClinic = (childName: string) => {
-    alert(`Opening secure messaging with clinic for ${childName}...\n\nThis allows direct communication with the outpatient clinic care team.`)
+    setSelectedModal(`message-clinic-${childName}`)
   }
 
   const handleViewFiles = (childName: string) => {
-    alert(`Opening file viewer for ${childName}...\n\nView and download medical records, lab results, and care documentation.`)
+    setSelectedModal(`view-files-${childName}`)
   }
 
   const handleRescheduleAppointment = (appointment: any) => {
-    alert(`Opening reschedule interface for ${appointment.childName}'s appointment...\n\nYou can request a different date/time for the ${appointment.type} appointment.`)
+    setSelectedModal(`reschedule-appointment-${appointment.childName}`)
   }
 
   const handleCallClinic = (appointment: any) => {
-    alert(`Initiating call to ${appointment.clinic}...\n\nThis would connect you directly to the clinic for appointment-related questions.`)
+    setSelectedModal(`call-clinic-${appointment.clinic}`)
   }
 
   const handleSendMessage = (appointment: any) => {
-    alert(`Opening message interface for ${appointment.clinic}...\n\nSend a secure message to the clinic about ${appointment.childName}'s appointment.`)
+    setSelectedModal(`send-message-${appointment.clinic}`)
   }
 
   return (
@@ -495,6 +495,382 @@ export default function PatientGuardianDemo() {
             </div>
           </div>
         </div>
+
+        {/* Modal Dialogs */}
+        <Dialog open={selectedModal === 'contact-care-team'} onOpenChange={() => setSelectedModal(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5 text-purple-600" />
+                Contact Care Team
+              </DialogTitle>
+              <DialogDescription>
+                Send secure message to your care team about your child's care
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium">Recipient</label>
+                <select className="w-full mt-1 p-2 border rounded-md">
+                  <option>Select recipient</option>
+                  <option>PICU Team - Dr. Matthew Donlan</option>
+                  <option>Clinic Team - Montreal Pediatric Associates</option>
+                  <option>General Care Team</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Subject</label>
+                <input className="w-full mt-1 p-2 border rounded-md" placeholder="Enter message subject" />
+              </div>
+              <div>
+                <label className="text-sm font-medium">Message</label>
+                <textarea className="w-full mt-1 p-2 border rounded-md" rows={4} placeholder="Enter your message to the care team..." />
+              </div>
+              <div className="flex items-center gap-2">
+                <input type="checkbox" id="urgent" />
+                <label htmlFor="urgent" className="text-sm">Mark as urgent</label>
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+              <Button className="bg-purple-600 hover:bg-purple-700">Send Message</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={selectedModal === 'view-documents'} onOpenChange={() => setSelectedModal(null)}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-purple-600" />
+                View Documents
+              </DialogTitle>
+              <DialogDescription>
+                Access and download your child's medical records and documentation
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="border border-gray-200 rounded-lg p-4">
+                  <h4 className="font-medium mb-2">Medical Records</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between items-center">
+                      <span>Discharge Summary</span>
+                      <Button size="sm" variant="outline">
+                        <Download className="h-3 w-3 mr-1" />
+                        Download
+                      </Button>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Lab Results</span>
+                      <Button size="sm" variant="outline">
+                        <Download className="h-3 w-3 mr-1" />
+                        Download
+                      </Button>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Imaging Reports</span>
+                      <Button size="sm" variant="outline">
+                        <Download className="h-3 w-3 mr-1" />
+                        Download
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <div className="border border-gray-200 rounded-lg p-4">
+                  <h4 className="font-medium mb-2">Care Plans</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between items-center">
+                      <span>Follow-up Care Plan</span>
+                      <Button size="sm" variant="outline">
+                        <Download className="h-3 w-3 mr-1" />
+                        Download
+                      </Button>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Medication Instructions</span>
+                      <Button size="sm" variant="outline">
+                        <Download className="h-3 w-3 mr-1" />
+                        Download
+                      </Button>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Appointment Schedule</span>
+                      <Button size="sm" variant="outline">
+                        <Download className="h-3 w-3 mr-1" />
+                        Download
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
+              <Button className="bg-purple-600 hover:bg-purple-700">Download All</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={selectedModal === 'schedule-appointment'} onOpenChange={() => setSelectedModal(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-purple-600" />
+                Schedule Appointment
+              </DialogTitle>
+              <DialogDescription>
+                Schedule follow-up appointments and consultations
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Child</label>
+                  <select className="w-full mt-1 p-2 border rounded-md">
+                    <option>Select child</option>
+                    {mockChildren.map(child => (
+                      <option key={child.id}>{child.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Appointment Type</label>
+                  <select className="w-full mt-1 p-2 border rounded-md">
+                    <option>Follow-up consultation</option>
+                    <option>Lab work</option>
+                    <option>Specialist referral</option>
+                    <option>General check-up</option>
+                  </select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Preferred Date</label>
+                  <input type="date" className="w-full mt-1 p-2 border rounded-md" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Preferred Time</label>
+                  <select className="w-full mt-1 p-2 border rounded-md">
+                    <option>Morning (9 AM - 12 PM)</option>
+                    <option>Afternoon (1 PM - 4 PM)</option>
+                    <option>Evening (4 PM - 6 PM)</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Notes</label>
+                <textarea className="w-full mt-1 p-2 border rounded-md" rows={3} placeholder="Any special requirements or notes..." />
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+              <Button className="bg-purple-600 hover:bg-purple-700">Schedule Appointment</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={selectedModal === 'set-notifications'} onOpenChange={() => setSelectedModal(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Bell className="h-5 w-5 text-purple-600" />
+                Notification Settings
+              </DialogTitle>
+              <DialogDescription>
+                Configure how you receive updates about your child's care
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium">Status Updates</label>
+                    <p className="text-xs text-gray-600">Get notified when care status changes</p>
+                  </div>
+                  <input type="checkbox" defaultChecked />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium">Appointment Reminders</label>
+                    <p className="text-xs text-gray-600">Receive reminders before appointments</p>
+                  </div>
+                  <input type="checkbox" defaultChecked />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium">New Messages</label>
+                    <p className="text-xs text-gray-600">Notify when care team sends messages</p>
+                  </div>
+                  <input type="checkbox" defaultChecked />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium">Document Uploads</label>
+                    <p className="text-xs text-gray-600">Alert when new documents are available</p>
+                  </div>
+                  <input type="checkbox" />
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Notification Method</label>
+                <select className="w-full mt-1 p-2 border rounded-md">
+                  <option>Email</option>
+                  <option>SMS</option>
+                  <option>Both</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+              <Button className="bg-purple-600 hover:bg-purple-700">Save Settings</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {mockChildren.map(child => (
+          <Dialog key={child.id} open={selectedModal === `message-picu-${child.name}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5 text-purple-600" />
+                  Message PICU Team for {child.name}
+                </DialogTitle>
+                <DialogDescription>
+                  Send secure message to Dr. Matthew Donlan and the PICU care team
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium">Subject</label>
+                  <input className="w-full mt-1 p-2 border rounded-md" placeholder="Enter message subject" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Message</label>
+                  <textarea className="w-full mt-1 p-2 border rounded-md" rows={4} placeholder="Enter your message to the PICU team..." />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" id="urgent" />
+                  <label htmlFor="urgent" className="text-sm">Mark as urgent</label>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+                <Button className="bg-purple-600 hover:bg-purple-700">Send Message</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockChildren.map(child => (
+          <Dialog key={child.id} open={selectedModal === `message-clinic-${child.name}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5 text-purple-600" />
+                  Message Clinic for {child.name}
+                </DialogTitle>
+                <DialogDescription>
+                  Send secure message to the outpatient clinic care team
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium">Subject</label>
+                  <input className="w-full mt-1 p-2 border rounded-md" placeholder="Enter message subject" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Message</label>
+                  <textarea className="w-full mt-1 p-2 border rounded-md" rows={4} placeholder="Enter your message to the clinic..." />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" id="urgent" />
+                  <label htmlFor="urgent" className="text-sm">Mark as urgent</label>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+                <Button className="bg-purple-600 hover:bg-purple-700">Send Message</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockChildren.map(child => (
+          <Dialog key={child.id} open={selectedModal === `view-files-${child.name}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-purple-600" />
+                  Files for {child.name}
+                </DialogTitle>
+                <DialogDescription>
+                  View and download medical records and care documentation
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-medium mb-2">Medical Records</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span>Discharge Summary</span>
+                        <Button size="sm" variant="outline">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span>Lab Results</span>
+                        <Button size="sm" variant="outline">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span>Care Plan</span>
+                        <Button size="sm" variant="outline">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-medium mb-2">Appointments</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span>Follow-up Schedule</span>
+                        <Button size="sm" variant="outline">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span>Medication List</span>
+                        <Button size="sm" variant="outline">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span>Care Instructions</span>
+                        <Button size="sm" variant="outline">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
+                <Button className="bg-purple-600 hover:bg-purple-700">Download All</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
       </div>
     </div>
   )

@@ -171,6 +171,26 @@ export default function ClinicDoctorDemo() {
   const availableSlots = demoClinic.capacity - demoClinic.currentPatients
   const utilizationRate = Math.round((demoClinic.currentPatients / demoClinic.capacity) * 100)
 
+  const handleAcceptPatient = (patientId: string) => {
+    setSelectedModal(`accept-patient-${patientId}`)
+  }
+
+  const handleDenyPatient = (patientId: string) => {
+    setSelectedModal(`deny-patient-${patientId}`)
+  }
+
+  const handleMessagePICU = (patientId: string) => {
+    setSelectedModal(`message-picu-${patientId}`)
+  }
+
+  const handleViewFiles = (patientId: string) => {
+    setSelectedModal(`view-files-${patientId}`)
+  }
+
+  const handleUpdateCapacity = () => {
+    setSelectedModal('update-capacity')
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -540,6 +560,246 @@ export default function ClinicDoctorDemo() {
             </div>
           </div>
         </div>
+
+        {/* Modal Dialogs */}
+        {mockRequests.map(request => (
+          <Dialog key={request.id} open={selectedModal === `accept-patient-${request.id}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  Accept Patient: {request.patientName}
+                </DialogTitle>
+                <DialogDescription>
+                  Confirm acceptance of this patient for outpatient care
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <h4 className="font-medium text-green-800 mb-2">Patient Information</h4>
+                  <div className="text-sm text-green-700 space-y-1">
+                    <div><strong>Age:</strong> {request.age}</div>
+                    <div><strong>Diagnosis:</strong> {request.diagnosis}</div>
+                    <div><strong>Priority:</strong> {request.priority}</div>
+                    <div><strong>Hospital:</strong> {request.hospital}</div>
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Notes</label>
+                  <textarea className="w-full mt-1 p-2 border rounded-md" rows={3} placeholder="Add notes about acceptance..." />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Follow-up Date</label>
+                  <input type="date" className="w-full mt-1 p-2 border rounded-md" />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+                <Button className="bg-green-600 hover:bg-green-700">Accept Patient</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockRequests.map(request => (
+          <Dialog key={request.id} open={selectedModal === `deny-patient-${request.id}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <XCircle className="h-5 w-5 text-red-600" />
+                  Deny Patient: {request.patientName}
+                </DialogTitle>
+                <DialogDescription>
+                  Provide reason for denying this patient request
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <h4 className="font-medium text-red-800 mb-2">Patient Information</h4>
+                  <div className="text-sm text-red-700 space-y-1">
+                    <div><strong>Age:</strong> {request.age}</div>
+                    <div><strong>Diagnosis:</strong> {request.diagnosis}</div>
+                    <div><strong>Priority:</strong> {request.priority}</div>
+                    <div><strong>Hospital:</strong> {request.hospital}</div>
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Reason for Denial</label>
+                  <select className="w-full mt-1 p-2 border rounded-md">
+                    <option>Select reason</option>
+                    <option>Insufficient capacity</option>
+                    <option>Specialized care required</option>
+                    <option>Geographic constraints</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Additional Notes</label>
+                  <textarea className="w-full mt-1 p-2 border rounded-md" rows={3} placeholder="Provide additional details..." />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+                <Button className="bg-red-600 hover:bg-red-700">Deny Patient</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockRequests.map(request => (
+          <Dialog key={request.id} open={selectedModal === `message-picu-${request.id}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5 text-blue-600" />
+                  Message PICU Doctor: {request.doctor}
+                </DialogTitle>
+                <DialogDescription>
+                  Send secure message to PICU doctor about {request.patientName}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium">Subject</label>
+                  <input className="w-full mt-1 p-2 border rounded-md" placeholder="Enter message subject" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Message</label>
+                  <textarea className="w-full mt-1 p-2 border rounded-md" rows={4} placeholder="Enter your message to the PICU doctor..." />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" id="urgent" />
+                  <label htmlFor="urgent" className="text-sm">Mark as urgent</label>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+                <Button className="bg-blue-600 hover:bg-blue-700">Send Message</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        {mockRequests.map(request => (
+          <Dialog key={request.id} open={selectedModal === `view-files-${request.id}`} onOpenChange={() => setSelectedModal(null)}>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-blue-600" />
+                  Patient Files: {request.patientName}
+                </DialogTitle>
+                <DialogDescription>
+                  View and download patient medical records and documentation
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-medium mb-2">Medical Records</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span>Discharge Summary</span>
+                        <Button size="sm" variant="outline">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span>Lab Results</span>
+                        <Button size="sm" variant="outline">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span>Imaging Reports</span>
+                        <Button size="sm" variant="outline">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-medium mb-2">Care Documentation</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span>Care Plan</span>
+                        <Button size="sm" variant="outline">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span>Medication List</span>
+                        <Button size="sm" variant="outline">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span>Follow-up Notes</span>
+                        <Button size="sm" variant="outline">
+                          <Download className="h-3 w-3 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
+                <Button className="bg-blue-600 hover:bg-blue-700">Download All</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        ))}
+
+        <Dialog open={selectedModal === 'update-capacity'} onOpenChange={() => setSelectedModal(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5 text-blue-600" />
+                Update Clinic Capacity
+              </DialogTitle>
+              <DialogDescription>
+                Modify the number of available slots and clinic status
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Total Capacity</label>
+                  <input type="number" className="w-full mt-1 p-2 border rounded-md" defaultValue={demoClinic.capacity} />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Current Patients</label>
+                  <input type="number" className="w-full mt-1 p-2 border rounded-md" defaultValue={demoClinic.currentPatients} />
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Accepting New Patients</label>
+                <select className="w-full mt-1 p-2 border rounded-md">
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h4 className="font-medium text-blue-800 mb-2">Current Status</h4>
+                <div className="text-sm text-blue-700 space-y-1">
+                  <div><strong>Available Slots:</strong> {availableSlots}</div>
+                  <div><strong>Utilization Rate:</strong> {utilizationRate}%</div>
+                  <div><strong>Status:</strong> {demoClinic.acceptingNew ? 'Accepting' : 'Full'}</div>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <Button variant="outline" onClick={() => setSelectedModal(null)}>Cancel</Button>
+              <Button className="bg-blue-600 hover:bg-blue-700">Update Capacity</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   )
