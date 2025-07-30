@@ -41,7 +41,7 @@ export default function PatientGuardianDemo() {
       age: '8 years',
       diagnosis: 'Severe asthma exacerbation',
       status: 'PENDING',
-      hospital: 'Montreal Children\'s Hospital',
+      hospital: 'Montreal Children&apos;s Hospital',
       doctor: 'Dr. Matthew Donlan',
       clinic: 'Montreal Pediatric Associates',
       lastUpdate: '2024-01-16',
@@ -54,7 +54,7 @@ export default function PatientGuardianDemo() {
       age: '12 years',
       diagnosis: 'Type 1 diabetes management',
       status: 'APPROVED',
-      hospital: 'Montreal Children\'s Hospital',
+      hospital: 'Montreal Children&apos;s Hospital',
       doctor: 'Dr. Matthew Donlan',
       clinic: 'West Island Pediatrics',
       lastUpdate: '2024-01-12',
@@ -67,8 +67,8 @@ export default function PatientGuardianDemo() {
     {
       id: '1',
       from: 'Dr. Matthew Donlan',
-      subject: 'Emma\'s Progress Update',
-      content: 'Emma is responding well to treatment. We\'ve contacted Montreal Pediatric Associates for follow-up care.',
+      subject: 'Emma&apos;s Progress Update',
+      content: 'Emma is responding well to treatment. We&apos;ve contacted Montreal Pediatric Associates for follow-up care.',
       timestamp: '2024-01-16 14:30',
       unread: true,
       type: 'HOSPITAL'
@@ -77,7 +77,7 @@ export default function PatientGuardianDemo() {
       id: '2',
       from: 'Montreal Pediatric Associates',
       subject: 'Welcome to Our Clinic',
-      content: 'We\'re reviewing Emma\'s case and will contact you within 2 business days with our decision.',
+      content: 'We&apos;re reviewing Emma&apos;s case and will contact you within 2 business days with our decision.',
       timestamp: '2024-01-15 10:15',
       unread: false,
       type: 'CLINIC'
@@ -85,8 +85,8 @@ export default function PatientGuardianDemo() {
     {
       id: '3',
       from: 'Dr. Robert Wilson',
-      subject: 'Lucas\'s Care Plan',
-      content: 'Lucas has been accepted to our clinic. We\'ll schedule his first appointment next week.',
+      subject: 'Lucas&apos;s Care Plan',
+      content: 'Lucas has been accepted to our clinic. We&apos;ll schedule his first appointment next week.',
       timestamp: '2024-01-12 16:45',
       unread: false,
       type: 'CLINIC'
@@ -208,7 +208,7 @@ export default function PatientGuardianDemo() {
                   <Users className="h-8 w-8 text-purple-600" />
                   <span>Patient Guardian Portal</span>
                 </h1>
-                <p className="text-gray-600">Track your child's care transition progress</p>
+                <p className="text-gray-600">Track your child&apos;s care transition progress</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
@@ -309,7 +309,7 @@ export default function PatientGuardianDemo() {
         <Card className="bg-white shadow-sm mb-8">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              <span>Your Children's Status</span>
+              <span>Your Children&apos;s Status</span>
               <Badge variant="outline" className="bg-purple-50 text-purple-700">
                 {mockChildren.length} Active Cases
               </Badge>
@@ -513,7 +513,7 @@ export default function PatientGuardianDemo() {
                 Contact Care Team
               </DialogTitle>
               <DialogDescription>
-                Send secure message to your care team about your child's care
+                Send secure message to your care team about your child&apos;s care
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -554,7 +554,7 @@ export default function PatientGuardianDemo() {
                 View Documents
               </DialogTitle>
               <DialogDescription>
-                Access and download your child's medical records and documentation
+                Access and download your child&apos;s medical records and documentation
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -686,7 +686,7 @@ export default function PatientGuardianDemo() {
                 Notification Settings
               </DialogTitle>
               <DialogDescription>
-                Configure how you receive updates about your child's care
+                Configure how you receive updates about your child&apos;s care
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -889,7 +889,7 @@ export default function PatientGuardianDemo() {
                   Child Details: {child.name}
                 </DialogTitle>
                 <DialogDescription>
-                  View comprehensive information about your child's care
+                  View comprehensive information about your child&apos;s care
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
@@ -915,7 +915,7 @@ export default function PatientGuardianDemo() {
                 </div>
                 <div>
                   <h4 className="font-medium mb-2">Care Notes</h4>
-                  <textarea className="w-full p-2 border rounded-md" rows={3} placeholder="Add notes about your child's care..." />
+                  <textarea className="w-full p-2 border rounded-md" rows={3} placeholder="Add notes about your child&apos;s care..." />
                 </div>
                 <div className="flex justify-end gap-2">
                   <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
