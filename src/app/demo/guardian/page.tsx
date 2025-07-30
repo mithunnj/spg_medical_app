@@ -208,7 +208,7 @@ export default function PatientGuardianDemo() {
                   <Users className="h-8 w-8 text-purple-600" />
                   <span>Patient Guardian Portal</span>
                 </h1>
-                <p className="text-gray-600">Track your child's care transition progress</p>
+                <p className="text-gray-600">Track your child&apos;s care transition progress</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
@@ -309,7 +309,7 @@ export default function PatientGuardianDemo() {
         <Card className="bg-white shadow-sm mb-8">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              <span>Your Children's Status</span>
+              <span>Your Children&apos;s Status</span>
               <Badge variant="outline" className="bg-purple-50 text-purple-700">
                 {mockChildren.length} Active Cases
               </Badge>
@@ -513,7 +513,7 @@ export default function PatientGuardianDemo() {
                 Contact Care Team
               </DialogTitle>
               <DialogDescription>
-                Send secure message to your care team about your child's care
+                Send secure message to your care team about your child&apos;s care
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -554,7 +554,7 @@ export default function PatientGuardianDemo() {
                 View Documents
               </DialogTitle>
               <DialogDescription>
-                Access and download your child's medical records and documentation
+                Access and download your child&apos;s medical records and documentation
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -686,7 +686,7 @@ export default function PatientGuardianDemo() {
                 Notification Settings
               </DialogTitle>
               <DialogDescription>
-                Configure how you receive updates about your child's care
+                Configure how you receive updates about your child&apos;s care
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
@@ -889,7 +889,7 @@ export default function PatientGuardianDemo() {
                   Child Details: {child.name}
                 </DialogTitle>
                 <DialogDescription>
-                  View comprehensive information about your child's care
+                  View comprehensive information about your child&apos;s care
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
@@ -915,7 +915,7 @@ export default function PatientGuardianDemo() {
                 </div>
                 <div>
                   <h4 className="font-medium mb-2">Care Notes</h4>
-                  <textarea className="w-full p-2 border rounded-md" rows={3} placeholder="Add notes about your child's care..." />
+                  <textarea className="w-full p-2 border rounded-md" rows={3} placeholder="Add notes about your child&apos;s care..." />
                 </div>
                 <div className="flex justify-end gap-2">
                   <Button variant="outline" onClick={() => setSelectedModal(null)}>Close</Button>
