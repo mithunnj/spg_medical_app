@@ -22,17 +22,18 @@ describe('DemoPage', () => {
   it('displays all four demo interfaces', () => {
     render(<DemoPage />)
     
-    expect(screen.getByText('PICU Doctor Interface')).toBeInTheDocument()
-    expect(screen.getByText('Outbound Clinic Interface')).toBeInTheDocument()
-    expect(screen.getByText('Patient Guardian Portal')).toBeInTheDocument()
-    expect(screen.getByText('Administrative Dashboard')).toBeInTheDocument()
+    // Check that each interface name appears at least once
+    expect(screen.getAllByText('PICU Doctor Interface')).toHaveLength(2)
+    expect(screen.getAllByText('Outbound Clinic Interface')).toHaveLength(1)
+    expect(screen.getAllByText('Patient Guardian Portal')).toHaveLength(1)
+    expect(screen.getAllByText('Administrative Dashboard')).toHaveLength(1)
   })
 
   it('shows demo mode and HIPAA compliant badges', () => {
     render(<DemoPage />)
     
     expect(screen.getByText('Demo Mode')).toBeInTheDocument()
-    expect(screen.getByText('HIPAA Compliant')).toBeInTheDocument()
+    expect(screen.getAllByText('HIPAA Compliant')).toHaveLength(2)
   })
 
   it('displays platform overview section', () => {

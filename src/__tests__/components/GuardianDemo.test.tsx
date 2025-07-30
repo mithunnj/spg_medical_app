@@ -29,7 +29,7 @@ describe('PatientGuardianDemo', () => {
     render(<PatientGuardianDemo />)
     
     expect(screen.getAllByText('Emma Rodriguez')).toHaveLength(2)
-    expect(screen.getAllByText('Lucas Chen')).toHaveLength(2)
+    expect(screen.getAllByText('Lucas Rodriguez')).toHaveLength(2)
   })
 
   it('displays action buttons', () => {

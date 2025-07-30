@@ -41,16 +41,16 @@ describe('AdminDashboardDemo', () => {
     render(<AdminDashboardDemo />)
     
     expect(screen.getByText('User Management')).toBeInTheDocument()
-    expect(screen.getByText('Dr. Sarah Johnson')).toBeInTheDocument()
-    expect(screen.getByText('Dr. Robert Wilson')).toBeInTheDocument()
-    expect(screen.getByText('Maria Rodriguez')).toBeInTheDocument()
+    expect(screen.getAllByText('Dr. Sarah Johnson')).toHaveLength(2) // Multiple instances
+    expect(screen.getAllByText('Dr. Robert Wilson')).toHaveLength(2) // Multiple instances
+    expect(screen.getAllByText('Maria Rodriguez')).toHaveLength(2) // Multiple instances
   })
 
   it('shows audit logs section', () => {
     render(<AdminDashboardDemo />)
     
     expect(screen.getByText('Recent Audit Logs')).toBeInTheDocument()
-    expect(screen.getByText('Dr. Sarah Johnson')).toBeInTheDocument()
+    expect(screen.getAllByText('Dr. Sarah Johnson')).toHaveLength(2) // Multiple instances
     expect(screen.getByText('Dr. Matthew Donlan')).toBeInTheDocument()
     expect(screen.getByText('Dr. Emily Chen')).toBeInTheDocument()
   })
@@ -66,22 +66,22 @@ describe('AdminDashboardDemo', () => {
   it('opens add user modal when button is clicked', async () => {
     render(<AdminDashboardDemo />)
     
-    const addUserButton = screen.getByText('Add New User')
-    fireEvent.click(addUserButton)
+    const addUserButtons = screen.getAllByText('Add New User')
+    fireEvent.click(addUserButtons[0])
     
     await waitFor(() => {
-      expect(screen.getByText('Add New User')).toBeInTheDocument()
+      expect(screen.getAllByText('Add New User')).toHaveLength(2) // Button and modal title
     })
   })
 
   it('opens system settings modal when button is clicked', async () => {
     render(<AdminDashboardDemo />)
     
-    const settingsButton = screen.getByText('System Settings')
-    fireEvent.click(settingsButton)
+    const settingsButtons = screen.getAllByText('System Settings')
+    fireEvent.click(settingsButtons[0])
     
     await waitFor(() => {
-      expect(screen.getByText('System Settings')).toBeInTheDocument()
+      expect(screen.getAllByText('System Settings')).toHaveLength(2) // Button and modal title
     })
   })
 
@@ -143,16 +143,16 @@ describe('AdminDashboardDemo', () => {
   it('shows user roles correctly', () => {
     render(<AdminDashboardDemo />)
     
-    expect(screen.getByText('HOSPITAL DOCTOR')).toBeInTheDocument()
-    expect(screen.getByText('CLINIC DOCTOR')).toBeInTheDocument()
-    expect(screen.getByText('PARENT')).toBeInTheDocument()
+    expect(screen.getAllByText('HOSPITAL DOCTOR')).toHaveLength(3) // Multiple instances
+    expect(screen.getAllByText('CLINIC DOCTOR')).toHaveLength(5) // Multiple instances
+    expect(screen.getAllByText('PARENT')).toHaveLength(2) // Multiple instances
   })
 
   it('shows user status correctly', () => {
     render(<AdminDashboardDemo />)
     
-    expect(screen.getByText('ACTIVE')).toBeInTheDocument()
-    expect(screen.getByText('PENDING')).toBeInTheDocument()
+    expect(screen.getAllByText('ACTIVE')).toHaveLength(3) // Multiple instances
+    expect(screen.getAllByText('PENDING')).toHaveLength(2) // Multiple instances
   })
 
   it('displays audit log actions', () => {
@@ -166,7 +166,7 @@ describe('AdminDashboardDemo', () => {
   it('shows audit log status', () => {
     render(<AdminDashboardDemo />)
     
-    expect(screen.getByText('SUCCESS')).toBeInTheDocument()
-    expect(screen.getByText('PENDING')).toBeInTheDocument()
+    expect(screen.getAllByText('SUCCESS')).toHaveLength(5) // Multiple instances
+    expect(screen.getAllByText('PENDING')).toHaveLength(2) // Multiple instances
   })
 }) 
